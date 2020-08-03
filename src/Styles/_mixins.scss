@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700&display=swap");
+// mobile
+@mixin mobile() {
+    @media only screen and (max-width: 767px) {
+        @content;
+    }
+}
+
+// tablet
+@mixin tab() {
+    @media only screen and (min-width: 768px) and (max-width: 1024px) {
+        @content;
+    }
+}
+
+// variable
+@mixin responsive($min, $max) {
+    @media only screen and (min-width: $min) and (max-width: $max) {
+        @content;
+    }
+}
+
+@mixin shadow($y: 5px, $spread: 15px, $opacity: 0.15) {
+    -webkit-box-shadow: 0px $y $spread 0px rgba(0, 0, 0, $opacity);
+    -moz-box-shadow: 0px $y $spread 0px rgba(0, 0, 0, $opacity);
+    box-shadow: 0px $y $spread 0px rgba(0, 0, 0, $opacity);
+}
+
+@mixin setFont($size: 16px, $weight: 400) {
+    font-size: $size;
+    font-weight: $weight;
+}
+
+@mixin linearGradient($property, $position, $primary, $secondary) {
+    #{$property}: -webkit-linear-gradient(to $position, $primary, $secondary);
+    #{$property}: -moz-linear-gradient(to $position, $primary, $secondary);
+    #{$property}: -o-linear-gradient(to $position, $primary, $secondary);
+    #{$property}: linear-gradient(to $position, $primary, $secondary);
+}
+
+@mixin placeholder {
+    &::-webkit-input-placeholder {
+        @content;
+    }
+    &:-moz-placeholder {
+        @content;
+    }
+    &::-moz-placeholder {
+        @content;
+    }
+    &:-ms-input-placeholder {
+        @content;
+    }
+}
