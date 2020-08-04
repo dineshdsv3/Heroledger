@@ -6,7 +6,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './css/main.css'
+import './Styles/main.scss'
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
