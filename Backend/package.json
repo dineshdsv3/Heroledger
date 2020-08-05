@@ -4,7 +4,8 @@
   "description": "Backend",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server" : "env-cmd -f ./.env nodemon ./App.js "
   },
   "author": "Satya Venkata Dinesh Danda - contact(dineshdsv3@gmail.com)",
   "license": "ISC",
