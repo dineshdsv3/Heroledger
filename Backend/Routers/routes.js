@@ -9,17 +9,19 @@ router.use(function (req, res, next) {
 });
 
 
-router.get('/addUser', async (req,res) => {
-    try {
-		// console.log(req.body.user);
-		const user = new User({name: "Dinesh",email:"hello@123.com",password:"Hello@12345678"});
-		console.log(user);
-		await user.save();
-		const token = await user.generateAuthToken();
-		res.status(201).send({ message: 'User registered Successfully', user, token });
-	} catch (error) {
-		res.status(400).send(error);
-	}
+router.post('/addUser', async (req,res) => {
+	console.log(req.body);
+	res.send({message:'success'})
+    // try {
+	// 	// console.log(req.body.user);
+	// 	const user = new User({name: "Dinesh",email:"hello@123.com",password:"Hello@12345678"});
+	// 	console.log(user);
+	// 	// await user.save();
+	// 	// const token = await user.generateAuthToken();
+	// 	// res.status(201).send({ message: 'User registered Successfully', user, token });
+	// } catch (error) {
+	// 	res.status(400).send(error);
+	// }
 })
 
 
