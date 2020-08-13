@@ -9,12 +9,14 @@ import PrivateRoute from '../Components/PrivateRoute';
 import PreLogin from '../Pages/Pre-Login/PreLogin';
 // import ForgotPass from '../Pages/Pre-Login/ForgotPass'
 
+import Welcome from '../Pages/Home/Welcome'
 
 const Routes = () => {
     return (
         <Switch>
             {/* pre login */}
             <Route exact path="/" component={PreLogin} />
+
             {/* <Route exact path="/forgot-password" component={ForgotPass} /> */}
             {/* <Route exact path="/create-password/:userID" component={CreatePassword} /> */}
             {/* <Route exact path="/privacy-policy" component={PrivacyPolicy} />
@@ -22,7 +24,7 @@ const Routes = () => {
             <Route exact path="/support" component={Help} /> */}
 
             {/* after Login */}
-            {/* <PrivateRoute exact path="/Ownerhome" component={OwnerHome} /> */}
+            <PrivateRoute exact path="/Welcome" component={Welcome} />
 
              {/* <PrivateRoute exact path="/profile" component={Profile} /> */}
 

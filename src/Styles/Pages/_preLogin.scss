@@ -1,26 +1,89 @@
-.header-video {
-    position: relative;
-    overflow: hidden;
-    background: url("../../Assets/Images/comic-background.png");
-    background-size: cover; 
-    background-repeat: no-repeat;
-    // min-height: 100vh;
-}
-#hero_video {
-    position: relative;
+.pre-login {
+    background: url("../../Assets/Images/mountain.jpg");
     background-size: cover;
-    color: #fff;
-    width: 100%;
-    font-size: 16px;
-    display: table;
-    height: 100%;
-    z-index: 99;
-    text-align: center;
+    min-height: 100vh;
 }
-#sub_content {
-    display: table-cell;
-    padding: 0 15%;
-    vertical-align: middle;
+
+.main-section {
+    margin: 0 auto;
+    margin-top: 90px;
+    padding: 0;
+}
+.login-modal-content {
+    background: #3b4652;
+    opacity: 0.9;
+    padding: 0 18px;
+    box-shadow: 0px 0px 3px #848484;
+}
+.user-img {
+    margin-top: -50px;
+    margin-bottom: 35px;
+    img {
+        height: 100px;
+        width: 100px;
+        border-radius: 5px;
+        box-shadow: 0px 0px 3px #848484;
+    }
+}
+.form-group {
+    margin-bottom: 25px;
+    input {
+        height: 42px;
+        border-radius: 13.5px;
+        margin-bottom: 12px;
+        border: 0;
+        font-size: 14px;
+    }
+}
+.login-btn {
+    width: 45%;
+    margin: 5px 0 25px;
+    background: #27c2a5;
+    color: white;
+    font-size: 19px;
+    padding: 7px 14px;
+    border-radius: 5px;
+    border: none;
+    border-bottom: 4px solid #219882;
+    &:hover,
+    &:focus {
+        background-color: #25a890 !important;
+        border-bottom: 4px solid #25a890 !important;
+    }
+    i {
+        margin-right: 7px;
+    }
+}
+.signup-btn {
+    @extend .login-btn;
+    width: 70%;
+}
+.login-toggle-btn {
+    padding: 10px 60px;
+    background: transparent;
+    border: 0;
+    outline: none !important;
+    position: relative;
+    width: 50%;
+    font-weight: 900;
+    color: #7c96a5;
+    &.active {
+        color: #000000;
+        border-bottom: 1px solid #ee9e32;
+        outline: none !important;
+    }
+}
+
+.forgot {
+    padding: 5px 0 25px;
+    a {
+        color: #c2fbfe;
+    }
+}
+.button-box {
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
     text-align: center;
-    font-size: 16px;
+    padding-top: 10px;
 }
