@@ -1,17 +1,36 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function Login() {
+function Login(props) {
 	const [userDetails, setUserDetails] = useState({
 		password: '',
 		email: '',
 	});
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(userDetails);
-		axios.post(`/login`, { userDetails }).then((res) => {
-			console.log(res);
-		});
+		// console.log(userDetails);
+		await axios.post(`/login`, { userDetails }).then(async(res) => {
+			// console.log(res);
+			// console.log(res.data.user);
+			if(res.error){
+			  console.log(res)
+			}
+			const token = res.data.token;
+			localStorage.setItem('token',token);
+			const userResponseDetails = {
+			  name : res.data.user.name,
+			  email : res.data.user.email
+			}
+			localStorage.setItem('user',JSON.stringify(userResponseDetails));
+			// alert("Log-in Successful")
+			// console.log(props);
+			props.props.history.push('/Welcome')
+		  }).catch((error) => {
+			if(error) {
+			  // console.log(error);
+			  alert("Incorrect Email and Password combination!!. Try again")
+			}
+		  })
 	};
 	return (
 		<div className="modal-dialog text-center login-modal">

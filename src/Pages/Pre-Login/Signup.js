@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 
-function Signup() {
+function Signup(props) {
 	const [userDetails, setUserDetails] = useState({
 		name: '',
 		email: '',
@@ -10,9 +10,10 @@ function Signup() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
-		console.log(userDetails);
 		axios.post(`/signup`, { userDetails }).then((res) => {
 			console.log(res);
+			let {signup, login} = props.togglePage;
+			props.settogglePage({ signup: false, login: true });
 		});
 	};
 
@@ -45,7 +46,7 @@ function Signup() {
 							/>
 							<input type="password" className="form-control" placeholder="Confirm Password" />
 
-							<button type="submit" className="signup-btn" >
+							<button type="submit" className="signup-btn">
 								<i className="fas fa-sign-in-alt"></i>Signup
 							</button>
 						</div>

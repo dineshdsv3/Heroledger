@@ -3,9 +3,9 @@ import baseUrl from '../../helpers/_API_URL';
 import axios from 'axios';
 import Signup from './Signup';
 import Login from './Login';
-
-function PreLogin() {
-
+import Particles from '../../Components/Particles';
+ 
+function PreLogin(props) {
 	const [togglePage, settogglePage] = useState({
 		signup: '',
 		login: '',
@@ -14,6 +14,7 @@ function PreLogin() {
 	return (
 		<div className="pre-login">
 			<div>&nbsp;</div>
+
 			<div className="button-box">
 				<button
 					type="button"
@@ -22,6 +23,7 @@ function PreLogin() {
 				>
 					Login
 				</button>
+				<div className="particles-bg"><Particles /></div>
 				<button
 					type="button"
 					className={togglePage.signup ? 'login-toggle-btn active' : 'login-toggle-btn'}
@@ -30,7 +32,11 @@ function PreLogin() {
 					Signup
 				</button>
 			</div>
-			{togglePage.login ? <Login /> : <Signup />}
+			{togglePage.login ? (
+				<Login props={props} togglePage={togglePage} settogglePage={settogglePage} />
+			) : (
+				<Signup togglePage={togglePage} settogglePage={settogglePage} />
+			)}
 		</div>
 	);
 }

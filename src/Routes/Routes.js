@@ -17,11 +17,6 @@ const Routes = () => {
             {/* pre login */}
             <Route exact path="/" component={PreLogin} />
 
-            {/* <Route exact path="/forgot-password" component={ForgotPass} /> */}
-            {/* <Route exact path="/create-password/:userID" component={CreatePassword} /> */}
-            {/* <Route exact path="/privacy-policy" component={PrivacyPolicy} />
-            <Route exact path="/terms-and-conditions" component={TermsCondition} />
-            <Route exact path="/support" component={Help} /> */}
 
             {/* after Login */}
             <PrivateRoute exact path="/Welcome" component={Welcome} />

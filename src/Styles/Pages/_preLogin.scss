@@ -1,5 +1,5 @@
 .pre-login {
-    background: url("../../Assets/Images/mountain.jpg");
+    background: url("../../Assets/Images/comic-background.png");
     background-size: cover;
     min-height: 100vh;
 }
@@ -38,17 +38,17 @@
 .login-btn {
     width: 45%;
     margin: 5px 0 25px;
-    background: #27c2a5;
+    background: lighten(#ee9e32, 10%);
     color: white;
     font-size: 19px;
     padding: 7px 14px;
     border-radius: 5px;
     border: none;
-    border-bottom: 4px solid #219882;
+    border-bottom: 4px solid lighten(#ee9e32, 10%);
     &:hover,
     &:focus {
-        background-color: #25a890 !important;
-        border-bottom: 4px solid #25a890 !important;
+        background-color: #ee9e32 !important;
+        border-bottom: 4px solid #ee9e32 !important;
     }
     i {
         margin-right: 7px;
@@ -67,8 +67,9 @@
     width: 50%;
     font-weight: 900;
     color: #7c96a5;
+    z-index:10;
     &.active {
-        color: #000000;
+        color: #ee9e32;
         border-bottom: 1px solid #ee9e32;
         outline: none !important;
     }
@@ -86,4 +87,12 @@
     margin-right: auto;
     text-align: center;
     padding-top: 10px;
+}
+.particles-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    min-height: 100vh;
+    width: 100vw;
+    // z-index: -1;
 }

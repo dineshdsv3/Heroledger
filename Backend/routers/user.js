@@ -15,25 +15,6 @@ router.post('/signup', async (req, res) => {
     }
 })
 
-// router.post('/login', async (req, res) => {
-// 	// console.log(req.body.userDetails)
-// 	//Login a registered user
-// 	try {
-// 		const { email, password } = req.body.userDetails;
-// 		console.log(email, password)
-// 		const user = await User.findByCredentials(email, password);
-// 		if (!user) {
-// 			return res.send({
-// 				message: 'Login failed! Check authentication credentials',
-// 			});
-// 		}
-// 		const token = await user.generateAuthToken();
-// 		res.send({ message: 'Logged In Successfully', user, token });
-// 	} catch(error) {
-// 		console.log(error)
-// 	}
-// })
-
 router.post('/login', async (req, res) => {
 	//Login a registered user
 	try {
