@@ -25,6 +25,12 @@ const userSchema = mongoose.Schema({
         required: true,
         minLength: 7
     },
+    latitude: {
+        type: String
+    },
+    longitude : {
+        type: String
+    },
     tokens: [{
         token: {
             type: String,

@@ -11,12 +11,10 @@ function PreLogin1() {
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'));
-        const token = user.token;
-        console.log(user);
-        console.log(token)
-        if(user.remember && token) {
-            window.location.pathname = "/welcome"
-        }
+		const token = user.token;
+		if (user.remember && token) {
+			window.location.pathname = '/welcome';
+		}
 	}, []);
 
 	// console.log(userDetails);

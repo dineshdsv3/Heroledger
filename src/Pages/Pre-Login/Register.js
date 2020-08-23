@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 // Styles are in pre-login1
 
@@ -8,7 +8,25 @@ function Register() {
 		email: '',
 		password: '',
 		confirmPassword: '',
+		latitude: '',
+		longitude: '',
 	});
+
+	useEffect(() => {
+		if ('geolocation' in navigator) {
+			console.log('Available');
+		} else {
+			console.log('Not Available');
+		}
+
+		navigator.geolocation.getCurrentPosition(function (position) {
+			setUserDetails({
+				...userDetails,
+				latitude: position.coords.latitude,
+				longitude: position.coords.longitude,
+			});
+		});
+	}, []);
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -17,6 +35,8 @@ function Register() {
 				name: userDetails.name,
 				email: userDetails.email,
 				password: userDetails.password,
+				latitude: userDetails.latitude,
+				longitude: userDetails.longitude
 			};
 			axios
 				.post(`/signup`, { registerDetails })

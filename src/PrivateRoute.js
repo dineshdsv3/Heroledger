@@ -13,9 +13,9 @@ const PrivateRouter = ({ component: PureComponent, ...rest }) => {
 	if (!user) {
 		localStorage.setItem('user', JSON.stringify(userResponseDetails));
 	}
-	console.log(user);
+	// console.log(user);
 	const token = user.token;
-	console.log('token: ', token, !!token);
+	// console.log('token: ', token, !!token);
 	return (
 		<Route
 			{...rest}
