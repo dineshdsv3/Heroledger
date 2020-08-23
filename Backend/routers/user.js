@@ -6,12 +6,12 @@ const router = express.Router()
 router.post('/signup', async (req, res) => {
     // Create a new user
     try {
-        const user = new User(req.body.userDetails)
+        const user = new User(req.body.registerDetails)
         await user.save()
         const token = await user.generateAuthToken()
 		res.status(201).send({ message: 'User Registered Successfully', user, token });
     } catch (error) {
-        res.status(400).send(error)
+        res.status(400).send({error: 'Registration failed'})
     }
 })
 
