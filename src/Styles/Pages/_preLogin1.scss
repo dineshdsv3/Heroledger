@@ -1,0 +1,110 @@
+.pre-login-home {
+    min-height: 100vh;
+    @include linearGradient(background-image, bottom, #ef972b, #f7b059);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.pre-login-card {
+    width: 80%;
+    border-radius: 20px !important;
+    box-shadow: 0 0.5rem 1rem 0 rgba(0, 0, 0, 0.1);
+}
+.img-left {
+    width: 35%;
+    background: black;
+}
+.pre-login-card-body {
+    padding: 2rem;
+}
+.title {
+    margin-bottom: 2rem;
+}
+.form-input {
+    position: relative;
+    input {
+        height: 45px;
+        width: 100%;
+        padding-left: 40px;
+        margin-bottom: 20px;
+        box-sizing: border-box;
+        box-shadow: none;
+        border: 1px solid #ef992f;
+        border-radius: 50px;
+        outline: none !important;
+        background: transparent;
+    }
+    span {
+        position: absolute;
+        top: 10px;
+        padding-left: 15px;
+        color: #ef992f;
+    }
+    ::placeholder {
+        color: black;
+        padding-left: 0px;
+    }
+}
+
+.custom-checkbox .custom-control-input:checked ~ .custom-control-label::before {
+    background-color: #ef992f !important;
+    border: 0px;
+}
+
+.pre-login-form-box {
+    button[type="submit"] {
+        margin-top: 10px;
+        width: 100%;
+        border: none;
+        cursor: pointer;
+        border-radius: 50px;
+        color: #ffffff;
+        background-color: #ef891f;
+        font-size: 90%;
+        font-weight: bold;
+        letter-spacing: 0.1rem;
+        transition: 0.5s;
+        padding: 12px;
+        &:hover {
+            background: lighten(#ef891f, 10%);
+        }
+    }
+}
+.forget-link,
+.register-link {
+    color: #ef992f;
+    font-weight: bold;
+    &:hover {
+        color: #f1a457;
+        text-decoration: none;
+    }
+}
+.btn-social {
+    color: white !important;
+    border: 0;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.btn-facebook {
+    background: #4866a8;
+    &:hover {
+        background: lighten(#4866a8, 10%);
+    }
+}
+.btn-google {
+    background: #da3f34;
+    &:hover {
+        background: lighten(#da3f34, 10%);
+    }
+}
+.btn-twitter {
+    background: #33ccff;
+    &:hover {
+        background: lighten(#33ccff, 10%);
+    }
+}
+
+.version-text {
+    position: absolute;
+}
