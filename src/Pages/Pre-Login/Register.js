@@ -67,7 +67,7 @@ function Register() {
 				</div>
 				<div className="col-6 card flex-row mx-auto px-0">
 					<div className="pre-login-card-body card-body">
-						<h4 className="title mt-1">Register</h4>
+						<h4 className="title mt-1">Register into Heroledger</h4>
 
 						<form className="pre-login-form-box px-3" onSubmit={handleSubmit}>
 							<div className="form-input">

@@ -9,13 +9,13 @@ function PreLogin1() {
 		remember: false,
 	});
 
-	useEffect(() => {
-		const user = JSON.parse(localStorage.getItem('user'));
-		const token = user.token;
-		if (user.remember && token) {
-			window.location.pathname = '/welcome';
-		}
-	}, []);
+	// useEffect(() => {
+	// 	const user = JSON.parse(localStorage.getItem('user'));
+	// 	const token = localStorage.getItem('token') || '';
+	// 	if (user.remember && token) {
+	// 		window.location.pathname = '/welcome';
+	// 	}
+	// }, []);
 
 	// console.log(userDetails);
 	const handleSubmit = async (e) => {
@@ -35,6 +35,7 @@ function PreLogin1() {
 					token: res.data.token,
 					remember: userDetails.remember,
 				};
+				localStorage.setItem('token', res.data.token);
 				localStorage.setItem('user', JSON.stringify(userResponseDetails));
 				alert('Log-in Successful');
 				window.location.pathname = '/Welcome';

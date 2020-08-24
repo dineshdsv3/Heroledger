@@ -33,4 +33,21 @@ router.post('/login', async (req, res) => {
 	}
 });
 
+router.put('/logout', async (req, res) => {
+	try {
+		const emailId = req.body.email;
+		console.log(emailId);
+		let updatedTokens = [];
+		User.findOneAndUpdate({ email: emailId }, { tokens: updatedTokens }, { new: true }, (err, resu) => {
+			if (err) {
+				console.log(error);
+			} else {
+				res.send({ message: 'Logout successful' });
+			}
+		});
+	} catch (error) {
+		res.status(500).send({ error: 'Signout failed' });
+	}
+});
+
 module.exports = router
