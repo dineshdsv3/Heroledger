@@ -1,10 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Dashboard from './Dashboard';
+import Assets from './Assets';
 // Style is in welcome.scss
 
 function Welcome() {
 	const user = JSON.parse(localStorage.getItem('user'));
 	const email = user.email;
+
+	const [toggle, setToggleItems] = useState({
+		dashboard: true,
+		assets: false,
+	});
+	console.log(toggle);
 
 	const logout = () => {
 		console.log(email);
@@ -12,7 +20,7 @@ function Welcome() {
 			if (res.status === 200) {
 				localStorage.removeItem('token');
 				localStorage.removeItem('user');
-				window.location.pathname ="/";
+				window.location.pathname = '/';
 			}
 		});
 	};
@@ -47,7 +55,7 @@ function Welcome() {
 								>
 									Heroledger
 								</a> */}
-								<div className="bottom-border pb-3">
+								<div className="bottom-border py-3">
 									<img
 										className="rounded-circle"
 										src={require('../../Assets/Images/face.png')}
@@ -59,7 +67,15 @@ function Welcome() {
 								</div>
 								<ul className="navbar-nav flex-column mt-4">
 									<li className="nav-item">
-										<a href="#" className="nav-link text-white p-3 mb-2 current">
+										<a
+											href="#"
+											className={
+												toggle.dashboard
+													? 'nav-link text-white p-3 mb-2 current'
+													: 'nav-link text-white p-3 mb-2 sidebar-link'
+											}
+											onClick={() => setToggleItems({ dashboard: true, assets: false })}
+										>
 											<i className="fas fa-home text-light fa-lg mr-3"></i>Dashboard
 										</a>
 									</li>
@@ -69,13 +85,16 @@ function Welcome() {
 										</a>
 									</li>
 									<li className="nav-item">
-										<a href="#" className="nav-link text-white p-3 mb-2 sidebar-link">
+										<a
+											href="#"
+											className={
+												toggle.assets
+													? 'nav-link text-white p-3 mb-2 current'
+													: 'nav-link text-white p-3 mb-2 sidebar-link'
+											}
+											onClick={() => setToggleItems({ dashboard: false, assets: true })}
+										>
 											<i className="fas fa-envelope text-light fa-lg mr-3"></i>Assets
-										</a>
-									</li>
-									<li className="nav-item">
-										<a href="#" className="nav-link text-white p-3 mb-2 sidebar-link">
-											<i className="fas fa-shopping-cart text-light fa-lg mr-3"></i>Transactions
 										</a>
 									</li>
 									<li className="nav-item">
@@ -175,84 +194,10 @@ function Welcome() {
 			{/* End of Modal */}
 
 			{/* Cards */}
-			<section>
-				<div className="container-fluid">
-					<div className="row">
-						<div className="col-xl-10 col-lg-9 col-md-8 ml-auto">
-							<div className="row pt-5 mt-md-3 mb-5">
-								<div className="col-xl-3 col-sm-6 p-2">
-									<div className="card card-dashboard">
-										<div className="card-body">
-											<div className="d-flex justify-content-between">
-												<i className="fas fa-shopping-cart fa-3x text-warning"></i>
-												<div className="text-right text-secondary">
-													<h5>Asset Value</h5>
-													<h3>$135,000</h3>
-												</div>
-											</div>
-										</div>
-										<div className="card-footer text-secondary">
-											<i className="fas fa-sync mr-3"></i>
-											<span>Updated Now</span>
-										</div>
-									</div>
-								</div>
-								<div className="col-xl-3 col-sm-6 p-2">
-									<div className="card card-dashboard">
-										<div className="card-body">
-											<div className="d-flex justify-content-between">
-												<i className="fas fa-money-bill-alt fa-3x text-success"></i>
-												<div className="text-right text-secondary">
-													<h5>Assets</h5>
-													<h3>100</h3>
-												</div>
-											</div>
-										</div>
-										<div className="card-footer text-secondary">
-											<i className="fas fa-sync mr-3"></i>
-											<span>Updated Now</span>
-										</div>
-									</div>
-								</div>
-								<div className="col-xl-3 col-sm-6 p-2">
-									<div className="card card-dashboard">
-										<div className="card-body">
-											<div className="d-flex justify-content-between">
-												<i className="fas fa-users fa-3x text-info"></i>
-												<div className="text-right text-secondary">
-													<h5>Users</h5>
-													<h3>90</h3>
-												</div>
-											</div>
-										</div>
-										<div className="card-footer text-secondary">
-											<i className="fas fa-sync mr-3"></i>
-											<span>Updated Now</span>
-										</div>
-									</div>
-								</div>
-								<div className="col-xl-3 col-sm-6 p-2">
-									<div className="card card-dashboard">
-										<div className="card-body">
-											<div className="d-flex justify-content-between">
-												<i className="fas fa-chart-line fa-3x text-danger"></i>
-												<div className="text-right text-secondary">
-													<h5>Visitors</h5>
-													<h3>45,000</h3>
-												</div>
-											</div>
-										</div>
-										<div className="card-footer text-secondary">
-											<i className="fas fa-sync mr-3"></i>
-											<span>Updated Now</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+			{
+				toggle.dashboard ? <Dashboard />  : toggle.assets ? <Assets /> : <div>Nothing selected</div>
+			}
+			
 			{/* End of Cards */}
 		</div>
 	);
