@@ -1,10 +1,27 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import Fortmatic from 'fortmatic';
+import Web3 from 'web3';
 import Dashboard from './Dashboard';
 import Assets from './Assets';
+
 // Style is in welcome.scss
 
 function Welcome() {
+	useEffect(() => {
+		async function loadWeb3() {
+			let fm = new Fortmatic('pk_test_097457B513F0A02C','ropsten');
+			window.web3 = new Web3(fm.getProvider());
+			console.log(fm.getProvider().isFortmatic);
+			console.log(window.web3.currentProvider.isFortmatic);
+			const web3 = window.web3;
+			console.log(web3);
+			const accounts = await web3.eth.getAccounts();
+			console.log(accounts);
+		}
+		loadWeb3();
+	}, []);
+
 	const user = JSON.parse(localStorage.getItem('user'));
 	const email = user.email;
 
@@ -194,10 +211,8 @@ function Welcome() {
 			{/* End of Modal */}
 
 			{/* Cards */}
-			{
-				toggle.dashboard ? <Dashboard />  : toggle.assets ? <Assets /> : <div>Nothing selected</div>
-			}
-			
+			{toggle.dashboard ? <Dashboard /> : toggle.assets ? <Assets /> : <div>Nothing selected</div>}
+
 			{/* End of Cards */}
 		</div>
 	);

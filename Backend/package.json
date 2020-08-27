@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server" : "env-cmd -f ./.env nodemon ./App.js "
+    "server": "env-cmd -f ./.env nodemon ./App.js "
   },
   "author": "Satya Venkata Dinesh Danda - contact(dineshdsv3@gmail.com)",
   "license": "ISC",
@@ -15,6 +15,7 @@
     "cors": "^2.8.5",
     "env-cmd": "^10.1.0",
     "express": "^4.17.1",
+    "fortmatic": "^2.2.1",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^3.5.3",
     "mongoose": "^5.9.0",

@@ -1,12 +1,35 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const productOptions = [
-	{ id: 1, name: 'Character', value: 'character', type: 'image' },
-	{ id: 2, name: 'Script', value: 'script', type: 'file' },
-	{ id: 3, name: 'Logo', value: 'logo', type: 'image' },
+	{ id: 0, name: 'Character', value: 'character', type: 'image' },
+	{ id: 1, name: 'Script', value: 'script', type: 'file' },
+	{ id: 2, name: 'Logo', value: 'logo', type: 'image' },
+	{ id: 3, name: 'Backgrounds', value: 'background', type: 'background' },
+	{ id: 4, name: 'Audio', value: 'audio', type: 'audio' },
+	{ id: 5, name: 'Video', value: 'video', type: 'video' },
 ];
 
 function Assets() {
+	const loadWeb3 = async () => {
+		const web3 = window.web3;
+		console.log(web3);
+		const accounts = await web3.eth.getAccounts();
+		console.log((accounts));
+		web3.eth.getBalance(accounts[0],function(error,result){
+
+            if(error){
+               console.log(error)
+            }
+            else{
+               console.log(result)
+            }
+         })
+	};
+
+	useEffect(() => {
+		loadWeb3();
+	}, []);
+
 	const [productDetails, setProductDetails] = useState({
 		name: '',
 		description: '',
@@ -82,8 +105,8 @@ function Assets() {
 										name="productType"
 										onChange={(e) =>
 											setProductDetails({ ...productDetails, productType: e.target.value })
-                                        }
-                                        required
+										}
+										required
 									>
 										<option value="">Select an option</option>
 										{productOptions.map((ele, ind) => (
@@ -94,15 +117,18 @@ function Assets() {
 									</select>
 								</div>
 								<div>
-									<label htmlFor="upload">Upload</label>
+									<label className="btn primary-btn" htmlFor="upload">
+										<i className="fa fa-upload"></i>Upload
+									</label>
 									<input
-                                        type="file"
+										type="file"
 										id="upload"
 										onChange={(e) =>
 											setProductDetails({ ...productDetails, upload: e.target.value })
-                                        }
-                                        accept="*"
+										}
+										accept="*"
 										required
+										hidden
 									/>
 								</div>
 								<div>
