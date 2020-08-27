@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Heroledger from '../../blockchain/abis/heroledger.json';
 
 const productOptions = [
 	{ id: 0, name: 'Character', value: 'character', type: 'image' },
@@ -10,26 +11,12 @@ const productOptions = [
 ];
 
 function Assets() {
-	const loadWeb3 = async () => {
-		const web3 = window.web3;
-		console.log(web3);
-		const accounts = await web3.eth.getAccounts();
-		console.log((accounts));
-		web3.eth.getBalance(accounts[0],function(error,result){
-
-            if(error){
-               console.log(error)
-            }
-            else{
-               console.log(result)
-            }
-         })
-	};
-
-	useEffect(() => {
-		loadWeb3();
-	}, []);
-
+	const [user, setUser] = useState({});
+	const [contract, setContract] = useState({});
+	const [blockReceipt, setBlockReceipt] = useState({});
+	console.log(blockReceipt);
+	// const [productCount, setproductCount] = useState();
+	const [account, setAccount] = useState('');
 	const [productDetails, setProductDetails] = useState({
 		name: '',
 		description: '',
@@ -39,8 +26,65 @@ function Assets() {
 		price: 0,
 	});
 
-	const handleSubmit = (e) => {
+	const loadContract = async () => {
+		const web3 = window.web3;
+		const accounts = await web3.eth.getAccounts();
+		setAccount(accounts[0]);
+		const networkId = await web3.eth.net.getId();
+		const networkData = Heroledger.networks[networkId];
+		if (networkData) {
+			const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
+			setContract(heroledger);
+			// const productCount = await heroledger.methods.productCount().call();
+			// setproductCount(productCount);
+		}
+	};
+
+	useEffect(() => {
+		getUserDetails();
+		loadContract();
+	}, []);
+
+	const getUserDetails = () => {
+		const user = JSON.parse(localStorage.getItem('user'));
+		setUser(user);
+	};
+
+	const addProduct = async (name, type, user, email, price) => {
+		contract.methods
+			.createProduct(name, type, user, email, price, false)
+			.send({ from: account })
+			.once('receipt', (receipt) => {
+				setBlockReceipt(receipt);
+			});
+	};
+
+	const handleUpload = (e) => {
+		let result;
+		let file = e.target.files[0];
+		if (file.size > 3148576) {
+			alert('Please upload file less than 3 MB');
+		} else {
+			let reader = new FileReader();
+			reader.readAsDataURL(file);
+			reader.onloadend = async () => {
+				result = reader.result;
+				console.log(reader.result);
+				setProductDetails({ ...productDetails, upload: reader.result });
+			};
+		}
+	};
+
+	const handlePrice = (e) => {
+		let usdValue = e.target.value;
+		let ethValue = usdValue * 0.0026;
+		let ethPrice = window.web3.utils.toWei(ethValue.toString(), 'Ether');
+		setProductDetails({ ...productDetails, price: ethPrice });
+	};
+
+	const handleSubmit = async (e) => {
 		e.preventDefault();
+		await addProduct(productDetails.name,productDetails.productType,user.name,user.email,productDetails.price)
 		console.log(productDetails);
 	};
 
@@ -120,26 +164,11 @@ function Assets() {
 									<label className="btn primary-btn" htmlFor="upload">
 										<i className="fa fa-upload"></i>Upload
 									</label>
-									<input
-										type="file"
-										id="upload"
-										onChange={(e) =>
-											setProductDetails({ ...productDetails, upload: e.target.value })
-										}
-										accept="*"
-										required
-										hidden
-									/>
+									<input type="file" id="upload" onChange={handleUpload} accept="*" required hidden />
 								</div>
 								<div>
 									<label htmlFor="price">Price in USD</label>
-									<input
-										id="price"
-										onChange={(e) =>
-											setProductDetails({ ...productDetails, price: e.target.value })
-										}
-										required
-									/>
+									<input id="price" onChange={handlePrice} required />
 								</div>
 							</div>
 							<div className="modal-footer">

@@ -10,7 +10,7 @@ import Assets from './Assets';
 function Welcome() {
 	useEffect(() => {
 		async function loadWeb3() {
-			let fm = new Fortmatic('pk_test_097457B513F0A02C','ropsten');
+			let fm = new Fortmatic('pk_test_097457B513F0A02C','kovan');
 			window.web3 = new Web3(fm.getProvider());
 			console.log(fm.getProvider().isFortmatic);
 			console.log(window.web3.currentProvider.isFortmatic);
