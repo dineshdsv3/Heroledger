@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import $ from 'jquery';
+import axios from 'axios';
 import Heroledger from '../../blockchain/abis/heroledger.json';
 
 const productOptions = [
@@ -13,8 +15,7 @@ const productOptions = [
 function Assets() {
 	const [user, setUser] = useState({});
 	const [contract, setContract] = useState({});
-	const [blockReceipt, setBlockReceipt] = useState({});
-	console.log(blockReceipt);
+	const [submitLoader, setSubmitLoader] = useState(false);
 	// const [productCount, setproductCount] = useState();
 	const [account, setAccount] = useState('');
 	const [productDetails, setProductDetails] = useState({
@@ -50,28 +51,103 @@ function Assets() {
 		setUser(user);
 	};
 
+	const addProductPostRequest = (product) => {
+		axios.post('/addProduct', { product }).then((res) => {
+			console.log(res.data.message);
+		});
+	};
+
 	const addProduct = async (name, type, user, email, price) => {
 		contract.methods
 			.createProduct(name, type, user, email, price, false)
 			.send({ from: account })
 			.once('receipt', (receipt) => {
-				setBlockReceipt(receipt);
+				const blockchainData = receipt.events.productCreated.returnValues;
+				console.log(blockchainData);
+				const product = {
+					productId: blockchainData.productId,
+					originatorEmail: blockchainData.originator,
+					ownerEmail: blockchainData.ownerEmail,
+					ownerAddress: blockchainData.owner,
+					productName: blockchainData.productName,
+					description: productDetails.description,
+					productType: blockchainData.productType,
+					price: blockchainData.price,
+					transactionHash: receipt.transactionHash,
+					blockHash: receipt.blockHash,
+					timestamp: blockchainData.timestamp,
+				};
+				console.log(product);
+				const upload = {
+					id: product.productId,
+					name: product.productName,
+					upload: productDetails.upload,
+				};
+				console.log(upload);
+				$('#register-asset').modal('hide');
+				if (product.productType == 'audio') {
+					axios
+						.post('/addAudio', { upload })
+						.then((res) => {
+							if (res.data.message) {
+								addProductPostRequest(product);
+							}
+						})
+						.catch((error) => {
+							alert('Product Registration Failed. Please register your product again');
+						});
+				} else if (product.productType == 'video') {
+					axios
+						.post('/addVideo', { upload })
+						.then((res) => {
+							if (res.data.message) {
+								addProductPostRequest(product);
+							}
+						})
+						.catch((error) => {
+							alert('Product Registration Failed. Please register your product again');
+						});
+				} else if (product.productType == 'script') {
+					axios
+						.post('/addDocument', { upload })
+						.then((res) => {
+							if (res.data.message) {
+								addProductPostRequest(product);
+							}
+						})
+						.catch((error) => {
+							alert('Product Registration Failed. Please register your product again');
+						});
+				} else {
+					axios
+						.post('/addImage', { upload })
+						.then((res) => {
+							if (res.data.message) {
+								addProductPostRequest(product);
+							}
+						})
+						.catch((error) => {
+							alert('Product Registration Failed. Please register your product again');
+						});
+				}
 			});
 	};
 
 	const handleUpload = (e) => {
 		let result;
 		let file = e.target.files[0];
-		if (file.size > 3148576) {
-			alert('Please upload file less than 3 MB');
-		} else {
-			let reader = new FileReader();
-			reader.readAsDataURL(file);
-			reader.onloadend = async () => {
-				result = reader.result;
-				console.log(reader.result);
-				setProductDetails({ ...productDetails, upload: reader.result });
-			};
+		if (file) {
+			if (file.size > 3148576) {
+				alert('In Beta version you need to upload file less than 3 MB');
+			} else {
+				let reader = new FileReader();
+				reader.readAsDataURL(file);
+				reader.onloadend = async () => {
+					result = reader.result;
+					console.log(reader.result);
+					setProductDetails({ ...productDetails, upload: reader.result });
+				};
+			}
 		}
 	};
 
@@ -84,7 +160,8 @@ function Assets() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		await addProduct(productDetails.name,productDetails.productType,user.name,user.email,productDetails.price)
+		setSubmitLoader(true);
+		await addProduct(productDetails.name, productDetails.productType, user.name, user.email, productDetails.price);
 		console.log(productDetails);
 	};
 
@@ -93,10 +170,82 @@ function Assets() {
 			<div className="container-fluid">
 				<div className="row">
 					<div className="col-xl-10 col-lg-9 col-md-8 ml-auto">
-						<div className="row pt-5 mt-md-3 mb-5 ml-2">
-							<button className="btn btn-primary" data-toggle="modal" data-target="#register-asset">
+						<div className="row pt-5 mt-md-3 mb-5 ml-auto">
+							<button
+								className="btn btn-primary ml-auto mr-2"
+								data-toggle="modal"
+								data-target="#register-asset"
+							>
 								New Asset
 							</button>
+							<div className="col-12">
+								<h3 className="text-muted text-center mb-3">Staff Salary</h3>
+								<table className="table table-striped bg-light text-center">
+									<thead>
+										<tr className="text-muted">
+											<th>#</th>
+											<th>Name</th>
+											<th>Salary</th>
+											<th>Date</th>
+											<th>Contact</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<th>1</th>
+											<td>John</td>
+											<td>$2000</td>
+											<td>25/05/2018</td>
+											<td>Message</td>
+										</tr>
+										<tr>
+											<th>2</th>
+											<td>Mark</td>
+											<td>$2000</td>
+											<td>25/05/2018</td>
+											<td>Message</td>
+										</tr>
+										<tr>
+											<th>3</th>
+											<td>Mary</td>
+											<td>$2000</td>
+											<td>25/05/2018</td>
+											<td>Message</td>
+										</tr>
+									</tbody>
+								</table>
+								{/* Pagination */}
+								<nav>
+									<ul className="pagination justify-content-center">
+										<li className="page-item">
+											<a href="#" className="page-link py-2 px-3">
+												<span>&laquo;</span>
+											</a>
+										</li>
+										<li className="page-item">
+											<a href="#" className="page-link py-2 px-3">
+												1
+											</a>
+										</li>
+										<li className="page-item">
+											<a href="#" className="page-link py-2 px-3">
+												2
+											</a>
+										</li>
+										<li className="page-item">
+											<a href="#" className="page-link py-2 px-3">
+												3
+											</a>
+										</li>
+										<li className="page-item">
+											<a href="#" className="page-link py-2 px-3">
+												<span>&raquo;</span>
+											</a>
+										</li>
+									</ul>
+								</nav>
+								{/* End of pagination */}
+							</div>
 						</div>
 					</div>
 				</div>
@@ -108,7 +257,7 @@ function Assets() {
 					<div className="modal-content asset-modal">
 						<form onSubmit={handleSubmit}>
 							<div className="modal-header">
-								<h4 className="modal-title">Register your Asset</h4>
+								<h4 className="modal-title">Register your Comic Asset</h4>
 								<button type="button" className="close" data-dismiss="modal">
 									&times;
 								</button>
@@ -133,16 +282,6 @@ function Assets() {
 									/>
 								</div>
 								<div>
-									<label htmlFor="terms">Terms</label>
-									<input
-										id="terms"
-										onChange={(e) =>
-											setProductDetails({ ...productDetails, terms: e.target.value })
-										}
-										required
-									/>
-								</div>
-								<div>
 									<label htmlFor="productType">Product type</label>
 									<select
 										id="productType"
@@ -161,19 +300,24 @@ function Assets() {
 									</select>
 								</div>
 								<div>
-									<label className="btn primary-btn" htmlFor="upload">
-										<i className="fa fa-upload"></i>Upload
+									<label
+										className="btn primary-btn text-center d-flex justify-content-center"
+										htmlFor="upload"
+									>
+										<i className="fa fa-upload"></i>&nbsp;Upload
 									</label>
 									<input type="file" id="upload" onChange={handleUpload} accept="*" required hidden />
-								</div>
-								<div>
-									<label htmlFor="price">Price in USD</label>
-									<input id="price" onChange={handlePrice} required />
 								</div>
 							</div>
 							<div className="modal-footer">
 								<button type="submit" className="btn btn-success">
-									Confirm
+									{submitLoader ? (
+										<div className="spinner-grow text-primary" role="status">
+											<span className="sr-only">Loading...</span>
+										</div>
+									) : (
+										'Confirm'
+									)}
 								</button>
 								<button type="button" className="btn btn-danger" data-dismiss="modal">
 									Cancel

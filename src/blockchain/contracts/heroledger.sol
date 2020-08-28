@@ -10,7 +10,8 @@ contract heroledger {
         string productName;
         string productType;
         string user;
-        string email;
+        string orginator;
+        string ownerEmail;
         uint256 timestamp;
         uint256 price;
         address payable owner;
@@ -22,7 +23,8 @@ contract heroledger {
         string productName,
         string productType,
         string user,
-        string email,
+        string originator,
+        string ownerEmail,
         uint256 timestamp,
         uint256 price,
         address owner,
@@ -44,6 +46,7 @@ contract heroledger {
             _productType,
             _user,
             _email,
+            _email,
             block.timestamp,
             _price,
             msg.sender,
@@ -55,6 +58,7 @@ contract heroledger {
             _productName,
             _productType,
             _user,
+            _email,
             _email,
             block.timestamp,
             _price,
