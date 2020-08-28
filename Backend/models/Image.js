@@ -1,10 +1,9 @@
 const mongoose = require('mongoose');
 
 const imageSchema = mongoose.Schema({
-	id: { type: Number, required: true },
-	name: { type: String, required: true },
-	email: { type: String, required: true },
-	images: { type: Array, required: true },
+	productId: { type: Number, required: true },
+	productName: { type: String, required: true },
+	productImage: { type: String, required: true },
 });
 
 module.exports = mongoose.model('image', imageSchema);
