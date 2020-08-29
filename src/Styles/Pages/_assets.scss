@@ -10,7 +10,8 @@
     label {
         font-weight: 550;
     }
-    input,select {
+    input,
+    select {
         height: 30px;
         width: 90%;
         margin-left: 20px;
@@ -37,4 +38,18 @@
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
+}
+.dot {
+    height: 15px;
+    width: 15px;
+    background-color: rgb(235, 14, 14);
+    border-radius: 50%;
+    display: inline-block;
+    &.active {
+        background-color: rgb(14, 235, 114);
+    }
+}
+
+.asset-table {
+    font-size: 10px;
 }

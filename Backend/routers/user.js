@@ -144,4 +144,15 @@ router.post('/addProduct', async (req, res) => {
 	});
 });
 
+router.get('/getUserAssets', async (req, res) => {
+	// console.log(req.query.email)
+	Product.find({ ownerEmail: req.query.email }, (err, data) => {
+		if (err) {
+			res.send({ message: 'Error', err });
+		} else {
+			res.send({ message: 'Data gathered', data });
+		}
+	});
+})
+
 module.exports = router;

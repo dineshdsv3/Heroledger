@@ -16,6 +16,8 @@ function Assets() {
 	const [user, setUser] = useState({});
 	const [contract, setContract] = useState({});
 	const [submitLoader, setSubmitLoader] = useState(false);
+	const [assets, setAssets] = useState([]);
+	console.log(assets);
 	// const [productCount, setproductCount] = useState();
 	const [account, setAccount] = useState('');
 	const [productDetails, setProductDetails] = useState({
@@ -46,14 +48,22 @@ function Assets() {
 		loadContract();
 	}, []);
 
-	const getUserDetails = () => {
+	const getUserDetails = async () => {
 		const user = JSON.parse(localStorage.getItem('user'));
 		setUser(user);
+		let email = user.email;
+		console.log(email);
+		await axios.get('/getUserAssets', { params: { email } }).then((res) => {
+			console.log(res.data.data[0]);
+			setAssets(res.data.data);
+		});
 	};
 
 	const addProductPostRequest = (product) => {
 		axios.post('/addProduct', { product }).then((res) => {
 			console.log(res.data.message);
+			$('#register-asset').modal('hide');
+			alert('Your Product has been successfully Registered');
 		});
 	};
 
@@ -84,7 +94,6 @@ function Assets() {
 					upload: productDetails.upload,
 				};
 				console.log(upload);
-				$('#register-asset').modal('hide');
 				if (product.productType == 'audio') {
 					axios
 						.post('/addAudio', { upload })
@@ -133,6 +142,49 @@ function Assets() {
 			});
 	};
 
+	const getDate = (timestamp) => {
+		const stamp = new Date(timestamp * 1000);
+		let date = stamp.getDate();
+		let month = stamp.getMonth() + 1;
+		let year = stamp.getFullYear();
+		let hours = stamp.getHours();
+		let minutes = stamp.getMinutes();
+		let seconds = stamp.getSeconds();
+
+		const time = `${date <= 9 ? '0' + date : date}-${month <= 9 ? '0' + month : month}-${year} ${
+			hours <= 9 ? '0' + hours : hours
+		}:${minutes <= 9 ? '0' + minutes : minutes}:${seconds <= 9 ? '0' + seconds : seconds}`;
+		return time;
+	};
+
+	const getImage = (characterType, productId) => {
+		if (characterType == 'audio') {
+			return (
+				<div>
+					<img className="rounded-circle" src={require('../../Assets/Images/music.png')} width="40" />
+				</div>
+			);
+		} else if (characterType == 'video') {
+			return (
+				<div>
+					<img className="rounded-circle" src={require('../../Assets/Images/video.jpeg')} width="40" />
+				</div>
+			);
+		} else if (characterType == 'script') {
+			return (
+				<div>
+				<img className="rounded-circle" src={require('../../Assets/Images/doc.jpeg')} width="40" />
+			</div>
+			)
+		} else {
+			return (
+				<div>
+				<img className="rounded-circle" src={require('../../Assets/Images/face.png')} width="40" />
+			</div>
+			)
+		}
+	};
+
 	const handleUpload = (e) => {
 		let result;
 		let file = e.target.files[0];
@@ -168,50 +220,52 @@ function Assets() {
 	return (
 		<section>
 			<div className="container-fluid">
-				<div className="row">
+				<div className="row align-items-center">
 					<div className="col-xl-10 col-lg-9 col-md-8 ml-auto">
 						<div className="row pt-5 mt-md-3 mb-5 ml-auto">
 							<button
-								className="btn btn-primary ml-auto mr-2"
+								className="btn btn-primary ml-auto mr-2 mb-1"
 								data-toggle="modal"
 								data-target="#register-asset"
 							>
 								New Asset
 							</button>
 							<div className="col-12">
-								<h3 className="text-muted text-center mb-3">Staff Salary</h3>
-								<table className="table table-striped bg-light text-center">
+								<table className="table table-striped bg-light text-center mt-1 asset-table">
 									<thead>
 										<tr className="text-muted">
-											<th>#</th>
-											<th>Name</th>
-											<th>Salary</th>
-											<th>Date</th>
-											<th>Contact</th>
+											<th>Image</th>
+											<th>Asset Name</th>
+											<th>Hash</th>
+											<th>Uploaded On</th>
+											<th>Product Type</th>
+											<th>Price</th>
+											<th>In Store</th>
+											<th>Licensing</th>
+											<th>Actions</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<th>1</th>
-											<td>John</td>
-											<td>$2000</td>
-											<td>25/05/2018</td>
-											<td>Message</td>
-										</tr>
-										<tr>
-											<th>2</th>
-											<td>Mark</td>
-											<td>$2000</td>
-											<td>25/05/2018</td>
-											<td>Message</td>
-										</tr>
-										<tr>
-											<th>3</th>
-											<td>Mary</td>
-											<td>$2000</td>
-											<td>25/05/2018</td>
-											<td>Message</td>
-										</tr>
+										{assets.map((ele, ind) => (
+											<tr key={ele + ind}>
+												<td>{getImage(ele.productType, ele.productId)}</td>
+												<td className="text-capitalize">{ele.productName}</td>
+												<td>{ele.transactionHash}</td>
+												<td>{getDate(ele.timestamp)}</td>
+												<td className="text-capitalize">{ele.productType}</td>
+												<td>{ele.price}</td>
+												<td>
+													<span className="dot active"></span>
+												</td>
+												<td>
+													<span className="dot"></span>
+												</td>
+												<td className="d-flex justify-content-around">
+													<i className="fa fa-pencil" aria-hidden="true"></i>
+													<i className="fa fa-times" aria-hidden="true"></i>
+												</td>
+											</tr>
+										))}
 									</tbody>
 								</table>
 								{/* Pagination */}
@@ -311,13 +365,7 @@ function Assets() {
 							</div>
 							<div className="modal-footer">
 								<button type="submit" className="btn btn-success">
-									{submitLoader ? (
-										<div className="spinner-grow text-primary" role="status">
-											<span className="sr-only">Loading...</span>
-										</div>
-									) : (
-										'Confirm'
-									)}
+									{submitLoader ? 'Registering...' : 'Confirm'}
 								</button>
 								<button type="button" className="btn btn-danger" data-dismiss="modal">
 									Cancel
