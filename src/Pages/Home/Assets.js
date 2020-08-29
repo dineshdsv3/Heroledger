@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import Heroledger from '../../blockchain/abis/heroledger.json';
+import DataTable, { createTheme } from 'react-data-table-component';
 
 const productOptions = [
 	{ id: 0, name: 'Character', value: 'character', type: 'image' },
@@ -29,6 +30,116 @@ function Assets() {
 		price: 0,
 	});
 
+	// Table Data Styling & Sorting
+	const customStyles = {
+		cells: {
+			style: {
+				fontSize: '10px',
+			},
+		},
+		headCells: {
+			style: {
+				fontSize: '11px',
+				fontWeight: 'bold',
+				color: '#030303',
+				alignItems: 'center',
+				justifyContent: 'center',
+				paddingLeft: '2px',
+				paddingRight: '2px',
+			},
+		},
+	};
+
+	createTheme('solarized', {
+		text: {
+			primary: '#268bd2',
+			secondary: '#2aa198',
+		},
+		background: {
+			default: '#002b36',
+		},
+		context: {
+			background: '#cb4b16',
+			text: '#FFFFFF',
+		},
+		divider: {
+			default: '#073642',
+		},
+		action: {
+			button: 'rgba(0,0,0,.54)',
+			hover: 'rgba(0,0,0,.08)',
+			disabled: 'rgba(0,0,0,.12)',
+		},
+	});
+
+	const columns = [
+		{
+			name: 'Image',
+			selector: 'image',
+			center: true,
+			width: '10%',
+		},
+		{
+			name: 'Asset Name',
+			selector: 'name',
+			width: '13%',
+		},
+		{
+			name: 'Hash',
+			selector: 'hash',
+			center: true,
+			width: '25%',
+		},
+		{
+			name: 'Uploaded On',
+			selector: 'timestamp',
+			sortable: true,
+			center: true,
+			wrap: true,
+			width: '10%',
+		},
+		{
+			name: 'Product Type',
+			selector: 'productType',
+			sortable: true,
+			center: true,
+			wrap: true,
+			width: '10%',
+		},
+		{
+			name: 'Price',
+			selector: 'price',
+			sortable: true,
+			center: true,
+			wrap: true,
+			width: '10%',
+		},
+		{
+			name: 'In Store',
+			selector: 'inStore',
+			sortable: true,
+			center: true,
+			width: '7%',
+		},
+		{
+			name: 'Licensing',
+			selector: 'licensing',
+			sortable: true,
+			center: true,
+			width: '5%',
+		},
+		{
+			name: 'Actions',
+			selector: 'actions',
+			sortable: true,
+			center: true,
+			wrap: true,
+			width: '10%',
+		},
+	];
+
+	// End of Table Data Styling & Sorting
+
 	const loadContract = async () => {
 		const web3 = window.web3;
 		const accounts = await web3.eth.getAccounts();
@@ -55,7 +166,29 @@ function Assets() {
 		console.log(email);
 		await axios.get('/getUserAssets', { params: { email } }).then((res) => {
 			console.log(res.data.data[0]);
-			setAssets(res.data.data);
+			const assetData = res.data.data.map((ele, ind) => {
+				return {
+					image: getImage(ele.productType, ele.productId),
+					name: ele.productName,
+					hash: (
+						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
+							{ele.transactionHash}
+						</a>
+					),
+					timestamp: getDate(ele.timestamp),
+					productType: ele.productType,
+					price: ele.price,
+					inStore: <span className="dot active"></span>,
+					licensing: <span className="dot"></span>,
+					actions: (
+						<div className="d-flex justify-content-between">
+							<i className="fa fa-pencil fa-2x" aria-hidden="true"></i>&nbsp;&nbsp;
+							<i className="fa fa-times fa-2x" aria-hidden="true"></i>
+						</div>
+					),
+				};
+			});
+			setAssets(assetData);
 		});
 	};
 
@@ -173,15 +306,15 @@ function Assets() {
 		} else if (characterType == 'script') {
 			return (
 				<div>
-				<img className="rounded-circle" src={require('../../Assets/Images/doc.jpeg')} width="40" />
-			</div>
-			)
+					<img className="rounded-circle" src={require('../../Assets/Images/doc.jpeg')} width="40" />
+				</div>
+			);
 		} else {
 			return (
 				<div>
-				<img className="rounded-circle" src={require('../../Assets/Images/face.png')} width="40" />
-			</div>
-			)
+					<img className="rounded-circle" src={require('../../Assets/Images/face.png')} width="40" />
+				</div>
+			);
 		}
 	};
 
@@ -224,14 +357,24 @@ function Assets() {
 					<div className="col-xl-10 col-lg-9 col-md-8 ml-auto">
 						<div className="row pt-5 mt-md-3 mb-5 ml-auto">
 							<button
-								className="btn btn-primary ml-auto mr-2 mb-1"
+								className="btn btn-primary ml-auto mr-2"
 								data-toggle="modal"
 								data-target="#register-asset"
 							>
 								New Asset
 							</button>
 							<div className="col-12">
-								<table className="table table-striped bg-light text-center mt-1 asset-table">
+								<DataTable
+									columns={columns}
+									data={assets}
+									customStyles={customStyles}
+									// theme="solarized"
+									pagination={true}
+									responsive={true}
+									paginationPerPage={10}
+								/>
+
+								{/* <table className="table table-striped bg-light text-center mt-1 asset-table">
 									<thead>
 										<tr className="text-muted">
 											<th>Image</th>
@@ -267,9 +410,9 @@ function Assets() {
 											</tr>
 										))}
 									</tbody>
-								</table>
+								</table> */}
 								{/* Pagination */}
-								<nav>
+								{/* <nav>
 									<ul className="pagination justify-content-center">
 										<li className="page-item">
 											<a href="#" className="page-link py-2 px-3">
@@ -297,7 +440,7 @@ function Assets() {
 											</a>
 										</li>
 									</ul>
-								</nav>
+								</nav> */}
 								{/* End of pagination */}
 							</div>
 						</div>
