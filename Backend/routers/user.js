@@ -122,7 +122,6 @@ router.post('/addDocument', async (req, res) => {
 });
 
 router.post('/addProduct', async (req, res) => {
-	// console.log(req.body.product);
 	const productReq = req.body.product;
 	const product = new Product({
 		productId: productReq.productId,
@@ -136,6 +135,7 @@ router.post('/addProduct', async (req, res) => {
 		price: productReq.price,
 		blockHash: productReq.blockHash,
 		transactionHash: productReq.transactionHash,
+		image:productReq.image
 	});
 
 	product.save().then((result) => {
@@ -154,5 +154,6 @@ router.get('/getUserAssets', async (req, res) => {
 		}
 	});
 })
+
 
 module.exports = router;

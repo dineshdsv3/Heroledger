@@ -12,12 +12,12 @@ function Welcome() {
 		async function loadWeb3() {
 			let fm = new Fortmatic('pk_test_097457B513F0A02C','kovan');
 			window.web3 = new Web3(fm.getProvider());
-			console.log(fm.getProvider().isFortmatic);
-			console.log(window.web3.currentProvider.isFortmatic);
+			// console.log(fm.getProvider().isFortmatic);
+			// console.log(window.web3.currentProvider.isFortmatic);
 			const web3 = window.web3;
-			console.log(web3);
+			// console.log(web3);
 			const accounts = await web3.eth.getAccounts();
-			console.log(accounts);
+			// console.log(accounts);
 		}
 		loadWeb3();
 	}, []);
@@ -29,7 +29,7 @@ function Welcome() {
 		dashboard: true,
 		assets: false,
 	});
-	console.log(toggle);
+	// console.log(toggle);
 
 	const logout = () => {
 		console.log(email);

@@ -18,7 +18,6 @@ function Assets() {
 	const [contract, setContract] = useState({});
 	const [submitLoader, setSubmitLoader] = useState(false);
 	const [assets, setAssets] = useState([]);
-	console.log(assets);
 	// const [productCount, setproductCount] = useState();
 	const [account, setAccount] = useState('');
 	const [productDetails, setProductDetails] = useState({
@@ -29,6 +28,11 @@ function Assets() {
 		upload: '',
 		price: 0,
 	});
+
+	useEffect(() => {
+		getUserDetails();
+		loadContract();
+	}, []);
 
 	// Table Data Styling & Sorting
 	const customStyles = {
@@ -154,21 +158,16 @@ function Assets() {
 		}
 	};
 
-	useEffect(() => {
-		getUserDetails();
-		loadContract();
-	}, []);
-
 	const getUserDetails = async () => {
 		const user = JSON.parse(localStorage.getItem('user'));
 		setUser(user);
 		let email = user.email;
 		console.log(email);
+
 		await axios.get('/getUserAssets', { params: { email } }).then((res) => {
-			console.log(res.data.data[0]);
-			const assetData = res.data.data.map((ele, ind) => {
+			const assetData = res.data.data.map((ele) => {
 				return {
-					image: getImage(ele.productType, ele.productId),
+					image: getImage(ele.productType, ele.image),
 					name: ele.productName,
 					hash: (
 						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
@@ -182,8 +181,8 @@ function Assets() {
 					licensing: <span className="dot"></span>,
 					actions: (
 						<div className="d-flex justify-content-between">
-							<i className="fa fa-pencil fa-2x" aria-hidden="true"></i>&nbsp;&nbsp;
-							<i className="fa fa-times fa-2x" aria-hidden="true"></i>
+							<i className="fa fa-pencil fa-1x" aria-hidden="true"></i>&nbsp;&nbsp;
+							<i className="fa fa-times fa-1x" aria-hidden="true"></i>
 						</div>
 					),
 				};
@@ -193,11 +192,16 @@ function Assets() {
 	};
 
 	const addProductPostRequest = (product) => {
-		axios.post('/addProduct', { product }).then((res) => {
-			console.log(res.data.message);
-			$('#register-asset').modal('hide');
-			alert('Your Product has been successfully Registered');
-		});
+		axios
+			.post('/addProduct', { product })
+			.then((res) => {
+				console.log(res.data.message);
+				$('#register-asset').modal('hide');
+				alert('Your Product has been successfully Registered');
+			})
+			.catch((err) => {
+				alert('Product Registration failed. Please try again in few minutes');
+			});
 	};
 
 	const addProduct = async (name, type, user, email, price) => {
@@ -219,6 +223,7 @@ function Assets() {
 					transactionHash: receipt.transactionHash,
 					blockHash: receipt.blockHash,
 					timestamp: blockchainData.timestamp,
+					image: productDetails.upload,
 				};
 				console.log(product);
 				const upload = {
@@ -232,6 +237,7 @@ function Assets() {
 						.post('/addAudio', { upload })
 						.then((res) => {
 							if (res.data.message) {
+								product.upload = '';
 								addProductPostRequest(product);
 							}
 						})
@@ -243,6 +249,7 @@ function Assets() {
 						.post('/addVideo', { upload })
 						.then((res) => {
 							if (res.data.message) {
+								product.upload = '';
 								addProductPostRequest(product);
 							}
 						})
@@ -254,6 +261,7 @@ function Assets() {
 						.post('/addDocument', { upload })
 						.then((res) => {
 							if (res.data.message) {
+								product.upload = '';
 								addProductPostRequest(product);
 							}
 						})
@@ -261,16 +269,7 @@ function Assets() {
 							alert('Product Registration Failed. Please register your product again');
 						});
 				} else {
-					axios
-						.post('/addImage', { upload })
-						.then((res) => {
-							if (res.data.message) {
-								addProductPostRequest(product);
-							}
-						})
-						.catch((error) => {
-							alert('Product Registration Failed. Please register your product again');
-						});
+					addProductPostRequest(product);
 				}
 			});
 	};
@@ -290,7 +289,7 @@ function Assets() {
 		return time;
 	};
 
-	const getImage = (characterType, productId) => {
+	const getImage = (characterType, image) => {
 		if (characterType == 'audio') {
 			return (
 				<div>
@@ -312,7 +311,7 @@ function Assets() {
 		} else {
 			return (
 				<div>
-					<img className="rounded-circle" src={require('../../Assets/Images/face.png')} width="40" />
+					<img className="rounded-circle" src={image} width="40" />
 				</div>
 			);
 		}
@@ -365,6 +364,7 @@ function Assets() {
 							</button>
 							<div className="col-12">
 								<DataTable
+									noHeader
 									columns={columns}
 									data={assets}
 									customStyles={customStyles}

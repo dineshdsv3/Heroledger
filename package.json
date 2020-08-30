@@ -48,8 +48,9 @@
   "scripts": {
     "start": "node ./Backend/app.js",
     "build": "react-scripts build",
-    "test": "react-scripts start",
-    "eject": "react-scripts eject"
+    "client": "react-scripts start",
+    "eject": "react-scripts eject",
+    "server": "env-cmd -f ./Backend/.env nodemon ./Backend/app.js"
   },
   "eslintConfig": {
     "extends": "react-app"
