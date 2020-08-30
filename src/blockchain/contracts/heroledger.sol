@@ -9,61 +9,61 @@ contract heroledger {
         uint256 productId;
         string productName;
         string productType;
-        string user;
         string orginator;
         string ownerEmail;
         uint256 timestamp;
         uint256 price;
         address payable owner;
         bool inStore;
+        bool license;
     }
 
     event productCreated(
         uint256 productId,
         string productName,
         string productType,
-        string user,
         string originator,
         string ownerEmail,
         uint256 timestamp,
         uint256 price,
         address owner,
-        bool inStore
+        bool inStore,
+        bool license
     );
 
     function createProduct(
         string memory _productName,
         string memory _productType,
-        string memory _user,
         string memory _email,
         uint256 _price,
-        bool _inStore
+        bool _inStore,
+        bool _license
     ) public {
         productCount++;
         products[productCount] = product(
             productCount,
             _productName,
             _productType,
-            _user,
             _email,
             _email,
             block.timestamp,
             _price,
             msg.sender,
-            _inStore
+            _inStore,
+            _license
         );
 
         emit productCreated (
             productCount,
             _productName,
             _productType,
-            _user,
             _email,
             _email,
             block.timestamp,
             _price,
             msg.sender,
-            _inStore
+            _inStore,
+            _license
         );
     }
 }

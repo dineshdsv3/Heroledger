@@ -11,6 +11,7 @@ const productOptions = [
 	{ id: 3, name: 'Backgrounds', value: 'background', type: 'background' },
 	{ id: 4, name: 'Audio', value: 'audio', type: 'audio' },
 	{ id: 5, name: 'Video', value: 'video', type: 'video' },
+	{ id: 6, name: 'Props', value: 'props', type: 'image' },
 ];
 
 function Assets() {
@@ -38,50 +39,26 @@ function Assets() {
 	const customStyles = {
 		cells: {
 			style: {
-				fontSize: '10px',
+				fontSize: '9.9px',
 			},
 		},
 		headCells: {
 			style: {
-				fontSize: '11px',
+				fontSize: '10.9px',
 				fontWeight: 'bold',
 				color: '#030303',
 				alignItems: 'center',
 				justifyContent: 'center',
-				paddingLeft: '2px',
-				paddingRight: '2px',
 			},
 		},
 	};
-
-	createTheme('solarized', {
-		text: {
-			primary: '#268bd2',
-			secondary: '#2aa198',
-		},
-		background: {
-			default: '#002b36',
-		},
-		context: {
-			background: '#cb4b16',
-			text: '#FFFFFF',
-		},
-		divider: {
-			default: '#073642',
-		},
-		action: {
-			button: 'rgba(0,0,0,.54)',
-			hover: 'rgba(0,0,0,.08)',
-			disabled: 'rgba(0,0,0,.12)',
-		},
-	});
 
 	const columns = [
 		{
 			name: 'Image',
 			selector: 'image',
 			center: true,
-			width: '10%',
+			width: '8%',
 		},
 		{
 			name: 'Asset Name',
@@ -92,7 +69,7 @@ function Assets() {
 			name: 'Hash',
 			selector: 'hash',
 			center: true,
-			width: '25%',
+			width: '22%',
 		},
 		{
 			name: 'Uploaded On',
@@ -100,15 +77,14 @@ function Assets() {
 			sortable: true,
 			center: true,
 			wrap: true,
-			width: '10%',
+			width: '11.5%',
 		},
 		{
 			name: 'Product Type',
 			selector: 'productType',
 			sortable: true,
 			center: true,
-			wrap: true,
-			width: '10%',
+			width: '12%',
 		},
 		{
 			name: 'Price',
@@ -116,14 +92,14 @@ function Assets() {
 			sortable: true,
 			center: true,
 			wrap: true,
-			width: '10%',
+			width: '8%',
 		},
 		{
 			name: 'In Store',
 			selector: 'inStore',
 			sortable: true,
 			center: true,
-			width: '7%',
+			width: '9%',
 		},
 		{
 			name: 'Licensing',
@@ -138,7 +114,7 @@ function Assets() {
 			sortable: true,
 			center: true,
 			wrap: true,
-			width: '10%',
+			width: '12%',
 		},
 	];
 
@@ -181,13 +157,19 @@ function Assets() {
 					licensing: <span className="dot"></span>,
 					actions: (
 						<div className="d-flex justify-content-between">
-							<i className="fa fa-pencil fa-1x" aria-hidden="true"></i>&nbsp;&nbsp;
-							<i className="fa fa-times fa-1x" aria-hidden="true"></i>
+							<button className="btn bg-transparent btn-outline-info">
+								<i className="fa fa-pencil" aria-hidden="true"></i>
+							</button>
+							&nbsp;
+							<button className="btn bg-transparent btn-outline-info">
+								<i className="fa fa-times" aria-hidden="true"></i>
+							</button>
 						</div>
 					),
 				};
 			});
 			setAssets(assetData);
+			setSubmitLoader(false);
 		});
 	};
 
@@ -204,9 +186,9 @@ function Assets() {
 			});
 	};
 
-	const addProduct = async (name, type, user, email, price) => {
+	const addProduct = async (name, type, email, price) => {
 		contract.methods
-			.createProduct(name, type, user, email, price, false)
+			.createProduct(name, type, email, price, false, false)
 			.send({ from: account })
 			.once('receipt', (receipt) => {
 				const blockchainData = receipt.events.productCreated.returnValues;
@@ -293,25 +275,40 @@ function Assets() {
 		if (characterType == 'audio') {
 			return (
 				<div>
-					<img className="rounded-circle" src={require('../../Assets/Images/music.png')} width="40" />
+					<img
+						className="rounded-circle"
+						src={require('../../Assets/Images/music.png')}
+						width="40"
+						height="40"
+					/>
 				</div>
 			);
 		} else if (characterType == 'video') {
 			return (
 				<div>
-					<img className="rounded-circle" src={require('../../Assets/Images/video.jpeg')} width="40" />
+					<img
+						className="rounded-circle"
+						src={require('../../Assets/Images/video.jpeg')}
+						width="40"
+						height="40"
+					/>
 				</div>
 			);
 		} else if (characterType == 'script') {
 			return (
 				<div>
-					<img className="rounded-circle" src={require('../../Assets/Images/doc.jpeg')} width="40" />
+					<img
+						className="rounded-circle"
+						src={require('../../Assets/Images/doc.jpeg')}
+						width="40"
+						height="40"
+					/>
 				</div>
 			);
 		} else {
 			return (
 				<div>
-					<img className="rounded-circle" src={image} width="40" />
+					<img className="rounded-circle" src={image} width="40" height="40" />
 				</div>
 			);
 		}
@@ -328,7 +325,6 @@ function Assets() {
 				reader.readAsDataURL(file);
 				reader.onloadend = async () => {
 					result = reader.result;
-					console.log(reader.result);
 					setProductDetails({ ...productDetails, upload: reader.result });
 				};
 			}
@@ -345,7 +341,7 @@ function Assets() {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setSubmitLoader(true);
-		await addProduct(productDetails.name, productDetails.productType, user.name, user.email, productDetails.price);
+		await addProduct(productDetails.name, productDetails.productType, user.email, productDetails.price);
 		console.log(productDetails);
 	};
 
@@ -372,76 +368,12 @@ function Assets() {
 									pagination={true}
 									responsive={true}
 									paginationPerPage={10}
+									noDataComponent={
+										<div class="spinner-border text-success" role="status">
+											<span class="sr-only">Loading...</span>
+										</div>
+									}
 								/>
-
-								{/* <table className="table table-striped bg-light text-center mt-1 asset-table">
-									<thead>
-										<tr className="text-muted">
-											<th>Image</th>
-											<th>Asset Name</th>
-											<th>Hash</th>
-											<th>Uploaded On</th>
-											<th>Product Type</th>
-											<th>Price</th>
-											<th>In Store</th>
-											<th>Licensing</th>
-											<th>Actions</th>
-										</tr>
-									</thead>
-									<tbody>
-										{assets.map((ele, ind) => (
-											<tr key={ele + ind}>
-												<td>{getImage(ele.productType, ele.productId)}</td>
-												<td className="text-capitalize">{ele.productName}</td>
-												<td>{ele.transactionHash}</td>
-												<td>{getDate(ele.timestamp)}</td>
-												<td className="text-capitalize">{ele.productType}</td>
-												<td>{ele.price}</td>
-												<td>
-													<span className="dot active"></span>
-												</td>
-												<td>
-													<span className="dot"></span>
-												</td>
-												<td className="d-flex justify-content-around">
-													<i className="fa fa-pencil" aria-hidden="true"></i>
-													<i className="fa fa-times" aria-hidden="true"></i>
-												</td>
-											</tr>
-										))}
-									</tbody>
-								</table> */}
-								{/* Pagination */}
-								{/* <nav>
-									<ul className="pagination justify-content-center">
-										<li className="page-item">
-											<a href="#" className="page-link py-2 px-3">
-												<span>&laquo;</span>
-											</a>
-										</li>
-										<li className="page-item">
-											<a href="#" className="page-link py-2 px-3">
-												1
-											</a>
-										</li>
-										<li className="page-item">
-											<a href="#" className="page-link py-2 px-3">
-												2
-											</a>
-										</li>
-										<li className="page-item">
-											<a href="#" className="page-link py-2 px-3">
-												3
-											</a>
-										</li>
-										<li className="page-item">
-											<a href="#" className="page-link py-2 px-3">
-												<span>&raquo;</span>
-											</a>
-										</li>
-									</ul>
-								</nav> */}
-								{/* End of pagination */}
 							</div>
 						</div>
 					</div>
