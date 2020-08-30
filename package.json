@@ -34,17 +34,21 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "semantic-ui-css": "^2.4.1",
-    "socket.io": "^2.3.0",
     "styled-components": "^5.1.1",
     "truffle": "^5.1.41",
-    "uuid": "^8.3.0",
-    "validator": "^13.1.1",
-    "web3": "^1.2.11"
+    "web3": "^1.2.11",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "multer": "^1.4.2",
+    "socket.io": "^2.3.0",
+    "uuid": "^8.1.0",
+    "validator": "^12.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node ./Backend/app.js",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts start",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
