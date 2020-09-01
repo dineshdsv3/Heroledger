@@ -31,6 +31,9 @@ const productSchema = mongoose.Schema({
 		required: true,
 		trim: true,
 	},
+	fullDescription: {
+		type: String
+	},
 	productType: {
 		type: String,
 		required: true,
@@ -80,6 +83,12 @@ const productSchema = mongoose.Schema({
 	image: {
 		type: String,
 		required: true
+	},
+	license: {
+		type: Boolean
+	},
+	InStore: {
+		type: Boolean
 	}
 
 });

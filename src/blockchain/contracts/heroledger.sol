@@ -31,6 +31,19 @@ contract heroledger {
         bool license
     );
 
+    event productEdited(
+        uint256 productId,
+        string productName,
+        string productType,
+        string originator,
+        string ownerEmail,
+        uint256 timestamp,
+        uint256 price,
+        address owner,
+        bool inStore,
+        bool license
+    );
+
     function createProduct(
         string memory _productName,
         string memory _productType,
@@ -66,4 +79,15 @@ contract heroledger {
             _license
         );
     }
+
+    function editProduct(uint256 _productId, string memory _productName,
+        string memory _productType,
+        string memory _email,
+        uint256 _price,
+        bool _inStore,
+        bool _license) public {
+            product memory _product = products[_productId];
+
+            
+        }
 }

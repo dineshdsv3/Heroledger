@@ -135,7 +135,10 @@ router.post('/addProduct', async (req, res) => {
 		price: productReq.price,
 		blockHash: productReq.blockHash,
 		transactionHash: productReq.transactionHash,
-		image:productReq.image
+		image:productReq.image,
+		InStore:productReq.inStore,
+		license:productReq.license,
+		fullDescription: productReq.fullDescription
 	});
 
 	product.save().then((result) => {
@@ -147,6 +150,16 @@ router.post('/addProduct', async (req, res) => {
 router.get('/getUserAssets', async (req, res) => {
 	// console.log(req.query.email)
 	Product.find({ ownerEmail: req.query.email }, (err, data) => {
+		if (err) {
+			res.send({ message: 'Error', err });
+		} else {
+			res.send({ message: 'Data gathered', data });
+		}
+	});
+})
+
+router.get('/getSingleProduct', async (req, res) => {
+	Product.find({ productId: req.query.productId }, (err, data) => {
 		if (err) {
 			res.send({ message: 'Error', err });
 		} else {

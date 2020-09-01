@@ -3,6 +3,7 @@ import $ from 'jquery';
 import axios from 'axios';
 import Heroledger from '../../blockchain/abis/heroledger.json';
 import DataTable, { createTheme } from 'react-data-table-component';
+import EditAssetModal from './EditAssetModal';
 
 const productOptions = [
 	{ id: 0, name: 'Character', value: 'character', type: 'image' },
@@ -19,8 +20,11 @@ function Assets() {
 	const [contract, setContract] = useState({});
 	const [submitLoader, setSubmitLoader] = useState(false);
 	const [assets, setAssets] = useState([]);
+	const [editAssetData, setEditAssetData] = useState([]);
+	console.log(editAssetData);
 	// const [productCount, setproductCount] = useState();
 	const [account, setAccount] = useState('');
+	const [toggleEditAsset, setToggleEditAsset] = useState(false);
 	const [productDetails, setProductDetails] = useState({
 		name: '',
 		description: '',
@@ -142,6 +146,7 @@ function Assets() {
 
 		await axios.get('/getUserAssets', { params: { email } }).then((res) => {
 			const assetData = res.data.data.map((ele) => {
+				const assetId = ele.productId;
 				return {
 					image: getImage(ele.productType, ele.image),
 					name: ele.productName,
@@ -153,15 +158,15 @@ function Assets() {
 					timestamp: getDate(ele.timestamp),
 					productType: ele.productType,
 					price: ele.price,
-					inStore: <span className="dot active"></span>,
-					licensing: <span className="dot"></span>,
+					inStore: ele.InStore ? <span className="dot active"></span> : <span className="dot"></span>,
+					licensing: ele.license ? <span className="dot active"></span> : <span className="dot"></span>,
 					actions: (
 						<div className="d-flex justify-content-between">
-							<button className="btn bg-transparent btn-outline-info">
+							<button className="btn btn-outline-info" onClick={() => editAsset(ele.productId)}>
 								<i className="fa fa-pencil" aria-hidden="true"></i>
 							</button>
 							&nbsp;
-							<button className="btn bg-transparent btn-outline-info">
+							<button className="btn btn-outline-info" onClick={() => deleteAsset(ele.productId)}>
 								<i className="fa fa-times" aria-hidden="true"></i>
 							</button>
 						</div>
@@ -171,6 +176,19 @@ function Assets() {
 			setAssets(assetData);
 			setSubmitLoader(false);
 		});
+	};
+
+	const editAsset = async (productId) => {
+		console.log(productId + 'Edit');
+		await axios.get('/getSingleProduct', { params: { productId } }).then((res) => {
+			console.log(res.data);
+			setEditAssetData(res.data.data);
+		});
+		setToggleEditAsset(true);
+	};
+
+	const deleteAsset = (productId) => {
+		console.log(productId + 'delete');
 	};
 
 	const addProductPostRequest = (product) => {
@@ -206,6 +224,9 @@ function Assets() {
 					blockHash: receipt.blockHash,
 					timestamp: blockchainData.timestamp,
 					image: productDetails.upload,
+					inStore: blockchainData.inStore,
+					license: blockchainData.license,
+					fullDescription: '',
 				};
 				console.log(product);
 				const upload = {
@@ -331,13 +352,6 @@ function Assets() {
 		}
 	};
 
-	const handlePrice = (e) => {
-		let usdValue = e.target.value;
-		let ethValue = usdValue * 0.0026;
-		let ethPrice = window.web3.utils.toWei(ethValue.toString(), 'Ether');
-		setProductDetails({ ...productDetails, price: ethPrice });
-	};
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setSubmitLoader(true);
@@ -345,7 +359,9 @@ function Assets() {
 		console.log(productDetails);
 	};
 
-	return (
+	return toggleEditAsset ? (
+		<EditAssetModal data={editAssetData} />
+	) : (
 		<section>
 			<div className="container-fluid">
 				<div className="row align-items-center">
@@ -369,8 +385,8 @@ function Assets() {
 									responsive={true}
 									paginationPerPage={10}
 									noDataComponent={
-										<div class="spinner-border text-success" role="status">
-											<span class="sr-only">Loading...</span>
+										<div className="spinner-border text-success" role="status">
+											<span className="sr-only">Loading...</span>
 										</div>
 									}
 								/>
