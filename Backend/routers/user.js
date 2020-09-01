@@ -135,10 +135,11 @@ router.post('/addProduct', async (req, res) => {
 		price: productReq.price,
 		blockHash: productReq.blockHash,
 		transactionHash: productReq.transactionHash,
-		image:productReq.image,
-		InStore:productReq.inStore,
-		license:productReq.license,
-		fullDescription: productReq.fullDescription
+		image: productReq.image,
+		InStore: productReq.inStore,
+		license: productReq.license,
+		fullDescription: productReq.fullDescription,
+		priceinUsd: productReq.priceinUsd,
 	});
 
 	product.save().then((result) => {
@@ -156,7 +157,7 @@ router.get('/getUserAssets', async (req, res) => {
 			res.send({ message: 'Data gathered', data });
 		}
 	});
-})
+});
 
 router.get('/getSingleProduct', async (req, res) => {
 	Product.find({ productId: req.query.productId }, (err, data) => {
@@ -166,7 +167,31 @@ router.get('/getSingleProduct', async (req, res) => {
 			res.send({ message: 'Data gathered', data });
 		}
 	});
-})
+});
 
+router.put('/updateProduct', async (req, res) => {
+	console.log(req.body.updatedProduct);
+	Product.findOneAndUpdate(
+		{ productId: req.body.updatedProduct.productId },
+		{
+			price: req.body.updatedProduct.ethPrice,
+			priceinUsd: req.body.updatedProduct.usdPrice,
+			license: req.body.updatedProduct.license,
+			InStore: req.body.updatedProduct.inStore,
+			description: req.body.updatedProduct.description,
+			fullDescription: req.body.updatedProduct.fullDescription
+		},
+		{ new: true },
+		(err, resu) => {
+			if (err) {
+				res.send({ message: 'Error', err });
+				console.log(error);
+			} else {
+				// console.log("MobileVerification update succeded")
+				res.send({ message: 'Product Updated' });
+			}
+		}
+	);
+});
 
 module.exports = router;

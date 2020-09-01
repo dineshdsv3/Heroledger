@@ -50,7 +50,11 @@ const productSchema = mongoose.Schema({
 	price: {
 		type: Number,
 		required: true,
-		trim: true,
+		trim: true
+	},
+	priceinUsd: {
+		type: Number,
+		trim: true
 	},
 	trnsType: {
 		type: String,

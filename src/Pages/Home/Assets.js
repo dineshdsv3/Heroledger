@@ -21,7 +21,6 @@ function Assets() {
 	const [submitLoader, setSubmitLoader] = useState(false);
 	const [assets, setAssets] = useState([]);
 	const [editAssetData, setEditAssetData] = useState([]);
-	console.log(editAssetData);
 	// const [productCount, setproductCount] = useState();
 	const [account, setAccount] = useState('');
 	const [toggleEditAsset, setToggleEditAsset] = useState(false);
@@ -157,16 +156,16 @@ function Assets() {
 					),
 					timestamp: getDate(ele.timestamp),
 					productType: ele.productType,
-					price: ele.price,
+					price: ele.priceinUsd,
 					inStore: ele.InStore ? <span className="dot active"></span> : <span className="dot"></span>,
 					licensing: ele.license ? <span className="dot active"></span> : <span className="dot"></span>,
 					actions: (
 						<div className="d-flex justify-content-between">
-							<button className="btn btn-outline-info" onClick={() => editAsset(ele.productId)}>
+							<button className="btn border-0" onClick={() => editAsset(ele.productId)}>
 								<i className="fa fa-pencil" aria-hidden="true"></i>
 							</button>
 							&nbsp;
-							<button className="btn btn-outline-info" onClick={() => deleteAsset(ele.productId)}>
+							<button className="btn border-0" onClick={() => deleteAsset(ele.productId)}>
 								<i className="fa fa-times" aria-hidden="true"></i>
 							</button>
 						</div>
@@ -227,6 +226,7 @@ function Assets() {
 					inStore: blockchainData.inStore,
 					license: blockchainData.license,
 					fullDescription: '',
+					priceinUsd: 0,
 				};
 				console.log(product);
 				const upload = {
@@ -360,7 +360,7 @@ function Assets() {
 	};
 
 	return toggleEditAsset ? (
-		<EditAssetModal data={editAssetData} />
+		<EditAssetModal data={editAssetData} setToggleEditAsset ={setToggleEditAsset}/>
 	) : (
 		<section>
 			<div className="container-fluid">

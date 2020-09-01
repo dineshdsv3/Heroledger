@@ -1,14 +1,36 @@
 import React, { useState, useEffect } from 'react';
+import Heroledger from '../../blockchain/abis/heroledger.json';
+import axios from 'axios';
 
 function EditAsset(props) {
 	const data = props.data[0];
+	const [contract, setContract] = useState({});
+	const [account, setAccount] = useState('');
+	console.log(contract);
+
+	useEffect(() => {
+		loadContract();
+	}, []);
+
+	const loadContract = async () => {
+		const web3 = window.web3;
+		const accounts = await web3.eth.getAccounts();
+		setAccount(accounts[0]);
+		const networkId = await web3.eth.net.getId();
+		const networkData = Heroledger.networks[networkId];
+		if (networkData) {
+			const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
+			setContract(heroledger);
+		}
+	};
 
 	const [editDetails, setEditDetails] = useState({
 		price: 0,
-		license: false,
-		inStore: false,
+		license: data.license,
+		inStore: data.InStore,
 		briefDescription: data.description,
-		fullDescription: '',
+		fullDescription: data.fullDescription,
+		priceinUSD: data.priceinUsd,
 	});
 
 	const handlePrice = (e) => {
@@ -16,7 +38,7 @@ function EditAsset(props) {
 		let ethValue = usdValue * 0.0026;
 		let ethPrice = window.web3.utils.toWei(ethValue.toString(), 'Ether');
 		console.log(ethPrice);
-		setEditDetails({ ...editDetails, price: ethPrice });
+		setEditDetails({ ...editDetails, price: ethPrice, priceinUSD: usdValue });
 	};
 
 	const getDate = (timestamp) => {
@@ -34,9 +56,34 @@ function EditAsset(props) {
 		return time;
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(editDetails);
+		await contract.methods
+			.editProduct(data.productId, editDetails.price, editDetails.inStore, editDetails.license)
+			.send({ from: account })
+			.once('receipt', (receipt) => {
+				// console.log(receipt);
+				const returnData = receipt.events.productEdited.returnValues;
+				console.log(returnData);
+				const updatedProduct = {
+					productId: data.productId,
+					license: returnData.license,
+					inStore: returnData.inStore,
+					ethPrice: returnData.price,
+					usdPrice: editDetails.priceinUSD,
+					description: editDetails.briefDescription,
+					fullDescription: editDetails.fullDescription,
+				};
+				axios
+					.put('/updateProduct', { updatedProduct })
+					.then((res) => {
+						alert('Changed Asset Details Successfully!!!');
+						props.setToggleEditAsset(false);
+					})
+					.catch((err) => {
+						alert('Error in Changing Asset Details, Please co');
+					});
+			});
 	};
 
 	return (
@@ -100,6 +147,7 @@ function EditAsset(props) {
 												placeholder="Price"
 												onChange={handlePrice}
 												required
+												value={editDetails.priceinUSD}
 											/>{' '}
 											USD
 										</div>
@@ -147,8 +195,8 @@ function EditAsset(props) {
 										value={editDetails.briefDescription}
 										onChange={(e) =>
 											setEditDetails({ ...editDetails, briefDescription: e.target.value })
-                                        }
-                                        placeholder="Brief Description"
+										}
+										placeholder="Brief Description"
 										required
 									/>
 								</div>
@@ -160,8 +208,8 @@ function EditAsset(props) {
 										onChange={(e) =>
 											setEditDetails({ ...editDetails, fullDescription: e.target.value })
 										}
-                                        required
-                                        placeholder="Full Description"
+										required
+										placeholder="Full Description"
 									/>
 								</div>
 								<div className="d-flex justify-content-end">

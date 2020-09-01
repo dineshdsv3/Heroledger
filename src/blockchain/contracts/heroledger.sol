@@ -33,13 +33,7 @@ contract heroledger {
 
     event productEdited(
         uint256 productId,
-        string productName,
-        string productType,
-        string originator,
-        string ownerEmail,
-        uint256 timestamp,
         uint256 price,
-        address owner,
         bool inStore,
         bool license
     );
@@ -66,7 +60,7 @@ contract heroledger {
             _license
         );
 
-        emit productCreated (
+        emit productCreated(
             productCount,
             _productName,
             _productType,
@@ -80,14 +74,20 @@ contract heroledger {
         );
     }
 
-    function editProduct(uint256 _productId, string memory _productName,
-        string memory _productType,
-        string memory _email,
+    function editProduct(
+        uint256 _productId,
         uint256 _price,
         bool _inStore,
-        bool _license) public {
-            product memory _product = products[_productId];
+        bool _license
+    ) public {
+        product memory _product = products[_productId];
 
-            
-        }
+        require(_product.productId > 0 && _product.productId <= productCount,"Product Not Found");
+
+        _product.price = _price;
+        _product.inStore = _inStore;
+        _product.license = _license;
+
+        emit productEdited(_productId, _price, _inStore, _license);
+    }
 }
