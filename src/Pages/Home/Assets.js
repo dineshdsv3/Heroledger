@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import $ from 'jquery';
 import axios from 'axios';
 import Heroledger from '../../blockchain/abis/heroledger.json';
-import DataTable, { createTheme } from 'react-data-table-component';
+import DataTable from 'react-data-table-component';
 import EditAssetModal from './EditAssetModal';
 
 const productOptions = [
@@ -21,6 +21,8 @@ function Assets() {
 	const [submitLoader, setSubmitLoader] = useState(false);
 	const [assets, setAssets] = useState([]);
 	const [editAssetData, setEditAssetData] = useState([]);
+	const [editLoader, setEditLoader] = useState(false);
+	console.log(editLoader);
 	// const [productCount, setproductCount] = useState();
 	const [account, setAccount] = useState('');
 	const [toggleEditAsset, setToggleEditAsset] = useState(false);
@@ -145,7 +147,6 @@ function Assets() {
 
 		await axios.get('/getUserAssets', { params: { email } }).then((res) => {
 			const assetData = res.data.data.map((ele) => {
-				const assetId = ele.productId;
 				return {
 					image: getImage(ele.productType, ele.image),
 					name: ele.productName,
@@ -162,7 +163,11 @@ function Assets() {
 					actions: (
 						<div className="d-flex justify-content-between">
 							<button className="btn border-0" onClick={() => editAsset(ele.productId)}>
-								<i className="fa fa-pencil" aria-hidden="true"></i>
+								{editLoader ? (
+									<i class="fa fa-spinner fa-spin text-success"></i>
+								) : (
+									<i className="fa fa-pencil" aria-hidden="true"></i>
+								)}
 							</button>
 							&nbsp;
 							<button className="btn border-0" onClick={() => deleteAsset(ele.productId)}>
@@ -179,6 +184,7 @@ function Assets() {
 
 	const editAsset = async (productId) => {
 		console.log(productId + 'Edit');
+		setEditLoader(true);
 		await axios.get('/getSingleProduct', { params: { productId } }).then((res) => {
 			console.log(res.data);
 			setEditAssetData(res.data.data);
@@ -197,6 +203,7 @@ function Assets() {
 				console.log(res.data.message);
 				$('#register-asset').modal('hide');
 				alert('Your Product has been successfully Registered');
+				window.location.reload();
 			})
 			.catch((err) => {
 				alert('Product Registration failed. Please try again in few minutes');
@@ -360,7 +367,7 @@ function Assets() {
 	};
 
 	return toggleEditAsset ? (
-		<EditAssetModal data={editAssetData} setToggleEditAsset ={setToggleEditAsset}/>
+		<EditAssetModal data={editAssetData} setToggleEditAsset={setToggleEditAsset} />
 	) : (
 		<section>
 			<div className="container-fluid">
@@ -455,7 +462,7 @@ function Assets() {
 								</div>
 							</div>
 							<div className="modal-footer">
-								<button type="submit" className="btn btn-success">
+								<button type="submit" className="btn btn-success" disabled={submitLoader}>
 									{submitLoader ? 'Registering...' : 'Confirm'}
 								</button>
 								<button type="button" className="btn btn-danger" data-dismiss="modal">

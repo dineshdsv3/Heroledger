@@ -6,7 +6,8 @@ function EditAsset(props) {
 	const data = props.data[0];
 	const [contract, setContract] = useState({});
 	const [account, setAccount] = useState('');
-	console.log(contract);
+	const [editLoader, setEditLoader] = useState(false);
+	console.log(editLoader);
 
 	useEffect(() => {
 		loadContract();
@@ -58,6 +59,7 @@ function EditAsset(props) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+		setEditLoader(true);
 		await contract.methods
 			.editProduct(data.productId, editDetails.price, editDetails.inStore, editDetails.license)
 			.send({ from: account })
@@ -79,6 +81,7 @@ function EditAsset(props) {
 					.then((res) => {
 						alert('Changed Asset Details Successfully!!!');
 						props.setToggleEditAsset(false);
+						window.location.reload();
 					})
 					.catch((err) => {
 						alert('Error in Changing Asset Details, Please co');
@@ -213,9 +216,15 @@ function EditAsset(props) {
 									/>
 								</div>
 								<div className="d-flex justify-content-end">
-									<button type="submit" className="btn btn-success mr-2">
-										Update
-									</button>
+									{editLoader ? (
+										<button type="submit" className="btn btn-success mr-2" disabled>
+											Updating
+										</button>
+									) : (
+										<button type="submit" className="btn btn-success mr-2">
+											Update
+										</button>
+									)}
 								</div>
 							</div>
 						</div>

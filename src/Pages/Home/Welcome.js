@@ -4,13 +4,14 @@ import Fortmatic from 'fortmatic';
 import Web3 from 'web3';
 import Dashboard from './Dashboard';
 import Assets from './Assets';
+import Licensing from './Licensing';
 
 // Style is in welcome.scss
 
 function Welcome() {
 	useEffect(() => {
 		async function loadWeb3() {
-			let fm = new Fortmatic('pk_test_097457B513F0A02C','kovan');
+			let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
 			window.web3 = new Web3(fm.getProvider());
 			// console.log(fm.getProvider().isFortmatic);
 			// console.log(window.web3.currentProvider.isFortmatic);
@@ -28,6 +29,7 @@ function Welcome() {
 	const [toggle, setToggleItems] = useState({
 		dashboard: true,
 		assets: false,
+		licensing: false,
 	});
 	// console.log(toggle);
 
@@ -91,7 +93,9 @@ function Welcome() {
 													? 'nav-link text-white p-3 mb-2 current'
 													: 'nav-link text-white p-3 mb-2 sidebar-link'
 											}
-											onClick={() => setToggleItems({ dashboard: true, assets: false })}
+											onClick={() =>
+												setToggleItems({ dashboard: true, assets: false, licensing: false })
+											}
 										>
 											<i className="fas fa-home text-light fa-lg mr-3"></i>Dashboard
 										</a>
@@ -109,7 +113,9 @@ function Welcome() {
 													? 'nav-link text-white p-3 mb-2 current'
 													: 'nav-link text-white p-3 mb-2 sidebar-link'
 											}
-											onClick={() => setToggleItems({ dashboard: false, assets: true })}
+											onClick={() =>
+												setToggleItems({ dashboard: false, assets: true, licensing: false })
+											}
 										>
 											<i className="fas fa-envelope text-light fa-lg mr-3"></i>Assets
 										</a>
@@ -120,7 +126,17 @@ function Welcome() {
 										</a>
 									</li>
 									<li className="nav-item">
-										<a href="#" className="nav-link text-white p-3 mb-2 sidebar-link">
+										<a
+											href="#"
+											className={
+												toggle.licensing
+													? 'nav-link text-white p-3 mb-2 current'
+													: 'nav-link text-white p-3 mb-2 sidebar-link'
+											}
+											onClick={() =>
+												setToggleItems({ dashboard: false, assets: false, licensing: true })
+											}
+										>
 											<i className="fas fa-chart-bar text-light fa-lg mr-3"></i>Licensing
 										</a>
 									</li>
@@ -211,7 +227,15 @@ function Welcome() {
 			{/* End of Modal */}
 
 			{/* Cards */}
-			{toggle.dashboard ? <Dashboard /> : toggle.assets ? <Assets /> : <div>Nothing selected</div>}
+			{toggle.dashboard ? (
+				<Dashboard />
+			) : toggle.assets ? (
+				<Assets />
+			) : toggle.licensing ? (
+				<Licensing />
+			) : (
+				<div>Nothing selected</div>
+			)}
 
 			{/* End of Cards */}
 		</div>
