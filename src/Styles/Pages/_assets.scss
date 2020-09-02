@@ -1,5 +1,5 @@
 .asset-modal {
-    background: lighten(#a6b5bd, 10%);
+    width: 30vw;
 }
 
 .asset-modal-body {
@@ -18,9 +18,9 @@
         margin-bottom: 20px;
         box-sizing: border-box;
         padding-left: 10px;
-        border: 1px solid rgb(123, 123, 194);
+        border: 1px solid rgb(3, 3, 3);
         outline: none !important;
-        border-radius: 12.5px;
+        border-radius: 2.5px;
     }
     textarea {
         width: 90%;
@@ -28,9 +28,20 @@
         margin-bottom: 20px;
         box-sizing: border-box;
         padding-left: 10px;
-        border: 1px solid rgb(123, 123, 194);
+        border: 1px solid rgb(3, 3, 3);
         outline: none !important;
-        border-radius: 12.5px;
+        border-radius: 2.5px;
+    }
+    #term2 {
+        height: 15px;
+        padding: 10px 0;
+        display: inline-block;
+        vertical-align: middle;
+    }
+    #term1 {
+        width: 100%;
+        padding: 0px;
+        margin: 10px 0;
     }
 }
 

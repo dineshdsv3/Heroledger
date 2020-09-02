@@ -157,7 +157,7 @@ function Assets() {
 					),
 					timestamp: getDate(ele.timestamp),
 					productType: ele.productType,
-					price: ele.priceinUsd,
+					price: `$ ${ele.priceinUsd}`,
 					inStore: ele.InStore ? <span className="dot active"></span> : <span className="dot"></span>,
 					licensing: ele.license ? <span className="dot active"></span> : <span className="dot"></span>,
 					actions: (
@@ -166,12 +166,12 @@ function Assets() {
 								{editLoader ? (
 									<i class="fa fa-spinner fa-spin text-success"></i>
 								) : (
-									<i className="fa fa-pencil" aria-hidden="true"></i>
+									<i className="fa fa-pencil text-info" aria-hidden="true"></i>
 								)}
 							</button>
 							&nbsp;
 							<button className="btn border-0" onClick={() => deleteAsset(ele.productId)}>
-								<i className="fa fa-times" aria-hidden="true"></i>
+								<i className="fa fa-times text-danger" aria-hidden="true"></i>
 							</button>
 						</div>
 					),
@@ -421,6 +421,7 @@ function Assets() {
 										id="name"
 										onChange={(e) => setProductDetails({ ...productDetails, name: e.target.value })}
 										required
+										maxlength="15"
 									/>
 								</div>
 								<div>

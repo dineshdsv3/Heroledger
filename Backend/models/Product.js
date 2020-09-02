@@ -5,7 +5,7 @@ const productSchema = mongoose.Schema({
 		type: String,
 		required: true,
 		trim: true,
-    },
+	},
 	originatorEmail: {
 		type: String,
 		required: true,
@@ -15,12 +15,12 @@ const productSchema = mongoose.Schema({
 		type: String,
 		required: true,
 		trim: true,
-    },
-    ownerAddress: {
-        type: String,
+	},
+	ownerAddress: {
+		type: String,
 		required: true,
 		trim: true,
-    },
+	},
 	productName: {
 		type: String,
 		required: true,
@@ -32,48 +32,35 @@ const productSchema = mongoose.Schema({
 		trim: true,
 	},
 	fullDescription: {
-		type: String
+		type: String,
+	},
+	licenseDescription: {
+		type: String,
 	},
 	productType: {
 		type: String,
 		required: true,
 		trim: true,
-    },
-    timestamp: {
-        type: Number,
-        required: true
-    },
-	exclType: {
-		type: String,
-		trim: true,
+	},
+	timestamp: {
+		type: Number,
+		required: true,
 	},
 	price: {
 		type: Number,
 		required: true,
-		trim: true
+		trim: true,
 	},
 	priceinUsd: {
 		type: Number,
-		trim: true
-	},
-	trnsType: {
-		type: String,
 		trim: true,
 	},
 	blockHash: {
 		type: String,
 		trim: true,
-    },
-    transactionHash: {
-        type: String,
-		trim: true,
-    },
-	rating: {
-		type: Number,
-		trim: true,
 	},
-	favoritesQuantity: {
-		type: Number,
+	transactionHash: {
+		type: String,
 		trim: true,
 	},
 	latitude: {
@@ -86,15 +73,26 @@ const productSchema = mongoose.Schema({
 	},
 	image: {
 		type: String,
-		required: true
+		required: true,
 	},
 	license: {
-		type: Boolean
+		type: Boolean,
 	},
 	InStore: {
-		type: Boolean
-	}
-
+		type: Boolean,
+	},
+	royalty: {
+		type: Number,
+	},
+	term1StartDate: {
+		type: Number,
+	},
+	term1EndDate: {
+		type: Number,
+	},
+	licenseTerm2: {
+		type: String,
+	},
 });
 
 module.exports = mongoose.model('product', productSchema);
