@@ -34,9 +34,6 @@ const productSchema = mongoose.Schema({
 	fullDescription: {
 		type: String,
 	},
-	licenseDescription: {
-		type: String,
-	},
 	productType: {
 		type: String,
 		required: true,
@@ -75,11 +72,20 @@ const productSchema = mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	InStore: {
+		type: Boolean,
+	},
 	license: {
 		type: Boolean,
 	},
-	InStore: {
-		type: Boolean,
+	licenseDescription: {
+		type: String,
+	},
+	licenseFeeUsd: {
+		type: Number,
+	},
+	licenseFee: {
+		type: Number,
 	},
 	royalty: {
 		type: Number,
@@ -90,7 +96,7 @@ const productSchema = mongoose.Schema({
 	term1EndDate: {
 		type: Number,
 	},
-	licenseTerm2: {
+	term2: {
 		type: String,
 	},
 });

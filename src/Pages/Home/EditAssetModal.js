@@ -38,7 +38,6 @@ function EditAsset(props) {
 		let usdValue = e.target.value;
 		let ethValue = usdValue * 0.0026;
 		let ethPrice = window.web3.utils.toWei(ethValue.toString(), 'Ether');
-		console.log(ethPrice);
 		setEditDetails({ ...editDetails, price: ethPrice, priceinUSD: usdValue });
 	};
 

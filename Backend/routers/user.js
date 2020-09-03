@@ -194,4 +194,30 @@ router.put('/updateProduct', async (req, res) => {
 	);
 });
 
+router.put('/addLicense', async (req, res) => {
+	console.log(req.body.license);
+	Product.findOneAndUpdate(
+		{ productId: req.body.license.productId },
+		{
+			licenseDescription: req.body.license.licenseDescription,
+			licenseFeeUsd: req.body.license.licenseFeeUsd,
+			licenseFee: req.body.license.licenseFee,
+			royalty: req.body.license.royalty,
+			term1StartDate: req.body.license.term1StartDate,
+			term1EndDate: req.body.license.term1EndDate,
+			term2: req.body.license.term2
+		},
+		{ new: true },
+		(err, resu) => {
+			if (err) {
+				res.send({ message: 'Error', err });
+				console.log(error);
+			} else {
+				// console.log("MobileVerification update succeded")
+				res.send({ message: 'License Added' });
+			}
+		}
+	);
+})
+
 module.exports = router;

@@ -7,10 +7,10 @@ import moment from 'moment';
 function Licensing() {
 	const [user, setUser] = useState({});
 	const [contract, setContract] = useState({});
-	console.log(contract);
 	const [submitLoader, setSubmitLoader] = useState(false);
 	const [assets, setAssets] = useState([]);
 	const [account, setAccount] = useState('');
+	const [licenseLoader, setLicenseLoader] = useState(false);
 	const [selectedLicensedAsset, setselectedLicensedAsset] = useState([]);
 	const [licenseDetails, setLicenseDetails] = useState({
 		licenseDescription: '',
@@ -61,10 +61,12 @@ function Licensing() {
 								{ele.transactionHash}
 							</a>
 						),
-						fee: `$ 120`,
-						royalty: '25%',
-						term1: `1/9/2020 to 1/3/2021`,
-						term2: 'Non-Exclusive',
+						fee: ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A',
+						royalty: ele.royalty ? `${ele.royalty}%` : 'N/A',
+						term1: ele.term1StartDate
+							? `${getDate(ele.term1StartDate)} to ${getDate(ele.term1EndDate)}`
+							: 'N/A',
+						term2: ele.term2 ? (ele.term2 == 'nonExclusive' ? 'Non-Exclusive' : 'Exclusive') : 'N/A',
 						transfer: <i className="fa fa-exchange" aria-hidden="true"></i>,
 						manage: (
 							<div className="d-flex justify-content-between">
@@ -101,13 +103,8 @@ function Licensing() {
 		let date = stamp.getDate();
 		let month = stamp.getMonth() + 1;
 		let year = stamp.getFullYear();
-		let hours = stamp.getHours();
-		let minutes = stamp.getMinutes();
-		let seconds = stamp.getSeconds();
 
-		const time = `${date <= 9 ? '0' + date : date}-${month <= 9 ? '0' + month : month}-${year} ${
-			hours <= 9 ? '0' + hours : hours
-		}:${minutes <= 9 ? '0' + minutes : minutes}:${seconds <= 9 ? '0' + seconds : seconds}`;
+		const time = `${date <= 9 ? '0' + date : date}-${month <= 9 ? '0' + month : month}-${year}`;
 		return time;
 	};
 
@@ -154,11 +151,44 @@ function Licensing() {
 		}
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
 		console.log(licenseDetails);
-		console.log(term2Details);
-		console.log(moment(licenseDetails.term1StartDate).format('X'));
+		setLicenseLoader(true);
+		const feeUsd = licenseDetails.fee;
+		const feeEth = window.web3.utils.toWei(feeUsd.toString(), 'Ether');
+		let term2 = term2Details.exclusive ? 'exclusive' : 'nonExclusive';
+		await contract.methods
+			.addLicense(
+				selectedLicensedAsset.productId,
+				selectedLicensedAsset.productName,
+				user.name,
+				feeEth,
+				moment(licenseDetails.term1StartDate).format('X'),
+				moment(licenseDetails.term1EndDate).format('X'),
+				term2
+			)
+			.send({ from: account })
+			.once('receipt', (receipt) => {
+				const returnData = receipt.events.licenseCreated.returnValues;
+				console.log(returnData);
+				const license = {
+					productId: returnData.productId,
+					licenseDescription: licenseDetails.licenseDescription,
+					licenseFee: returnData.licenseFee,
+					licenseFeeUsd: feeUsd,
+					royalty: licenseDetails.royalty,
+					term1StartDate: returnData.term1StartDate,
+					term1EndDate: returnData.term1EndDate,
+					term2: returnData.term2,
+				};
+				console.log(license);
+				axios.put('/addLicense', { license }).then((res) => {
+					alert('License added to the product successfully!!!');
+					setLicenseLoader(false);
+					window.location.reload();
+				});
+			});
 	};
 
 	const customStyles = {
@@ -194,7 +224,7 @@ function Licensing() {
 			name: 'Hash',
 			selector: 'hash',
 			center: true,
-			width: '23%',
+			width: '21%',
 		},
 		{
 			name: 'Fee',
@@ -404,8 +434,8 @@ function Licensing() {
 								</div>
 							</div>
 							<div className="modal-footer">
-								<button type="submit" className="btn btn-info">
-									Add License
+								<button type="submit" className="btn btn-info" disabled={licenseLoader}>
+									{licenseLoader ? 'Adding..' : 'Add License'}
 								</button>
 							</div>
 						</form>
