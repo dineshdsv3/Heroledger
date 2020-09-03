@@ -224,7 +224,7 @@ function Licensing() {
 			name: 'Hash',
 			selector: 'hash',
 			center: true,
-			width: '21%',
+			width: '18%',
 		},
 		{
 			name: 'Fee',
@@ -261,7 +261,7 @@ function Licensing() {
 			sortable: true,
 			center: true,
 			wrap: true,
-			width: '6%',
+			width: '5%',
 		},
 		{
 			name: 'Manage',
