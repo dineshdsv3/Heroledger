@@ -7,7 +7,6 @@ function EditAsset(props) {
 	const [contract, setContract] = useState({});
 	const [account, setAccount] = useState('');
 	const [editLoader, setEditLoader] = useState(false);
-	console.log(editLoader);
 
 	useEffect(() => {
 		loadContract();
@@ -79,7 +78,6 @@ function EditAsset(props) {
 					.put('/updateProduct', { updatedProduct })
 					.then((res) => {
 						alert('Changed Asset Details Successfully!!!');
-						props.setToggleEditAsset(false);
 						window.location.reload();
 					})
 					.catch((err) => {

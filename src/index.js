@@ -13,6 +13,7 @@ import * as serviceWorker from './serviceWorker';
 import PreLogin1 from './Pages/Pre-Login/PreLogin1';
 import Register from './Pages/Pre-Login/Register';
 import Welcome from './Pages/Home/Welcome';
+import ProductDescription from './Pages/ProductDescription';
 
 const routing = (
 	<Router>
@@ -21,6 +22,7 @@ const routing = (
 			<Route exact path="/register" component={Register} />
 
 			<PrivateRouter exact path="/Welcome" component={Welcome} />
+			<PrivateRouter exact path="/Product" component={ProductDescription} />
 		</div>
 	</Router>
 );

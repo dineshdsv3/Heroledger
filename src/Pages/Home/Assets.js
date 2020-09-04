@@ -21,9 +21,6 @@ function Assets() {
 	const [submitLoader, setSubmitLoader] = useState(false);
 	const [assets, setAssets] = useState([]);
 	const [editAssetData, setEditAssetData] = useState([]);
-	const [editLoader, setEditLoader] = useState(false);
-	console.log(editLoader);
-	// const [productCount, setproductCount] = useState();
 	const [account, setAccount] = useState('');
 	const [toggleEditAsset, setToggleEditAsset] = useState(false);
 	const [productDetails, setProductDetails] = useState({
@@ -36,10 +33,15 @@ function Assets() {
 	});
 
 	useEffect(() => {
-		getUserDetails();
+		// getUserDetails();
 		loadContract();
 	}, []);
 
+	useEffect(() => {
+		getUserDetails();
+	}, [assets]);
+
+	
 	// Table Data Styling & Sorting
 	const customStyles = {
 		cells: {
@@ -140,12 +142,11 @@ function Assets() {
 	};
 
 	const getUserDetails = async () => {
-		const user = JSON.parse(localStorage.getItem('user'));
+		const user = await JSON.parse(localStorage.getItem('user'));
 		setUser(user);
 		let email = user.email;
-		console.log(email);
 
-		await axios.get('/getUserAssets', { params: { email } }).then((res) => {
+		axios.get('/getUserAssets', { params: { email } }).then((res) => {
 			const assetData = res.data.data.map((ele) => {
 				return {
 					image: getImage(ele.productType, ele.image),
@@ -163,11 +164,7 @@ function Assets() {
 					actions: (
 						<div className="d-flex justify-content-between">
 							<button className="btn border-0" onClick={() => editAsset(ele.productId)}>
-								{editLoader ? (
-									<i class="fa fa-spinner fa-spin text-success"></i>
-								) : (
-									<i className="fa fa-pencil text-info" aria-hidden="true"></i>
-								)}
+								<i className="fa fa-pencil text-info" aria-hidden="true"></i>
 							</button>
 							&nbsp;
 							<button className="btn border-0" onClick={() => deleteAsset(ele.productId)}>
@@ -178,13 +175,11 @@ function Assets() {
 				};
 			});
 			setAssets(assetData);
-			setSubmitLoader(false);
 		});
 	};
 
 	const editAsset = async (productId) => {
 		console.log(productId + 'Edit');
-		setEditLoader(true);
 		await axios.get('/getSingleProduct', { params: { productId } }).then((res) => {
 			console.log(res.data);
 			setEditAssetData(res.data.data);
@@ -203,7 +198,6 @@ function Assets() {
 				console.log(res.data.message);
 				$('#register-asset').modal('hide');
 				alert('Your Product has been successfully Registered');
-				window.location.reload();
 			})
 			.catch((err) => {
 				alert('Product Registration failed. Please try again in few minutes');
@@ -421,7 +415,7 @@ function Assets() {
 										id="name"
 										onChange={(e) => setProductDetails({ ...productDetails, name: e.target.value })}
 										required
-										maxlength="15"
+										maxLength="15"
 									/>
 								</div>
 								<div>

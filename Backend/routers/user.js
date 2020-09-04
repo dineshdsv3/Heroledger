@@ -47,7 +47,6 @@ router.post('/login', async (req, res) => {
 router.put('/logout', async (req, res) => {
 	try {
 		const emailId = req.body.email;
-		console.log(emailId);
 		let updatedTokens = [];
 		User.findOneAndUpdate({ email: emailId }, { tokens: updatedTokens }, { new: true }, (err, resu) => {
 			if (err) {
@@ -61,20 +60,7 @@ router.put('/logout', async (req, res) => {
 	}
 });
 // Add Image Route
-router.post('/addImage', async (req, res) => {
-	console.log(req.body);
-	const image = new Image({
-		productId: req.body.upload.id,
-		productName: req.body.upload.name,
-		productImage: req.body.upload.upload,
-	});
 
-	// console.log(image);
-	image.save().then((result) => {
-		console.log('Image Added');
-		res.send({ message: 'Image Added to DB' });
-	});
-});
 // Add Audio Route
 router.post('/addAudio', async (req, res) => {
 	// console.log(req.body.upload)

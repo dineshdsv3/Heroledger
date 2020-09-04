@@ -44,12 +44,12 @@ function Licensing() {
 	};
 
 	const getUserDetails = async () => {
-		const user = JSON.parse(localStorage.getItem('user'));
+		const user = await JSON.parse(localStorage.getItem('user'));
 		setUser(user);
 		let email = user.email;
 		console.log(email);
 
-		await axios.get('/getUserAssets', { params: { email } }).then((res) => {
+		axios.get('/getUserAssets', { params: { email } }).then((res) => {
 			const assetData = res.data.data
 				.filter((ele) => ele.license == true)
 				.map((ele) => {
