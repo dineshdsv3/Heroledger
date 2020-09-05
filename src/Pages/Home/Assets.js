@@ -150,7 +150,7 @@ function Assets() {
 			const assetData = res.data.data.map((ele) => {
 				return {
 					image: getImage(ele.productType, ele.image),
-					name: ele.productName,
+					name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
 					hash: (
 						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
 							{ele.transactionHash}

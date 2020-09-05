@@ -4,10 +4,11 @@
 
 .new-product {
     background: green;
-    width: 50px;
+    width: fit-content;
     color: white;
     font-size: 12px;
     font-weight: bold;
+    padding: 10px;
 }
 
 .description-col {
