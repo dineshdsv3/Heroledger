@@ -14,6 +14,7 @@ import PreLogin1 from './Pages/Pre-Login/PreLogin1';
 import Register from './Pages/Pre-Login/Register';
 import Welcome from './Pages/Home/Welcome';
 import ProductDescription from './Pages/ProductDescription';
+import Store from './Pages/Home/Store';
 
 const routing = (
 	<Router>
@@ -23,6 +24,7 @@ const routing = (
 
 			<PrivateRouter exact path="/Welcome" component={Welcome} />
 			<PrivateRouter exact path="/Product" component={ProductDescription} />
+			<PrivateRouter exact path="/Store" component={Store} />
 		</div>
 	</Router>
 );

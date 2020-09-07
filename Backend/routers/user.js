@@ -165,7 +165,7 @@ router.put('/updateProduct', async (req, res) => {
 			license: req.body.updatedProduct.license,
 			InStore: req.body.updatedProduct.inStore,
 			description: req.body.updatedProduct.description,
-			fullDescription: req.body.updatedProduct.fullDescription
+			fullDescription: req.body.updatedProduct.fullDescription,
 		},
 		{ new: true },
 		(err, resu) => {
@@ -191,7 +191,7 @@ router.put('/addLicense', async (req, res) => {
 			royalty: req.body.license.royalty,
 			term1StartDate: req.body.license.term1StartDate,
 			term1EndDate: req.body.license.term1EndDate,
-			term2: req.body.license.term2
+			term2: req.body.license.term2,
 		},
 		{ new: true },
 		(err, resu) => {
@@ -204,6 +204,16 @@ router.put('/addLicense', async (req, res) => {
 			}
 		}
 	);
-})
+});
+
+router.get('/getAllAssets', async (req, res) => {
+	Product.find({}, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	}).limit(5);
+});
 
 module.exports = router;
