@@ -1,8 +1,30 @@
 .store-card {
-    height: 40vh;
-    
+    width: 250px;
+    height: 45vh;
+    margin-bottom: 20px;
+    &:hover {
+        transform: scale(1.01)
+    }
+    margin-top: 20px;
+    @include linearGradient(background-image, bottom, rgba(92, 76, 76, 0.6), rgba(138, 130, 130, 0.9));
 }
 .store-card-image {
-    height: 35%;
-    width: 2vw;
+    height: 55%;
+    width: 100px;
+    background-color: black;
+    @include linearGradient(background-image, bottom, #ef972b, #f7b059);
+}
+.store-page {
+    background: linear-gradient(to left, rgba(75, 69, 48, 0.6), rgba(46, 45, 40, 0.9)),
+    url("../../Assets/Images/store-bg1.jpg");
+    min-height: 100vh;
+    background-size: cover;
+    background-position: center;
+}
+.store-card-title {
+    font-size: 14px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+.store-card-text {
+    font-size: 12px;
 }

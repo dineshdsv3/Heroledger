@@ -7,130 +7,124 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 function Store() {
 	const [data, setData] = useState([]);
+	console.log(data);
 
 	useEffect(() => {
-		axios.get('/getAllAssets').then((res) => {
-			console.log(res);
+		getAllAssets();
+	}, [data]);
+
+	const getAllAssets = async () => {
+		await axios.get('/getAllAssets').then((res) => {
 			setData(res.data.data);
 		});
-	}, []);
+	};
 
 	return (
 		<div>
 			<Navbar />
+			<div className="store-page pt-5 mt-4">
+				<h2 className="my-3 text-white ml-2">Characters</h2>
+				<div className="ml-5 pl-5">
+					<OwlCarousel className="owl-theme" loop dotsContainer="false" items={4}>
+						{data.map((ele, ind) => (
+							<div class="row item justify-content-around" key={ele + ind}>
+								<div className="card store-card">
+									<img src={ele.image} className="card-img-top store-card-image img-fluid" />
+									<div className="card-body">
+										<div className="card-title store-card-title text-capitalize">
+											{ele.productName}
+										</div>
+										<div className="card-text store-card-text mt-1">
+											<span className="text-primary">Short Description:</span> {ele.description}
+										</div>
+										<div className="row mt-1">
+											<div className="col-6 d-flex justify-content-start">
+												<button className="btn btn-success p-1">VIEW</button>
+											</div>
+											<div className="col-6 d-flex justify-content-end">
+												<div>
+													<small>
+														Price: <b>$ {ele.priceinUsd}</b>
+													</small>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						))}
+					</OwlCarousel>
+				</div>
+				<h2 className="my-3 text-white ml-2">Logos</h2>
 
-			<OwlCarousel className="owl-theme pt-5 mt-4" loop dotsContainer="false" items={4}>
-				<div class="row item justify-content-around">
-					<div className="card store-card" style={{ width: '200px' }}>
-						<img
-							src={require('../../Assets/Images/Ant-Man.png')}
-							className="card-img-top store-card-image img-fluid"
-						/>
-						<div className="card-body">
-							<h5 className="card-title">Product Name</h5>
-							<p className="card-text">
-								Short Description: fjjf ofijfw fwfiweofn wiojowj woiwjgiwjgq goigowijgiowjg
-							</p>
-							<div className="row">
-								<div className="col-6 d-flex justify-content-start">
-									<button className="btn btn-success">VIEW</button>
-								</div>
-								<div className="col-6 d-flex justify-content-end">
-									<button className="btn btn-info">$ 200</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div className="card store-card" style={{ width: '300px' }}>
-						<img
-							src={require('../../Assets/Images/Ant-Man.png')}
-							className="card-img-top store-card-image img-fluid"
-						/>
-						<div className="card-body">
-							<h5 className="card-title">Product Name</h5>
-							<p className="card-text">
-								Short Description: fjjf ofijfw fwfiweofn wiojowj woiwjgiwjgq goigowijgiowjg
-							</p>
-							<div className="row">
-								<div className="col-6 d-flex justify-content-start">
-									<button className="btn btn-success">VIEW</button>
-								</div>
-								<div className="col-6 d-flex justify-content-end">
-									<button className="btn btn-info">$ 200</button>
+				<div className="ml-5 pl-5">
+					<OwlCarousel className="owl-theme" loop dotsContainer="false" items={4}>
+						{data.map((ele, ind) => (
+							<div class="row item justify-content-around" key={ele + ind}>
+								<div className="card store-card">
+									<img src={ele.image} className="card-img-top store-card-image img-fluid" />
+									<div className="card-body">
+										<div className="card-title store-card-title text-capitalize">
+											{ele.productName}
+										</div>
+										<div className="card-text store-card-text mt-1">
+											<span className="text-primary">Short Description:</span> {ele.description}
+										</div>
+										<div className="row mt-1">
+											<div className="col-6 d-flex justify-content-start">
+												<a
+													href={`/product?id=${ele.productId}`}
+													className="btn btn-success p-1"
+												>
+													VIEW
+												</a>
+											</div>
+											<div className="col-6 d-flex justify-content-end">
+												<div>
+													<small>
+														Price: <b>$ {ele.priceinUsd}</b>
+													</small>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+						))}
+					</OwlCarousel>
 				</div>
-				<div class="item">
-					<div className="card store-card" style={{ width: '300px' }}>
-						<img
-							src={require('../../Assets/Images/Ant-Man.png')}
-							className="card-img-top store-card-image img-fluid"
-						/>
-						<div className="card-body">
-							<h5 className="card-title">Product Name</h5>
-							<p className="card-text">
-								Short Description: fjjf ofijfw fwfiweofn wiojowj woiwjgiwjgq goigowijgiowjg
-							</p>
-							<div className="row">
-								<div className="col-6 d-flex justify-content-start">
-									<button className="btn btn-success">VIEW</button>
-								</div>
-								<div className="col-6 d-flex justify-content-end">
-									<button className="btn btn-info">$ 200</button>
+				<div className="ml-5 pl-5">
+					<OwlCarousel className="owl-theme" loop dotsContainer="false" items={4}>
+						{data.map((ele, ind) => (
+							<div class="row item justify-content-around" key={ele + ind}>
+								<div className="card store-card">
+									<img src={ele.image} className="card-img-top store-card-image img-fluid" />
+									<div className="card-body">
+										<div className="card-title store-card-title text-capitalize">
+											{ele.productName}
+										</div>
+										<div className="card-text store-card-text mt-1">
+											<span className="text-primary">Short Description:</span> {ele.description}
+										</div>
+										<div className="row mt-1">
+											<div className="col-6 d-flex justify-content-start">
+												<button className="btn btn-success p-1">VIEW</button>
+											</div>
+											<div className="col-6 d-flex justify-content-end">
+												<div>
+													<small>
+														Price: <b>$ {ele.priceinUsd}</b>
+													</small>
+												</div>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+						))}
+					</OwlCarousel>
 				</div>
-				<div class="item">
-					<div className="card store-card" style={{ width: '300px' }}>
-						<img
-							src={require('../../Assets/Images/Ant-Man.png')}
-							className="card-img-top store-card-image img-fluid"
-						/>
-						<div className="card-body">
-							<h5 className="card-title">Product Name</h5>
-							<p className="card-text">
-								Short Description: fjjf ofijfw fwfiweofn wiojowj woiwjgiwjgq goigowijgiowjg
-							</p>
-							<div className="row">
-								<div className="col-6 d-flex justify-content-start">
-									<button className="btn btn-success">VIEW</button>
-								</div>
-								<div className="col-6 d-flex justify-content-end">
-									<button className="btn btn-info">$ 200</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="item">
-					<div className="card store-card" style={{ width: '300px' }}>
-						<img
-							src={require('../../Assets/Images/Ant-Man.png')}
-							className="card-img-top store-card-image img-fluid"
-						/>
-						<div className="card-body">
-							<h5 className="card-title">Product Name</h5>
-							<p className="card-text">
-								Short Description: fjjf ofijfw fwfiweofn wiojowj woiwjgiwjgq goigowijgiowjg
-							</p>
-							<div className="row">
-								<div className="col-6 d-flex justify-content-start">
-									<button className="btn btn-success">VIEW</button>
-								</div>
-								<div className="col-6 d-flex justify-content-end">
-									<button className="btn btn-info">$ 200</button>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</OwlCarousel>
+			</div>
 		</div>
 	);
 }
