@@ -1,18 +1,17 @@
 .store-card {
-    width: 250px;
+    width: 200px;
     height: 45vh;
     margin-bottom: 20px;
     &:hover {
-        transform: scale(1.01)
+        transform: scale(1.01);
+        background: linear-gradient(125deg, orange 60%, cyan);
     }
     margin-top: 20px;
-    @include linearGradient(background-image, bottom, rgba(92, 76, 76, 0.6), rgba(138, 130, 130, 0.9));
+    background: linear-gradient(125deg, rgb(99, 93, 81) 50%, rgb(148, 177, 177))
 }
 .store-card-image {
-    height: 55%;
+    height: 60%;
     width: 100px;
-    background-color: black;
-    @include linearGradient(background-image, bottom, #ef972b, #f7b059);
 }
 .store-page {
     background: linear-gradient(to left, rgba(75, 69, 48, 0.6), rgba(46, 45, 40, 0.9)),
@@ -27,4 +26,8 @@
 }
 .store-card-text {
     font-size: 12px;
+}
+.store-btn {
+    width: 110%;
+    height: 100%;
 }

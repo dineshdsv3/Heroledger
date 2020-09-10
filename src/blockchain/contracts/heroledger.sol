@@ -10,8 +10,9 @@ contract heroledger {
     struct licensedProduct {
         uint256 productId;
         string productName;
-        string owner;
-        address ownerAddress;
+        string licensor;
+        string licensee;
+        address payable ownerAddress;
         uint256 licenseFee;
         uint256 term1StartDate;
         uint256 term1EndDate;
@@ -34,13 +35,15 @@ contract heroledger {
     event licenseCreated(
         uint256 productId,
         string productName,
-        string owner,
-        address ownerAddress,
+        string licensor,
+        string licensee,
+        address payable ownerAddress,
         uint256 licenseFee,
         uint256 term1StartDate,
         uint256 term1EndDate,
         string term2
     );
+
 
     event productCreated(
         uint256 productId,
@@ -50,11 +53,24 @@ contract heroledger {
         string ownerEmail,
         uint256 timestamp,
         uint256 price,
-        address owner,
+        address payable owner,
         bool inStore,
         bool license
     );
 
+    event productPurchased(
+        uint256 productId,
+        string ownerEmail,
+        uint256 timestamp,
+        bool inStore
+    );
+
+    event licensePurchased(
+        uint256 productId,
+        string licensorMail,
+        string licenseeMail,
+        uint256 timestamp
+    );
     event productEdited(
         uint256 productId,
         uint256 price,
@@ -98,6 +114,67 @@ contract heroledger {
         );
     }
 
+    function purchaseProduct(
+        uint256 _productId,
+        string memory _buyerEmail
+    ) public payable {
+        product memory _product = products[_productId];
+
+        require(
+            _product.productId > 0 && _product.productId <= productCount,
+            "Invalid Product ID"
+        );
+
+        require(
+            _product.inStore == true,
+            "This Product is not available for sale"
+        );
+
+        require(msg.value >= _product.price, "Check the price of the product");
+
+        address payable _sellerAdd = _product.owner;
+
+        address(_sellerAdd).transfer(msg.value);
+
+        _product.owner = msg.sender;
+        _product.ownerEmail = _buyerEmail;
+        _product.inStore = false;
+
+        products[_productId] = _product;
+
+        emit productPurchased(_productId, _buyerEmail, block.timestamp, false);
+    }
+
+    function purchaseLicense(uint256 _productId,string memory _licensee) public payable {
+        licensedProduct memory _licenseProduct = licensedProducts[_productId];
+
+        product memory _product = products[_productId];
+
+        require(msg.value >= _licenseProduct.licenseFee, "Check with license fee of the product");
+        require(_product.license == true,"Product not available for license");
+
+        require(_licenseProduct.term1EndDate <= block.timestamp, "License Term Expired");
+
+
+        address payable _licensorAdd = _licenseProduct.ownerAddress;
+
+        address(_licensorAdd).transfer(msg.value);
+
+        _licenseProduct.licensee = _licensee;
+        _licenseProduct.ownerAddress = msg.sender;
+        _licenseProduct.term1StartDate = 0;
+        _licenseProduct.term1EndDate = 0;
+        _licenseProduct.term2 = "N/A";
+
+        _product.license = false;
+
+        products[_productId] = _product;
+
+        licensedProducts[_productId] = _licenseProduct;
+        
+        emit licensePurchased(_productId,_licenseProduct.licensor, _licenseProduct.licensee, block.timestamp);
+    }
+
     function editProduct(
         uint256 _productId,
         uint256 _price,
@@ -105,6 +182,11 @@ contract heroledger {
         bool _license
     ) public {
         product memory _product = products[_productId];
+
+        require(
+            _product.owner == msg.sender,
+            "You can't have access to this product"
+        );
 
         require(
             _product.productId > 0 && _product.productId <= productCount,
@@ -121,7 +203,7 @@ contract heroledger {
     function addLicense(
         uint256 _productId,
         string memory _productName,
-        string memory _owner,
+        string memory _licensor,
         uint256 _licenseFee,
         uint256 _term1StartDate,
         uint256 _term1EndDate,
@@ -131,7 +213,8 @@ contract heroledger {
         licensedProducts[_productId] = licensedProduct(
             _productId,
             _productName,
-            _owner,
+            _licensor,
+            "N/A",
             msg.sender,
             _licenseFee,
             _term1StartDate,
@@ -142,7 +225,8 @@ contract heroledger {
         emit licenseCreated(
             _productId,
             _productName,
-            _owner,
+            _licensor,
+            "N/A",
             msg.sender,
             _licenseFee,
             _term1StartDate,

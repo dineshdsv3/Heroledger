@@ -5,6 +5,7 @@ import Web3 from 'web3';
 import Dashboard from './Dashboard';
 import Assets from './Assets';
 import Licensing from './Licensing';
+import Store from './Store';
 
 // Style is in welcome.scss
 
@@ -30,6 +31,7 @@ function Welcome() {
 		dashboard: true,
 		assets: false,
 		licensing: false,
+		store: false,
 	});
 	// console.log(toggle);
 
@@ -94,7 +96,12 @@ function Welcome() {
 													: 'nav-link text-white p-3 mb-2 sidebar-link'
 											}
 											onClick={() =>
-												setToggleItems({ dashboard: true, assets: false, licensing: false })
+												setToggleItems({
+													dashboard: true,
+													assets: false,
+													licensing: false,
+													store: false,
+												})
 											}
 										>
 											<i className="fas fa-home text-light fa-lg mr-3"></i>Dashboard
@@ -114,14 +121,34 @@ function Welcome() {
 													: 'nav-link text-white p-3 mb-2 sidebar-link'
 											}
 											onClick={() =>
-												setToggleItems({ dashboard: false, assets: true, licensing: false })
+												setToggleItems({
+													dashboard: false,
+													assets: true,
+													licensing: false,
+													store: false,
+												})
 											}
 										>
 											<i className="fas fa-envelope text-light fa-lg mr-3"></i>Assets
 										</a>
 									</li>
 									<li className="nav-item">
-										<a href="#" className="nav-link text-white p-3 mb-2 sidebar-link">
+										<a
+											href="#"
+											className={
+												toggle.store
+													? 'nav-link text-white p-3 mb-2 current'
+													: 'nav-link text-white p-3 mb-2 sidebar-link'
+											}
+											onClick={() =>
+												setToggleItems({
+													dashboard: false,
+													assets: false,
+													licensing: false,
+													store: true,
+												})
+											}
+										>
 											<i className="fas fa-chart-line text-light fa-lg mr-3"></i>Store
 										</a>
 									</li>
@@ -233,8 +260,10 @@ function Welcome() {
 				<Assets />
 			) : toggle.licensing ? (
 				<Licensing />
+			) : toggle.store ? (
+				<Store />
 			) : (
-				<div>Nothing selected</div>
+				<div>Nothing selected, Please contact your Admin</div>
 			)}
 
 			{/* End of Cards */}
