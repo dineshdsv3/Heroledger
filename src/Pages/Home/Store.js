@@ -25,8 +25,14 @@ function Store() {
 		const user = JSON.parse(localStorage.getItem('user'));
 		setUser(user);
 		await axios.get('/getAllAssets').then((res) => {
-			setData(res.data.data);
-			setLoader(false);
+			let resData = res.data.data.filter((ele) => ele.InStore == true && ele.priceinUsd > 0).map((ele) => ele);
+			if (resData.length > 0) {
+				setData(resData);
+				setLoader(false);
+			} else {
+				alert('No Assets in your portfolio');
+				setLoader(false);
+			}
 		});
 	};
 
@@ -56,7 +62,7 @@ function Store() {
 				<div className="col-xl-10 col-lg-9 col-md-8 store-page pt-5 mt-4 ml-auto">
 					<h2 className="my-3 text-white ml-2">Characters</h2>
 					<div className="ml-5 pl-5">
-						<OwlCarousel className="owl-theme" loop dotsContainer="false" items={3}>
+						<OwlCarousel className="owl-theme" dotsContainer="false" items={4}>
 							{data.map((ele, ind) => (
 								<div className="row item justify-content-around" key={ele + ind}>
 									<div className="card store-card">
@@ -74,13 +80,20 @@ function Store() {
 												<div className="col-6 d-flex justify-content-start">
 													<button
 														className="btn btn-info p-1 store-btn"
-														onClick={() => purchaseProduct(ele.productId, user.email, ele.price)}
+														onClick={() =>
+															purchaseProduct(ele.productId, user.email, ele.price)
+														}
 													>
 														Buy
 													</button>
 												</div>
 												<div className="col-6 d-flex justify-content-end">
-													<button className="btn btn-primary p-1 store-btn">License</button>
+													<button
+														className="btn btn-primary p-1 store-btn"
+														disabled={!ele.license && !(ele.licenseFeeUsd) &&!(ele.licenseFeeUsd > 0)}
+													>
+														License
+													</button>
 												</div>
 											</div>
 										</div>

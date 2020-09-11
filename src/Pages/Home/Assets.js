@@ -41,7 +41,6 @@ function Assets() {
 		getUserDetails();
 	}, [assets]);
 
-	
 	// Table Data Styling & Sorting
 	const customStyles = {
 		cells: {
@@ -174,7 +173,11 @@ function Assets() {
 					),
 				};
 			});
-			setAssets(assetData);
+			if (assetData.length > 0) {
+				setAssets(assetData);
+			} else {
+				alert('No Assets in your portfolio');
+			}
 		});
 	};
 
