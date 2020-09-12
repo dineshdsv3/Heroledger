@@ -50,8 +50,18 @@ function Store() {
 		}
 	};
 
-	const purchaseProduct = (productId, buyerEmail, price) => {
+	const purchaseProduct = async (productId, buyerEmail, price) => {
 		console.log(productId, buyerEmail, price);
+		await contract.methods
+			.purchaseProduct(productId, buyerEmail)
+			.send({ from: account, value: price })
+			.once('receipt', (receipt) => {
+				console.log(receipt);
+			});
+	};
+
+	const purchaseLicense = async (productId, licensee, licensePrice) => {
+		console.log(productId, licensee, licensePrice);
 	};
 
 	return (
@@ -83,6 +93,7 @@ function Store() {
 														onClick={() =>
 															purchaseProduct(ele.productId, user.email, ele.price)
 														}
+														disabled={user.email == ele.ownerEmail}
 													>
 														Buy
 													</button>
@@ -90,7 +101,16 @@ function Store() {
 												<div className="col-6 d-flex justify-content-end">
 													<button
 														className="btn btn-primary p-1 store-btn"
-														disabled={!ele.license && !(ele.licenseFeeUsd) &&!(ele.licenseFeeUsd > 0)}
+														onClick={() =>
+															purchaseLicense(ele.productId, user.email, ele.licenseFee)
+														}
+														disabled={
+															!(
+																ele.license &&
+																ele.licenseFeeUsd > 0 &&
+																!(user.email == ele.ownerEmail)
+															)
+														}
 													>
 														License
 													</button>

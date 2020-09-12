@@ -157,7 +157,8 @@ function Licensing() {
 		console.log(licenseDetails);
 		setLicenseLoader(true);
 		const feeUsd = licenseDetails.fee;
-		const feeEth = window.web3.utils.toWei(feeUsd.toString(), 'Ether');
+		let ethValue = feeUsd * 0.0026;
+		const feeEth = window.web3.utils.toWei(ethValue.toString(), 'Ether');
 		let term2 = term2Details.exclusive ? 'exclusive' : 'nonExclusive';
 		await contract.methods
 			.addLicense(

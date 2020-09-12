@@ -125,11 +125,6 @@ contract heroledger {
             "Invalid Product ID"
         );
 
-        require(
-            _product.inStore == true,
-            "This Product is not available for sale"
-        );
-
         require(msg.value >= _product.price, "Check the price of the product");
 
         address payable _sellerAdd = _product.owner;
@@ -151,7 +146,6 @@ contract heroledger {
         product memory _product = products[_productId];
 
         require(msg.value >= _licenseProduct.licenseFee, "Check with license fee of the product");
-        require(_product.license == true,"Product not available for license");
 
         require(_licenseProduct.term1EndDate <= block.timestamp, "License Term Expired");
 
