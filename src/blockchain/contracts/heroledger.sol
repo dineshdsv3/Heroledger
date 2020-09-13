@@ -62,14 +62,20 @@ contract heroledger {
         uint256 productId,
         string ownerEmail,
         uint256 timestamp,
-        bool inStore
+        bool inStore,
+        address payable ownerAddress
     );
 
     event licensePurchased(
         uint256 productId,
         string licensorMail,
         string licenseeMail,
-        uint256 timestamp
+        uint256 timestamp,
+        bool license,
+        uint256 startDate,
+        uint256 endDate,
+        string term2,
+        address payable ownerAddress
     );
     event productEdited(
         uint256 productId,
@@ -125,8 +131,6 @@ contract heroledger {
             "Invalid Product ID"
         );
 
-        require(msg.value >= _product.price, "Check the price of the product");
-
         address payable _sellerAdd = _product.owner;
 
         address(_sellerAdd).transfer(msg.value);
@@ -137,18 +141,13 @@ contract heroledger {
 
         products[_productId] = _product;
 
-        emit productPurchased(_productId, _buyerEmail, block.timestamp, false);
+        emit productPurchased(_productId, _product.ownerEmail, block.timestamp, _product.inStore,_product.owner);
     }
 
     function purchaseLicense(uint256 _productId,string memory _licensee) public payable {
         licensedProduct memory _licenseProduct = licensedProducts[_productId];
 
         product memory _product = products[_productId];
-
-        require(msg.value >= _licenseProduct.licenseFee, "Check with license fee of the product");
-
-        require(_licenseProduct.term1EndDate <= block.timestamp, "License Term Expired");
-
 
         address payable _licensorAdd = _licenseProduct.ownerAddress;
 
@@ -166,7 +165,8 @@ contract heroledger {
 
         licensedProducts[_productId] = _licenseProduct;
         
-        emit licensePurchased(_productId,_licenseProduct.licensor, _licenseProduct.licensee, block.timestamp);
+        emit licensePurchased(_productId,_licenseProduct.licensor, _licenseProduct.licensee, block.timestamp, _product.license,
+        _licenseProduct.term1StartDate,_licenseProduct.term1EndDate, _licenseProduct.term2,_licenseProduct.ownerAddress );
     }
 
     function editProduct(

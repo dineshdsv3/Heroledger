@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Heroledger from '../../blockchain/abis/heroledger.json';
+import moment from 'moment';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
@@ -56,12 +57,63 @@ function Store() {
 			.purchaseProduct(productId, buyerEmail)
 			.send({ from: account, value: price })
 			.once('receipt', (receipt) => {
-				console.log(receipt);
+				const BCData = receipt.events.productPurchased;
+				const returnData = receipt.events.productPurchased.returnValues;
+				const updatedProduct = {
+					productId: returnData.productId,
+					ownerAddress: returnData.ownerAddress,
+					ownerEmail: returnData.ownerEmail,
+					inStore: returnData.inStore,
+					timestamp: returnData.timestamp,
+					transactionHash: BCData.transactionHash, 
+				}
+				console.log("Product Purchase completed")
+				axios.put('/purchaseProduct', {updatedProduct}).then(res => {
+					console.log(res);
+					alert("Purchase Succesfful, Product added to your account");
+					window.location.reload();
+				}).catch((error) => {
+					alert("Purchase not successful, Please try again")
+				})
 			});
 	};
 
-	const purchaseLicense = async (productId, licensee, licensePrice) => {
-		console.log(productId, licensee, licensePrice);
+	const purchaseLicense = async (productId, licensee, licenseFee, endDate) => {
+		var d = new Date();
+		var date = d.getDate();
+		console.log(date);
+		var currentTime = moment(d).format('X');
+
+		if (currentTime <= endDate) {
+			console.log(productId, licensee, licenseFee, currentTime);
+			await contract.methods
+				.purchaseLicense(productId, licensee)
+				.send({ from: account, value: licenseFee })
+				.once('receipt', (receipt) => {
+					// console.log(receipt);
+					const BCData = receipt.events.licensePurchased;
+					const returnData = receipt.events.licensePurchased.returnValues;
+					const updatedLicense = {
+						productId: returnData.productId,
+						endDate: returnData.endDate,
+						startDate: returnData.startDate,
+						license: returnData.license,
+						licenseeMail: returnData.licenseeMail,
+						licensorMail: returnData.licensorMail,
+						term2: returnData.term2,
+						transactionHash: BCData.transactionHash,
+						timestamp: returnData.timestamp,
+						ownerAddress: returnData.ownerAddress
+					};
+					console.log("License Update purchased")
+					console.log(updatedLicense);
+					axios.put('/purchaseLicense', {updatedLicense}).then((res) => {
+						console.log(res);
+					})
+				});
+		} else {
+			alert('license expired for the selected product');
+		}
 	};
 
 	return (
@@ -102,7 +154,12 @@ function Store() {
 													<button
 														className="btn btn-primary p-1 store-btn"
 														onClick={() =>
-															purchaseLicense(ele.productId, user.email, ele.licenseFee)
+															purchaseLicense(
+																ele.productId,
+																user.email,
+																ele.licenseFee,
+																ele.term1EndDate
+															)
 														}
 														disabled={
 															!(

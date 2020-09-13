@@ -145,6 +145,16 @@ router.get('/getUserAssets', async (req, res) => {
 	});
 });
 
+router.get('/getUserLicenseAssets', async (req, res) => {
+	Product.find({ licensor: req.query.email }, (err, data) => {
+		if (err) {
+			res.send({ message: 'Error', err });
+		} else {
+			res.send({ message: 'Data gathered', data });
+		}
+	});
+});
+
 router.get('/getSingleProduct', async (req, res) => {
 	Product.find({ productId: req.query.productId }, (err, data) => {
 		if (err) {
@@ -192,6 +202,9 @@ router.put('/addLicense', async (req, res) => {
 			term1StartDate: req.body.license.term1StartDate,
 			term1EndDate: req.body.license.term1EndDate,
 			term2: req.body.license.term2,
+			licensor: req.body.license.licensor,
+			licensee: req.body.license.licensee,
+			licenseOwnerAddress: req.body.license.licenseOwnerAddress,
 		},
 		{ new: true },
 		(err, resu) => {
@@ -199,7 +212,6 @@ router.put('/addLicense', async (req, res) => {
 				res.send({ message: 'Error', err });
 				console.log(error);
 			} else {
-				// console.log("MobileVerification update succeded")
 				res.send({ message: 'License Added' });
 			}
 		}
@@ -214,6 +226,56 @@ router.get('/getAllAssets', async (req, res) => {
 			res.send({ message: 'Data Fetched', data });
 		}
 	}).limit(5);
+});
+
+router.put('/purchaseProduct', async (req, res) => {
+	console.log('Purchase Product triggered');
+	console.log(req.body.updatedProduct);
+	Product.findOneAndUpdate(
+		{ productId: req.body.updatedProduct.productId },
+		{
+			ownerAddress: req.body.updatedProduct.ownerAddress,
+			ownerEmail: req.body.updatedProduct.ownerEmail,
+			InStore: req.body.updatedProduct.inStore,
+		},
+		{ new: true },
+		(err, resu) => {
+			if (err) {
+				res.send({ message: 'Error', err });
+				console.log(error);
+			} else {
+				console.log('Product purchase  api completed');
+				res.send({ message: 'Product price updated' });
+			}
+		}
+	);
+});
+
+router.put('/purchaseLicense', async (req, res) => {
+	console.log('Purchase License Triggered');
+	console.log(req.body.updatedLicense);
+	Product.findOneAndUpdate(
+		{ productId: req.body.updatedLicense.productId },
+		{
+			licensor: req.body.updatedLicense.licensorMail,
+			licensee: req.body.updatedLicense.licenseeMail,
+			term1StartDate: req.body.updatedLicense.startDate,
+			term1EndDate: req.body.updatedLicense.endDate,
+			license: req.body.updatedLicense.license,
+			term2: req.body.updatedLicense.term2,
+			licenseOwnerAddress: req.body.updatedLicense.ownerAddress,
+		},
+		{ new: true },
+		(err, resu) => {
+			if (err) {
+				res.send({ message: 'Error', err });
+				console.log(error);
+			} else {
+				console.log('Product license  api completed');
+				res.send({ message: 'Product License updated' });
+			}
+		}
+	);
 });
 
 module.exports = router;

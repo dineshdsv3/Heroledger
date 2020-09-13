@@ -49,7 +49,7 @@ function Licensing() {
 		let email = user.email;
 		console.log(email);
 
-		axios.get('/getUserAssets', { params: { email } }).then((res) => {
+		axios.get('/getUserLicenseAssets', { params: { email } }).then((res) => {
 			const assetData = res.data.data
 				.filter((ele) => ele.license == true)
 				.map((ele) => {
@@ -164,7 +164,7 @@ function Licensing() {
 			.addLicense(
 				selectedLicensedAsset.productId,
 				selectedLicensedAsset.productName,
-				user.name,
+				user.email,
 				feeEth,
 				moment(licenseDetails.term1StartDate).format('X'),
 				moment(licenseDetails.term1EndDate).format('X'),
@@ -183,6 +183,9 @@ function Licensing() {
 					term1StartDate: returnData.term1StartDate,
 					term1EndDate: returnData.term1EndDate,
 					term2: returnData.term2,
+					licensor: returnData.licensor,
+					licensee: returnData.licensee,
+					licenseOwnerAddress: returnData.licenseOwnerAddress
 				};
 				console.log(license);
 				axios.put('/addLicense', { license }).then((res) => {

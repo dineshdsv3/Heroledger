@@ -78,6 +78,15 @@ const productSchema = mongoose.Schema({
 	license: {
 		type: Boolean,
 	},
+	licensor: {
+		type: String
+	},
+	licensee: {
+		type: String
+	},
+	licenseOwnerAddress: {
+		type: String
+	},
 	licenseDescription: {
 		type: String,
 	},
