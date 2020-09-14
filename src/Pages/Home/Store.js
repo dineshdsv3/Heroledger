@@ -11,10 +11,9 @@ function Store() {
 	const [account, setAccount] = useState('');
 	const [user, setUser] = useState({});
 	const [data, setData] = useState([]);
-	console.log(data);
 	const [loader, setLoader] = useState(false);
-
-	console.log(contract);
+	const [selectedProduct, setSelectedProduct] = useState({});
+	console.log(selectedProduct);
 
 	useEffect(() => {
 		loadContract();
@@ -65,16 +64,19 @@ function Store() {
 					ownerEmail: returnData.ownerEmail,
 					inStore: returnData.inStore,
 					timestamp: returnData.timestamp,
-					transactionHash: BCData.transactionHash, 
-				}
-				console.log("Product Purchase completed")
-				axios.put('/purchaseProduct', {updatedProduct}).then(res => {
-					console.log(res);
-					alert("Purchase Succesfful, Product added to your account");
-					window.location.reload();
-				}).catch((error) => {
-					alert("Purchase not successful, Please try again")
-				})
+					transactionHash: BCData.transactionHash,
+				};
+				console.log('Product Purchase completed');
+				axios
+					.put('/purchaseProduct', { updatedProduct })
+					.then((res) => {
+						console.log(res);
+						alert('Purchase Succesfful, Product added to your account');
+						window.location.reload();
+					})
+					.catch((error) => {
+						alert('Purchase not successful, Please try again');
+					});
 			});
 	};
 
@@ -103,13 +105,20 @@ function Store() {
 						term2: returnData.term2,
 						transactionHash: BCData.transactionHash,
 						timestamp: returnData.timestamp,
-						ownerAddress: returnData.ownerAddress
+						ownerAddress: returnData.ownerAddress,
 					};
-					console.log("License Update purchased")
+					console.log('License Update purchased');
 					console.log(updatedLicense);
-					axios.put('/purchaseLicense', {updatedLicense}).then((res) => {
-						console.log(res);
-					})
+					axios
+						.put('/purchaseLicense', { updatedLicense })
+						.then((res) => {
+							console.log(res);
+							alert('License successful, Product license added to your account');
+							window.location.reload();
+						})
+						.catch((error) => {
+							alert('Purchase not successful, Please try again');
+						});
 				});
 		} else {
 			alert('license expired for the selected product');
@@ -131,17 +140,32 @@ function Store() {
 										<img
 											src={ele.image}
 											className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-											onClick={() => (window.location.pathname = `/Product?id=${ele.productId}`)}
+											onClick={() => (window.location.href = `/Product?id=${ele.productId}`)}
 										/>
-										<div className="card-body">
-											<div className="card-title store-card-title text-capitalize font-weight-bold text-white font-italic">
-												{ele.productName}
+										<div className="card-body store-card-body">
+											<div className="row">
+												<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic">
+													{ele.productName}
+												</div>
+												<div className="col-7 px-1 m-0 d-flex justify-content-start">
+													<p>
+														<small>
+															<b>Price:</b>$ {ele.priceinUsd}
+														</small>
+													</p>
+												</div>
+												<div className="col-5 px-1 m-0 d-flex justify-content-start">
+													<small>
+														<b>Fee:</b>{' '}
+														{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
+													</small>
+												</div>
 											</div>
 
-											<div className="row mt-1">
+											<div className="row">
 												<div className="col-6 d-flex justify-content-start">
 													<button
-														className="btn btn-info p-1 store-btn"
+														className="btn btn-info store-btn"
 														onClick={() =>
 															purchaseProduct(ele.productId, user.email, ele.price)
 														}
@@ -153,14 +177,9 @@ function Store() {
 												<div className="col-6 d-flex justify-content-end">
 													<button
 														className="btn btn-primary p-1 store-btn"
-														onClick={() =>
-															purchaseLicense(
-																ele.productId,
-																user.email,
-																ele.licenseFee,
-																ele.term1EndDate
-															)
-														}
+														data-toggle="modal"
+														data-target="#licensing-terms"
+														onClick={() => setSelectedProduct(ele)}
 														disabled={
 															!(
 																ele.license &&
@@ -189,14 +208,14 @@ function Store() {
 										<img
 											src={ele.image}
 											className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-											onClick={() => (window.location.pathname = `/Product?id=${ele.productId}`)}
+											onClick={() => (window.location.href = `/Product?id=${ele.productId}`)}
 										/>
 										<div className="card-body">
 											<div className="card-title store-card-title text-capitalize">
 												{ele.productName}
 											</div>
 
-											<div className="row mt-1">
+											<div className="row mt-0">
 												<div className="col-6 d-flex justify-content-start">
 													<button className="btn btn-info p-1 store-btn">Buy</button>
 												</div>
@@ -243,6 +262,105 @@ function Store() {
 					</div>
 				</div>
 			)}
+			{/* Modal-licensing terms */}
+			<div className="modal licensing-modal" id="licensing-terms">
+				<div className="modal-dialog modal-lg" role="document">
+					<div className="modal-content">
+						<div className="modal-header">
+							<h5 className="modal-title ">LICENSING AGREEMENT</h5>
+							<button type="button" className="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div className="modal-body">
+							<p>
+								<b>
+									<i>Asset Name:</i>
+								</b>{' '}
+								{selectedProduct.productName}
+							</p>
+							<p>
+								<b>
+									<i>Hash: </i>
+								</b>
+								{selectedProduct.transactionHash}
+							</p>
+							<p>
+								This Artist Licensing Agreement (the “AGREEMENT”) is entered into effective this date,
+								(date added here) between LICENSOR NAME (“ARTIST”) and LICENSEE (“CLIENT”).
+							</p>
+							<p>
+								<b>Scope of this Agreement.</b> This Agreement applies to any image, graphics, digital
+								assets, or digital images created or taken by Artist and delivered to the Client
+								(collectively known as “IMAGES”). This Agreement governs the relationship between the
+								parties and in no communication or other exchange, shall modify the terms of this
+								Agreement unless agreed to in writing.
+							</p>
+							<p>
+								<b>Rights:</b> All Images and rights relating to them, including copyright and ownership
+								rights in the media in which the Images are stored, remain the sole and exclusive
+								property of the Artist. This license provides the Client with the limited right to
+								reproduce, publicly display, and distribute the Images only for the agreed upon terms as
+								set forth in the Client Invoice and signed by both parties. Images used for any purpose
+								not directly related outside of those terms must be with the express permission of
+								Artist and may include the payment of additional fees, unless otherwise agreed to in
+								writing. Images may contain copyright management information (CMI) at the discretion of
+								the Artist in the form of either 1) a copyright notice © and/or 2) other copyright and
+								ownership information embedded in the metadata or elsewhere unless otherwise agreed to
+								by the Parties. Removing and/or altering such information is prohibited and constitutes
+								a violation of the Digital Millennium Copyright Act (DMCA) and Client will be
+								responsible to the Artist for any penalties and awards available under that statute.
+							</p>{' '}
+							<p>
+								{' '}
+								<b>Relationship of the Parties:</b> The parties agree that Artist is an independent
+								contractor and that neither Artist nor Artist’s employees or contract personnel are, or
+								shall be deemed to be, employees of Client. No agency, partnership, joint venture, or
+								employee-employer relationship is intended or created by this Agreement. Neither party
+								is authorized to act as agent or bind the other party except as expressly stated in this
+								Agreement. Artist and the Images or any other deliverables prepared by Artist shall not
+								be deemed a work for hire as defined under Copyright Law. All rights granted to Client
+								are contractual in nature and are expressly defined by this Agreement.
+							</p>
+							<p>
+								<b>Creation:</b> The manner and method of creating any Image is solely at the discretion
+								of Artist and the Client has no right to control Artist’s manner and method of
+								performance under this Agreement. Artist will use his/her best efforts to: (a) ensure
+								that the Images conform to Client’s specifications; and (b) submit all Images to Client
+								in publishable quality, on or before the applicable deadlines.
+							</p>
+							<p>
+								<b>Delivery:</b> Artist may select delivery of designs in PDF, JPEG, PNG, or other
+								standard formats at a resolution that Artist determines will be suitable for the Images
+								as licensed. It is the Client’s responsibility to verify that the Images are suitable
+								for reproduction and that if the Images are not deemed suitable, to notify the Artist
+								within five (5) business days. Artist’s sole obligation will be to replace the Images at
+								a suitable resolution but in no event will Artist be liable for poor reproduction
+								quality, delays, or consequential damages.
+							</p>
+						</div>
+						<div className="modal-footer">
+							<button
+								type="button"
+								className="btn btn-success"
+								onClick={() =>
+									purchaseLicense(
+										selectedProduct.productId,
+										user.email,
+										selectedProduct.licenseFee,
+										selectedProduct.term1EndDate
+									)
+								}
+							>
+								Accept and Purchase
+							</button>
+							<button type="button" className="btn btn-danger" data-dismiss="modal">
+								Close
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }

@@ -1,21 +1,22 @@
 .store-card {
-    width: 200px;
-    height: 45vh;
+    width: 220px;
+    height: 60vh;
     margin-bottom: 20px;
     &:hover {
         transform: scale(1.01);
-        background: linear-gradient(125deg, orange 60%, cyan);
+        // background: linear-gradient(125deg, orange 60%, cyan);
     }
     margin-top: 20px;
-    background: linear-gradient(125deg, rgb(99, 93, 81) 50%, rgb(148, 177, 177))
+    // background: linear-gradient(125deg, rgb(99, 93, 81) 50%, rgb(148, 177, 177))
 }
 .store-card-image {
     height: 60%;
     width: 100px;
 }
 .store-page {
-    background: linear-gradient(to left, rgba(75, 69, 48, 0.6), rgba(46, 45, 40, 0.9)),
-    url("../../Assets/Images/store-bg1.jpg");
+    // background: linear-gradient(to left, rgba(75, 69, 48, 0.6), rgba(46, 45, 40, 0.9)),
+    // url("../../Assets/Images/store-bg1.jpg");
+    background: black;
     min-height: 100vh;
     background-size: cover;
     background-position: center;
@@ -30,4 +31,9 @@
 .store-btn {
     width: 110%;
     height: 100%;
+    font-size: 14px;
+    margin: 0px;
+}
+.store-card-body {
+    font-size: 14px;
 }

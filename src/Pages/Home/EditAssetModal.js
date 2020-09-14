@@ -73,6 +73,7 @@ function EditAsset(props) {
 					usdPrice: editDetails.priceinUSD,
 					description: editDetails.briefDescription,
 					fullDescription: editDetails.fullDescription,
+					licensor: data.originatorEmail
 				};
 				axios
 					.put('/updateProduct', { updatedProduct })

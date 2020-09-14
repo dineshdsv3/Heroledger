@@ -136,6 +136,17 @@ router.post('/addProduct', async (req, res) => {
 
 router.get('/getUserAssets', async (req, res) => {
 	// console.log(req.query.email)
+	Product.find({ originatorEmail: req.query.email }, (err, data) => {
+		if (err) {
+			res.send({ message: 'Error', err });
+		} else {
+			res.send({ message: 'Data gathered', data });
+		}
+	});
+});
+
+router.get('/getPurchasedUserAssets', async (req, res) => {
+	// console.log(req.query.email)
 	Product.find({ ownerEmail: req.query.email }, (err, data) => {
 		if (err) {
 			res.send({ message: 'Error', err });
@@ -145,8 +156,18 @@ router.get('/getUserAssets', async (req, res) => {
 	});
 });
 
-router.get('/getUserLicenseAssets', async (req, res) => {
+router.get('/getUserLicensorAssets', async (req, res) => {
 	Product.find({ licensor: req.query.email }, (err, data) => {
+		if (err) {
+			res.send({ message: 'Error', err });
+		} else {
+			res.send({ message: 'Data gathered', data });
+		}
+	});
+});
+
+router.get('/getUserlicenseeAssets', async (req, res) => {
+	Product.find({ licensee: req.query.email }, (err, data) => {
 		if (err) {
 			res.send({ message: 'Error', err });
 		} else {
@@ -176,6 +197,7 @@ router.put('/updateProduct', async (req, res) => {
 			InStore: req.body.updatedProduct.inStore,
 			description: req.body.updatedProduct.description,
 			fullDescription: req.body.updatedProduct.fullDescription,
+			licensor: req.body.updatedProduct.licensor
 		},
 		{ new: true },
 		(err, resu) => {

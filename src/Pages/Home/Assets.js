@@ -20,6 +20,9 @@ function Assets() {
 	const [contract, setContract] = useState({});
 	const [submitLoader, setSubmitLoader] = useState(false);
 	const [assets, setAssets] = useState([]);
+	const [assetLoader, setAssetLoader] = useState(true);
+	const [purchaseAssets, setPurchaseAssets] = useState([]);
+	const [purchaseAssetLoader, setPurchaseAssetLoader] = useState(true);
 	const [editAssetData, setEditAssetData] = useState([]);
 	const [account, setAccount] = useState('');
 	const [toggleEditAsset, setToggleEditAsset] = useState(false);
@@ -69,13 +72,19 @@ function Assets() {
 		{
 			name: 'Asset Name',
 			selector: 'name',
-			width: '13%',
+			width: '12%',
 		},
 		{
 			name: 'Hash',
 			selector: 'hash',
 			center: true,
-			width: '22%',
+			width: '10%',
+		},
+		{
+			name: 'Owner',
+			selector: 'owner',
+			width: '10%',
+			sortable: true,
 		},
 		{
 			name: 'Uploaded On',
@@ -83,7 +92,7 @@ function Assets() {
 			sortable: true,
 			center: true,
 			wrap: true,
-			width: '11.5%',
+			width: '11%',
 		},
 		{
 			name: 'Product Type',
@@ -146,38 +155,73 @@ function Assets() {
 		let email = user.email;
 
 		axios.get('/getUserAssets', { params: { email } }).then((res) => {
-			const assetData = res.data.data.map((ele) => {
-				return {
-					image: getImage(ele.productType, ele.image),
-					name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
-					hash: (
-						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
-							{ele.transactionHash}
-						</a>
-					),
-					timestamp: getDate(ele.timestamp),
-					productType: ele.productType,
-					price: `$ ${ele.priceinUsd}`,
-					inStore: ele.InStore ? <span className="dot active"></span> : <span className="dot"></span>,
-					licensing: ele.license ? <span className="dot active"></span> : <span className="dot"></span>,
-					actions: (
-						<div className="d-flex justify-content-between">
-							<button className="btn border-0" onClick={() => editAsset(ele.productId)}>
-								<i className="fa fa-pencil text-info" aria-hidden="true"></i>
-							</button>
-							&nbsp;
-							<button className="btn border-0" onClick={() => deleteAsset(ele.productId)}>
-								<i className="fa fa-times text-danger" aria-hidden="true"></i>
-							</button>
-						</div>
-					),
-				};
-			});
-			if (assetData.length > 0) {
-				setAssets(assetData);
-			} else {
-				alert('No Assets in your portfolio');
-			}
+			const assetData = res.data.data
+				.map((ele) => {
+					return {
+						image: getImage(ele.productType, ele.image),
+						name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
+						hash: (
+							<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
+								{ele.transactionHash}
+							</a>
+						),
+						owner: (ele.ownerEmail),
+						timestamp: getDate(ele.timestamp),
+						productType: ele.productType,
+						price: `$ ${ele.priceinUsd}`,
+						inStore: ele.InStore ? <span className="dot active"></span> : <span className="dot"></span>,
+						licensing: ele.license ? <span className="dot active"></span> : <span className="dot"></span>,
+						actions: (
+							<div className="d-flex justify-content-between">
+								<button className="btn border-0" onClick={() => editAsset(ele.productId)}>
+									<i className="fa fa-pencil text-info" aria-hidden="true"></i>
+								</button>
+								&nbsp;
+								<button className="btn border-0" onClick={() => deleteAsset(ele.productId)}>
+									<i className="fa fa-times text-danger" aria-hidden="true"></i>
+								</button>
+							</div>
+						),
+					};
+				});
+			setAssets(assetData);
+			setAssetLoader(false);
+		});
+		axios.get('/getPurchasedUserAssets', { params: { email } }).then((res) => {
+			const purchaseAssetData = res.data.data
+				.filter((ele) => ele.originatorEmail !== ele.ownerEmail)
+				.map((ele) => {
+					return {
+						image: getImage(ele.productType, ele.image),
+						name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
+						hash: (
+							<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
+								{ele.transactionHash}
+							</a>
+						),
+						owner: (ele.ownerEmail),
+						timestamp: getDate(ele.timestamp),
+						productType: ele.productType,
+						price: `$ ${ele.priceinUsd}`,
+						inStore: ele.InStore ? <span className="dot active"></span> : <span className="dot"></span>,
+						licensing: ele.license ? <span className="dot active"></span> : <span className="dot"></span>,
+						actions: (
+							<div className="d-flex justify-content-between">
+								{/* onClick={() => editAsset(ele.productId)} */}
+								<button className="btn border-0" disabled>
+									<i className="fa fa-pencil text-info" aria-hidden="true"></i>
+								</button>
+								&nbsp;
+								<button className="btn border-0"  disabled onClick={() => deleteAsset(ele.productId)}>
+									<i className="fa fa-times text-danger" aria-hidden="true"></i>
+								</button>
+							</div>
+						),
+					};
+				});
+
+			setPurchaseAssets(purchaseAssetData);
+			setPurchaseAssetLoader(false);
 		});
 	};
 
@@ -379,21 +423,53 @@ function Assets() {
 								New Asset
 							</button>
 							<div className="col-12">
-								<DataTable
-									noHeader
-									columns={columns}
-									data={assets}
-									customStyles={customStyles}
-									// theme="solarized"
-									pagination={true}
-									responsive={true}
-									paginationPerPage={10}
-									noDataComponent={
-										<div className="spinner-border text-success" role="status">
-											<span className="sr-only">Loading...</span>
-										</div>
-									}
-								/>
+								<h5 className="text-primary">Registered Assets</h5>
+								{assetLoader ? (
+									<div className="spinner-border text-info" role="status">
+										<span className="sr-only">Loading...</span>
+									</div>
+								) : assets.length > 0 ? (
+									<DataTable
+										noHeader
+										columns={columns}
+										data={assets}
+										customStyles={customStyles}
+										pagination={true}
+										responsive={true}
+										paginationPerPage={5}
+										noDataComponent={
+											<div className="spinner-border text-success" role="status">
+												<span className="sr-only">Loading...</span>
+											</div>
+										}
+									/>
+								) : (
+									<h5 className="text-center text-warning">No Registered assets found!!!</h5>
+								)}
+
+								<h5 className="text-primary mt-1">Purchased Assets</h5>
+								{purchaseAssetLoader ? (
+									<div className="spinner-border text-info" role="status">
+										<span className="sr-only">Loading...</span>
+									</div>
+								) : purchaseAssets.length > 0 ? (
+									<DataTable
+										noHeader
+										columns={columns}
+										data={purchaseAssets}
+										customStyles={customStyles}
+										pagination={true}
+										responsive={true}
+										paginationPerPage={5}
+										noDataComponent={
+											<div className="spinner-border text-success" role="status">
+												<span className="sr-only">Loading...</span>
+											</div>
+										}
+									/>
+								) : (
+									<h5 className="text-center text-warning">No Purchased assets found!!!</h5>
+								)}
 							</div>
 						</div>
 					</div>
@@ -403,7 +479,7 @@ function Assets() {
 			{/* Asset Registration Modal */}
 			<div className="modal fade" id="register-asset">
 				<div className="modal-dialog">
-					<div className="modal-content asset-modal">
+					<div className="modal-content">
 						<form onSubmit={handleSubmit}>
 							<div className="modal-header">
 								<h4 className="modal-title">Register your Comic Asset</h4>

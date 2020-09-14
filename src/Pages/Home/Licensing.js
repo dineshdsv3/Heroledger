@@ -7,8 +7,10 @@ import moment from 'moment';
 function Licensing() {
 	const [user, setUser] = useState({});
 	const [contract, setContract] = useState({});
-	const [submitLoader, setSubmitLoader] = useState(false);
 	const [assets, setAssets] = useState([]);
+	const [licenseeAssets, setLicensorAssets] = useState([]);
+	const [licensorLoader, setlicensorLoader] = useState(true);
+	const [licenseeLoader, setlicenseeLoader] = useState(true);
 	const [account, setAccount] = useState('');
 	const [licenseLoader, setLicenseLoader] = useState(false);
 	const [selectedLicensedAsset, setselectedLicensedAsset] = useState([]);
@@ -49,7 +51,7 @@ function Licensing() {
 		let email = user.email;
 		console.log(email);
 
-		axios.get('/getUserLicenseAssets', { params: { email } }).then((res) => {
+		axios.get('/getUserLicensorAssets', { params: { email } }).then((res) => {
 			const assetData = res.data.data
 				.filter((ele) => ele.license == true)
 				.map((ele) => {
@@ -88,7 +90,46 @@ function Licensing() {
 					};
 				});
 			setAssets(assetData);
-			setSubmitLoader(false);
+			setlicensorLoader(false);
+		});
+
+		axios.get('/getUserlicenseeAssets', { params: { email } }).then((res) => {
+			const assetData = res.data.data.map((ele) => {
+				return {
+					image: getImage(ele.productType, ele.image),
+					name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
+					hash: (
+						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
+							{ele.transactionHash}
+						</a>
+					),
+					fee: ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A',
+					royalty: ele.royalty ? `${ele.royalty}%` : 'N/A',
+					term1: ele.term1StartDate
+						? `${getDate(ele.term1StartDate)} to ${getDate(ele.term1EndDate)}`
+						: 'N/A',
+					term2: ele.term2 ? (ele.term2 == 'nonExclusive' ? 'Non-Exclusive' : 'Exclusive') : 'N/A',
+					transfer: <i className="fa fa-exchange" aria-hidden="true"></i>,
+					manage: (
+						<div className="d-flex justify-content-between">
+							<button
+								className="btn border-0 text-info"
+								data-toggle="modal"
+								data-target="#add-license"
+								onClick={() => addLicenseProduct(ele.productId)}
+							>
+								<i className="fa fa-pencil" aria-hidden="true"></i>
+							</button>
+							&nbsp;
+							<button className="btn border-0 text-danger">
+								<i className="fa fa-times" aria-hidden="true"></i>
+							</button>
+						</div>
+					),
+				};
+			});
+			setLicensorAssets(assetData);
+			setlicenseeLoader(false);
 		});
 	};
 
@@ -185,7 +226,7 @@ function Licensing() {
 					term2: returnData.term2,
 					licensor: returnData.licensor,
 					licensee: returnData.licensee,
-					licenseOwnerAddress: returnData.licenseOwnerAddress
+					licenseOwnerAddress: returnData.ownerAddress,
 				};
 				console.log(license);
 				axios.put('/addLicense', { license }).then((res) => {
@@ -284,21 +325,54 @@ function Licensing() {
 				<div className="col-xl-10 col-lg-9 col-md-8 ml-auto">
 					<div className="row pt-5 mt-md-3 mb-5 ml-1">
 						<div className="col-12">
-							<DataTable
-								noHeader
-								columns={columns}
-								data={assets}
-								customStyles={customStyles}
-								// theme="solarized"
-								pagination={true}
-								responsive={true}
-								paginationPerPage={10}
-								noDataComponent={
-									<div className="spinner-border text-success" role="status">
-										<span className="sr-only">Loading...</span>
-									</div>
-								}
-							/>
+							<h6 className="text-primary">Registered Licenses</h6>
+							{licensorLoader ? (
+								<div className="spinner-border text-success" role="status">
+									<span className="sr-only">Loading...</span>
+								</div>
+							) : assets.length > 0 ? (
+								<DataTable
+									noHeader
+									columns={columns}
+									data={assets}
+									customStyles={customStyles}
+									pagination={true}
+									responsive={true}
+									paginationPerPage={5}
+									noDataComponent={
+										<div className="spinner-border text-success" role="status">
+											<span className="sr-only">Loading...</span>
+										</div>
+									}
+								/>
+							) : (
+								<h5 className="text-center text-warning">No Licensor Records Found</h5>
+							)}
+						</div>
+						<div className="col-12">
+							<h6 className="text-primary">Purchased Licenses</h6>
+							{licenseeLoader ? (
+								<div className="spinner-border text-success" role="status">
+									<span className="sr-only">Loading...</span>
+								</div>
+							) : licenseeAssets.length > 0 ? (
+								<DataTable
+									noHeader
+									columns={columns}
+									data={licenseeAssets}
+									customStyles={customStyles}
+									pagination={true}
+									responsive={true}
+									paginationPerPage={5}
+									noDataComponent={
+										<div className="spinner-border text-success" role="status">
+											<span className="sr-only">Loading...</span>
+										</div>
+									}
+								/>
+							) : (
+								<h5 className="text-center text-warning">No Licensee Records Found</h5>
+							)}
 						</div>
 					</div>
 				</div>
