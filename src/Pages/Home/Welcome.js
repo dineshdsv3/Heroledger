@@ -6,6 +6,7 @@ import Dashboard from './Dashboard';
 import Assets from './Assets';
 import Licensing from './Licensing';
 import Store from './Store';
+import Transactions from './Transactions';
 
 // Style is in welcome.scss
 
@@ -32,6 +33,7 @@ function Welcome() {
 		assets: false,
 		licensing: false,
 		store: false,
+		transactions: false,
 	});
 	// console.log(toggle);
 
@@ -70,26 +72,17 @@ function Welcome() {
 										width="100"
 									/>
 								</div>
-								{/* <a
-									href="#"
-									className="navar-brand text-white d-block mx-auto text-center py-3 mb-4 bottom-border"
-								>
-									Heroledger
-								</a> */}
 								<div className="bottom-border py-3">
 									<img
 										className="rounded-circle"
 										src={require('../../Assets/Images/face.png')}
 										width="50"
 									/>{' '}
-									<a href="#" className="text-white">
-										{user.name}
-									</a>
+									<a className="text-white">{user.name}</a>
 								</div>
 								<ul className="navbar-nav flex-column mt-4">
 									<li className="nav-item">
 										<a
-											href="#"
 											className={
 												toggle.dashboard
 													? 'nav-link text-white p-3 mb-2 current'
@@ -101,20 +94,15 @@ function Welcome() {
 													assets: false,
 													licensing: false,
 													store: false,
+													transactions: false,
 												})
 											}
 										>
-											<i className="fas fa-home text-light fa-lg mr-3"></i>Dashboard
-										</a>
-									</li>
-									<li className="nav-item">
-										<a href="#" className="nav-link text-white p-3 mb-2 sidebar-link">
-											<i className="fas fa-user text-light fa-lg mr-3"></i>Profile
+											<i className="fa fa-dashboard text-light fa-lg mr-3"></i>Dashboard
 										</a>
 									</li>
 									<li className="nav-item">
 										<a
-											href="#"
 											className={
 												toggle.assets
 													? 'nav-link text-white p-3 mb-2 current'
@@ -126,6 +114,7 @@ function Welcome() {
 													assets: true,
 													licensing: false,
 													store: false,
+													transactions: false,
 												})
 											}
 										>
@@ -134,7 +123,6 @@ function Welcome() {
 									</li>
 									<li className="nav-item">
 										<a
-											href="#"
 											className={
 												toggle.store
 													? 'nav-link text-white p-3 mb-2 current'
@@ -146,6 +134,7 @@ function Welcome() {
 													assets: false,
 													licensing: false,
 													store: true,
+													transactions: false,
 												})
 											}
 										>
@@ -154,17 +143,41 @@ function Welcome() {
 									</li>
 									<li className="nav-item">
 										<a
-											href="#"
 											className={
 												toggle.licensing
 													? 'nav-link text-white p-3 mb-2 current'
 													: 'nav-link text-white p-3 mb-2 sidebar-link'
 											}
 											onClick={() =>
-												setToggleItems({ dashboard: false, assets: false, licensing: true })
+												setToggleItems({
+													dashboard: false,
+													assets: false,
+													licensing: true,
+													transactions: false,
+												})
 											}
 										>
 											<i className="fas fa-chart-bar text-light fa-lg mr-3"></i>Licensing
+										</a>
+									</li>
+									<li className="nav-item">
+										<a
+											className={
+												toggle.transactions
+													? 'nav-link text-white p-3 mb-2 current'
+													: 'nav-link text-white p-3 mb-2 sidebar-link'
+											}
+											onClick={() =>
+												setToggleItems({
+													dashboard: false,
+													assets: false,
+													licensing: false,
+													store: false,
+													transactions: true,
+												})
+											}
+										>
+											<i className="fas fa fa-files-o text-light fa-lg mr-3"></i>Transactions
 										</a>
 									</li>
 								</ul>
@@ -194,18 +207,17 @@ function Welcome() {
 									<div className="col-md-3">
 										<ul className="navbar-nav">
 											<li className="nav-item icon-parent">
-												<a href="#" className="nav-link icon-bullet">
+												<a className="nav-link icon-bullet">
 													<i className="fas fa-comments text-muted fa-lg"></i>
 												</a>
 											</li>
 											<li className="nav-item icon-parent">
-												<a href="#" className="nav-link icon-bullet">
+												<a className="nav-link icon-bullet">
 													<i className="fas fa-bell text-muted fa-lg"></i>
 												</a>
 											</li>
 											<li className="nav-item icon-parent ml-md-auto">
 												<a
-													href="#"
 													className="nav-link icon-bullet"
 													data-toggle="modal"
 													data-target="#sign-out"
@@ -262,6 +274,8 @@ function Welcome() {
 				<Licensing />
 			) : toggle.store ? (
 				<Store />
+			) : toggle.transactions ? (
+				<Transactions />
 			) : (
 				<div>Nothing selected, Please contact your Admin</div>
 			)}

@@ -1,10 +1,10 @@
 const express = require('express');
 const User = require('../models/User');
-const Image = require('../models/Image');
 const Audio = require('../models/Audio');
 const Video = require('../models/Video');
 const Document = require('../models/Document');
 const Product = require('../models/Product');
+const Transaction = require('../models/Transactions');
 
 const router = express.Router();
 
@@ -240,14 +240,76 @@ router.put('/addLicense', async (req, res) => {
 	);
 });
 
-router.get('/getAllAssets', async (req, res) => {
-	Product.find({}, (err, data) => {
+router.get('/getScriptAssets', async (req, res) => {
+	Product.find({productType: "script", InStore: true}, (err, data) => {
 		if (err) {
 			res.status(404).send({ message: 'Error Not found Details', err });
 		} else {
 			res.send({ message: 'Data Fetched', data });
 		}
-	}).limit(5);
+	}).limit(4);
+});
+
+router.get('/getLogoAssets', async (req, res) => {
+	Product.find({productType: "logo", InStore: true}, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	}).limit(4);
+});
+
+router.get('/getBackgroundAssets', async (req, res) => {
+	Product.find({productType: "background", InStore: true}, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	}).limit(4);
+});
+
+router.get('/getAudioAssets', async (req, res) => {
+	Product.find({productType: "audio", InStore: true}, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	}).limit(4);
+});
+
+router.get('/getVideoAssets', async (req, res) => {
+	Product.find({productType: "video", InStore: true}, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	}).limit(4);
+});
+
+router.get('/getPropsAssets', async (req, res) => {
+	Product.find({productType: "props",  InStore: true}, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	}).limit(4);
+});
+
+
+
+router.get('/getCharacterAssets', async (req, res) => {
+	Product.find({productType: "character", InStore: true}, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	}).limit(4);
 });
 
 router.put('/purchaseProduct', async (req, res) => {
@@ -299,5 +361,8 @@ router.put('/purchaseLicense', async (req, res) => {
 		}
 	);
 });
+router.post('/addTransaction', async (req, res) => {
+	console.log(req.body);
+})
 
 module.exports = router;

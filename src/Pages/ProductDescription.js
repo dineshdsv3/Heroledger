@@ -12,6 +12,8 @@ function ProductDescription() {
 	const [account, setAccount] = useState('');
 	const [product, setProduct] = useState([]);
 	const [user, setUser] = useState({});
+	const [check, setCheck] = useState(false);
+	console.log(check);
 
 	useEffect(() => {
 		getProductDetails();
@@ -88,11 +90,14 @@ function ProductDescription() {
 					timestamp: returnData.timestamp,
 					transactionHash: BCData.transactionHash,
 				};
+				const transactionDetails = {
+					productId: returnData.productId,
+				}
 				console.log('Product Purchase completed');
 				axios
 					.put('/purchaseProduct', { updatedProduct })
 					.then((res) => {
-						console.log(res);
+						axios.post('/addTransaction')
 						alert('Purchase Succesfful, Product added to your account');
 						window.location.reload();
 					})
@@ -176,10 +181,7 @@ function ProductDescription() {
 		<div className="container product-container">
 			<Navbar />
 			<div className="row">
-				<div className="col-md-5">
-					{getImage(product.productType, product.image)}
-					<img src={product.image} />
-				</div>
+				<div className="col-md-5">{getImage(product.productType, product.image)}</div>
 				<div className="col-md-7 description-col">
 					<p className="new-product text-center text-capitalize">{product.productType}</p>
 					<h2>{product.productName}</h2>
@@ -243,6 +245,7 @@ function ProductDescription() {
 							</button>
 						</div>
 						<div className="modal-body">
+							<div class="watermark">SAMPLE</div>
 							<p>
 								<b>
 									<i>Asset Name:</i>
@@ -310,9 +313,14 @@ function ProductDescription() {
 							</p>
 						</div>
 						<div className="modal-footer">
+							<div className="mr-auto">
+								<input type="checkbox" value={check} onChange={() => setCheck(!check)} /> {'    '}{' '}
+								&nbsp;I have read and accept the terms and information contained in this license.
+							</div>
 							<button
 								type="button"
 								className="btn btn-success"
+								disabled={!check}
 								onClick={() =>
 									purchaseLicense(
 										product.productId,

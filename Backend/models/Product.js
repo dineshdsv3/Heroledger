@@ -107,7 +107,7 @@ const productSchema = mongoose.Schema({
 	},
 	term2: {
 		type: String,
-	},
+	}
 });
 
 module.exports = mongoose.model('product', productSchema);

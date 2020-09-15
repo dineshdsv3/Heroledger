@@ -7,9 +7,9 @@ import moment from 'moment';
 function Licensing() {
 	const [user, setUser] = useState({});
 	const [contract, setContract] = useState({});
-	const [assets, setAssets] = useState([]);
-	const [licenseeAssets, setLicensorAssets] = useState([]);
+	const [licensorAssets, setLicensorAssets] = useState([]);
 	const [licensorLoader, setlicensorLoader] = useState(true);
+	const [licenseeAssets, setLicenseeAssets] = useState([]);
 	const [licenseeLoader, setlicenseeLoader] = useState(true);
 	const [account, setAccount] = useState('');
 	const [licenseLoader, setLicenseLoader] = useState(false);
@@ -53,7 +53,6 @@ function Licensing() {
 
 		axios.get('/getUserLicensorAssets', { params: { email } }).then((res) => {
 			const assetData = res.data.data
-				.filter((ele) => ele.license == true)
 				.map((ele) => {
 					return {
 						image: getImage(ele.productType, ele.image),
@@ -77,19 +76,20 @@ function Licensing() {
 									className="btn border-0 text-info"
 									data-toggle="modal"
 									data-target="#add-license"
+									disabled={!(ele.licensee == !('N/A' || null || undefined))}
 									onClick={() => addLicenseProduct(ele.productId)}
 								>
 									<i className="fa fa-pencil" aria-hidden="true"></i>
 								</button>
 								&nbsp;
-								<button className="btn border-0 text-danger">
+								<button className="btn border-0 text-danger" disabled>
 									<i className="fa fa-times" aria-hidden="true"></i>
 								</button>
 							</div>
 						),
 					};
 				});
-			setAssets(assetData);
+			setLicensorAssets(assetData);
 			setlicensorLoader(false);
 		});
 
@@ -115,20 +115,19 @@ function Licensing() {
 							<button
 								className="btn border-0 text-info"
 								data-toggle="modal"
-								data-target="#add-license"
-								onClick={() => addLicenseProduct(ele.productId)}
+								data-target="#licensing-terms"
 							>
-								<i className="fa fa-pencil" aria-hidden="true"></i>
+								<i className="fa fa-file" aria-hidden="true"></i>
 							</button>
 							&nbsp;
-							<button className="btn border-0 text-danger">
+							<button className="btn border-0 text-danger" disabled>
 								<i className="fa fa-times" aria-hidden="true"></i>
 							</button>
 						</div>
 					),
 				};
 			});
-			setLicensorAssets(assetData);
+			setLicenseeAssets(assetData);
 			setlicenseeLoader(false);
 		});
 	};
@@ -330,11 +329,11 @@ function Licensing() {
 								<div className="spinner-border text-success" role="status">
 									<span className="sr-only">Loading...</span>
 								</div>
-							) : assets.length > 0 ? (
+							) : licensorAssets.length > 0 ? (
 								<DataTable
 									noHeader
 									columns={columns}
-									data={assets}
+									data={licensorAssets}
 									customStyles={customStyles}
 									pagination={true}
 									responsive={true}
@@ -377,6 +376,7 @@ function Licensing() {
 					</div>
 				</div>
 			</div>
+			{/* License Modal */}
 			<div className="modal fade" id="add-license">
 				<div className="modal-dialog">
 					<div className="modal-content asset-modal">
@@ -521,7 +521,81 @@ function Licensing() {
 					</div>
 				</div>
 			</div>
-			{/* End of Modal */}
+			{/* End of License Modal */}
+			{/* Modal-licensing terms */}
+			<div className="modal licensing-modal" id="licensing-terms">
+				<div className="modal-dialog modal-lg" role="document">
+					<div className="modal-content">
+						<div className="modal-header">
+							<h5 className="modal-title ">LICENSING AGREEMENT</h5>
+							<button type="button" className="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+						</div>
+						<div className="modal-body">
+							<div className="watermark">SAMPLE</div>
+							<p>
+								This Artist Licensing Agreement (the “AGREEMENT”) is entered into effective this date,
+								(date added here) between LICENSOR NAME (“ARTIST”) and LICENSEE (“CLIENT”).
+							</p>
+							<p>
+								<b>Scope of this Agreement.</b> This Agreement applies to any image, graphics, digital
+								assets, or digital images created or taken by Artist and delivered to the Client
+								(collectively known as “IMAGES”). This Agreement governs the relationship between the
+								parties and in no communication or other exchange, shall modify the terms of this
+								Agreement unless agreed to in writing.
+							</p>
+							<p>
+								<b>Rights:</b> All Images and rights relating to them, including copyright and ownership
+								rights in the media in which the Images are stored, remain the sole and exclusive
+								property of the Artist. This license provides the Client with the limited right to
+								reproduce, publicly display, and distribute the Images only for the agreed upon terms as
+								set forth in the Client Invoice and signed by both parties. Images used for any purpose
+								not directly related outside of those terms must be with the express permission of
+								Artist and may include the payment of additional fees, unless otherwise agreed to in
+								writing. Images may contain copyright management information (CMI) at the discretion of
+								the Artist in the form of either 1) a copyright notice © and/or 2) other copyright and
+								ownership information embedded in the metadata or elsewhere unless otherwise agreed to
+								by the Parties. Removing and/or altering such information is prohibited and constitutes
+								a violation of the Digital Millennium Copyright Act (DMCA) and Client will be
+								responsible to the Artist for any penalties and awards available under that statute.
+							</p>{' '}
+							<p>
+								{' '}
+								<b>Relationship of the Parties:</b> The parties agree that Artist is an independent
+								contractor and that neither Artist nor Artist’s employees or contract personnel are, or
+								shall be deemed to be, employees of Client. No agency, partnership, joint venture, or
+								employee-employer relationship is intended or created by this Agreement. Neither party
+								is authorized to act as agent or bind the other party except as expressly stated in this
+								Agreement. Artist and the Images or any other deliverables prepared by Artist shall not
+								be deemed a work for hire as defined under Copyright Law. All rights granted to Client
+								are contractual in nature and are expressly defined by this Agreement.
+							</p>
+							<p>
+								<b>Creation:</b> The manner and method of creating any Image is solely at the discretion
+								of Artist and the Client has no right to control Artist’s manner and method of
+								performance under this Agreement. Artist will use his/her best efforts to: (a) ensure
+								that the Images conform to Client’s specifications; and (b) submit all Images to Client
+								in publishable quality, on or before the applicable deadlines.
+							</p>
+							<p>
+								<b>Delivery:</b> Artist may select delivery of designs in PDF, JPEG, PNG, or other
+								standard formats at a resolution that Artist determines will be suitable for the Images
+								as licensed. It is the Client’s responsibility to verify that the Images are suitable
+								for reproduction and that if the Images are not deemed suitable, to notify the Artist
+								within five (5) business days. Artist’s sole obligation will be to replace the Images at
+								a suitable resolution but in no event will Artist be liable for poor reproduction
+								quality, delays, or consequential damages.
+							</p>
+						</div>
+						<div className="modal-footer">
+							<button type="button" className="btn btn-danger" data-dismiss="modal">
+								Close
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 	);
 }

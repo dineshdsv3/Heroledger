@@ -173,7 +173,7 @@ function Assets() {
 						licensing: ele.license ? <span className="dot active"></span> : <span className="dot"></span>,
 						actions: (
 							<div className="d-flex justify-content-between">
-								<button className="btn border-0" onClick={() => editAsset(ele.productId)}>
+								<button className="btn border-0" disabled={ele.ownerEmail !== user.email} onClick={() => editAsset(ele.productId)}>
 									<i className="fa fa-pencil text-info" aria-hidden="true"></i>
 								</button>
 								&nbsp;
@@ -387,8 +387,8 @@ function Assets() {
 		let result;
 		let file = e.target.files[0];
 		if (file) {
-			if (file.size > 3148576) {
-				alert('In Beta version you need to upload file less than 3 MB');
+			if (file.size > 1148576) {
+				alert('In Beta version you need to upload file less than 1 MB');
 			} else {
 				let reader = new FileReader();
 				reader.readAsDataURL(file);
