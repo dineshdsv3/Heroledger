@@ -100,7 +100,9 @@ function Store() {
 			.send({ from: account, value: price })
 			.once('receipt', (receipt) => {
 				const BCData = receipt.events.productPurchased;
+				// console.log(BCData);
 				const returnData = receipt.events.productPurchased.returnValues;
+				// console.log(returnData);
 				const updatedProduct = {
 					productId: returnData.productId,
 					ownerAddress: returnData.ownerAddress,
@@ -109,13 +111,25 @@ function Store() {
 					timestamp: returnData.timestamp,
 					transactionHash: BCData.transactionHash,
 				};
-				console.log('Product Purchase completed');
+				const transactionDetails = {
+					productId: returnData.productId,
+					productName: returnData.productName,
+					transactionHash: BCData.transactionHash,
+					transactionType: 'asset',
+					previousOwner: returnData.seller,
+					currentOwner: returnData.ownerEmail,
+					purchaseDate: returnData.timestamp,
+					amountinEth: returnData.amount,
+				};
+				console.log(transactionDetails);
 				axios
 					.put('/purchaseProduct', { updatedProduct })
 					.then((res) => {
-						console.log(res);
-						alert('Purchase Succesfful, Product added to your account');
-						window.location.reload();
+						axios.post('/addTransaction', { transactionDetails }).then((res) => {
+							console.log(res);
+							alert('Purchase Succesfful, Product added to your account');
+							window.location.reload();
+						});
 					})
 					.catch((error) => {
 						alert('Purchase not successful, Please try again');
@@ -151,13 +165,26 @@ function Store() {
 						ownerAddress: returnData.ownerAddress,
 					};
 					console.log('License Update purchased');
-					console.log(updatedLicense);
+					console.log(BCData);
+					console.log(returnData);
+					const transactionDetails = {
+						productId: returnData.productId,
+						productName: returnData.productName,
+						transactionHash: BCData.transactionHash,
+						transactionType: 'license',
+						previousOwner: returnData.licensorMail,
+						currentOwner: returnData.licenseeMail,
+						purchaseDate: returnData.timestamp,
+						amountinEth: returnData.amount,
+					};
 					axios
 						.put('/purchaseLicense', { updatedLicense })
 						.then((res) => {
-							console.log(res);
-							alert('License successful, Product license added to your account');
-							window.location.reload();
+							axios.post('/addTransaction', { transactionDetails }).then((res) => {
+								console.log(res);
+								alert('License Purchase Succesfful, Product added to your account');
+								window.location.reload();
+							});
 						})
 						.catch((error) => {
 							alert('Purchase not successful, Please try again');
@@ -167,7 +194,6 @@ function Store() {
 			alert('license expired for the selected product');
 		}
 	};
-
 	return (
 		<div>
 			<div className="col-xl-10 col-lg-9 col-md-8 store-page pt-5 mt-4 ml-auto">
@@ -738,7 +764,7 @@ function Store() {
 								</button>
 							</div>
 							<div className="modal-body">
-								<div class="watermark">SAMPLE</div>
+								<div className="watermark">SAMPLE</div>
 								<p>
 									<b>
 										<i>Asset Name:</i>
@@ -808,10 +834,10 @@ function Store() {
 								</p>
 							</div>
 							<div className="modal-footer">
-							<div className="mr-auto">
-								<input type="checkbox" value={check} onChange={() => setCheck(!check)} /> {'    '}{' '}
-								&nbsp;I have read and accept the terms and information contained in this license.
-							</div>
+								<div className="mr-auto">
+									<input type="checkbox" value={check} onChange={() => setCheck(!check)} /> {'    '}{' '}
+									&nbsp;I have read and accept the terms and information contained in this license.
+								</div>
 								<button
 									type="button"
 									className="btn btn-success"

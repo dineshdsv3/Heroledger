@@ -66,7 +66,9 @@ contract heroledger {
         bool inStore,
         address payable ownerAddress,
         string buyer,
-        string seller
+        string seller,
+        uint256 amount,
+        uint256 registrationDate
     );
 
     event licensePurchased(
@@ -77,9 +79,10 @@ contract heroledger {
         uint256 timestamp,
         bool license,
         uint256 startDate,
-        uint256 endDate,
         string term2,
-        address payable ownerAddress
+        address payable ownerAddress,
+        uint256 amount,
+        uint256 registrationDate
     );
     event productEdited(
         uint256 productId,
@@ -148,7 +151,7 @@ contract heroledger {
         products[_productId] = _product;
 
         emit productPurchased(_productId,_product.productName, _product.ownerEmail, block.timestamp,
-         _product.inStore, _product.owner, _buyerEmail,_sellerEmail);
+         _product.inStore, _product.owner, _buyerEmail,_sellerEmail, msg.value,_product.timestamp);
     }
 
     function purchaseLicense(uint256 _productId,string memory _licensee) public payable {
@@ -171,8 +174,9 @@ contract heroledger {
         products[_productId] = _product;
 
         licensedProducts[_productId] = _licenseProduct;
-        emit licensePurchased(_productId,_product.productName,_licenseProduct.licensor, _licenseProduct.licensee, block.timestamp,
-         _product.license, _licenseProduct.term1StartDate,_licenseProduct.term1EndDate, _licenseProduct.term2,_licenseProduct.ownerAddress );
+        emit licensePurchased(_productId,_product.productName,_licenseProduct.licensor,
+         _licenseProduct.licensee, block.timestamp, _product.license, _licenseProduct.term1StartDate,
+         _licenseProduct.term2, _licenseProduct.ownerAddress, msg.value, _product.timestamp);
     }
 
     function editProduct(

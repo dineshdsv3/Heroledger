@@ -11,21 +11,16 @@ const transactionSchema = mongoose.Schema({
 		required: true,
 		trim: true,
 	},
-	productType: {
-		type: String,
-		required: true,
-		trim: true,
-	},
 	transactionHash: {
 		type: String,
 		required: true,
 		trim: true,
-    },
-    transactionType: {
-        type: String,
+	},
+	transactionType: {
+		type: String,
 		required: true,
 		trim: true,
-    },
+	},
 	previousOwner: {
 		type: String,
 		required: true,
@@ -45,17 +40,11 @@ const transactionSchema = mongoose.Schema({
 		type: Number,
 		required: true,
 		trim: true,
-    },
-    amountinUsd: {
-        type: Number,
-		required: true,
+	},
+	amountinEth: {
+		type: Number,
 		trim: true,
-    },
-    amountinEth: {
-        type: Number,
-		required: true,
-		trim: true,
-    }
+	},
 });
 
 module.exports = mongoose.model('transaction', transactionSchema);

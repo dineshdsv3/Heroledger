@@ -76,7 +76,7 @@ function Licensing() {
 									className="btn border-0 text-info"
 									data-toggle="modal"
 									data-target="#add-license"
-									disabled={!(ele.licensee == !('N/A' || null || undefined))}
+									disabled={((ele.licensee).includes('.com') )}
 									onClick={() => addLicenseProduct(ele.productId)}
 								>
 									<i className="fa fa-pencil" aria-hidden="true"></i>

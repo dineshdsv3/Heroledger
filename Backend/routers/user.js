@@ -107,6 +107,25 @@ router.post('/addDocument', async (req, res) => {
 	});
 });
 
+router.post('/addTransaction', async (req, res) => {
+	console.log(req.body.transactionDetails);
+	let transaction = new Transaction({
+		productId: req.body.transactionDetails.productId,
+		productName:req.body.transactionDetails.productName,
+		transactionHash:req.body.transactionDetails.transactionHash,
+		transactionType:req.body.transactionDetails.transactionType,
+		previousOwner:req.body.transactionDetails.previousOwner,
+		currentOwner:req.body.transactionDetails.currentOwner,
+		purchaseDate:req.body.transactionDetails.purchaseDate,
+		amountinEth:req.body.transactionDetails.amountinEth,
+		registrationDate:req.body.transactionDetails.registrationDate
+	});
+	 transaction.save().then((result) => {
+		 console.log('Transaction Added');
+		 res.send({message: "Transaction Added to DB"})
+	 });
+});
+
 router.post('/addProduct', async (req, res) => {
 	const productReq = req.body.product;
 	const product = new Product({
@@ -129,7 +148,7 @@ router.post('/addProduct', async (req, res) => {
 	});
 
 	product.save().then((result) => {
-		console.log('Product Added');
+		// console.log('Product Added');
 		res.send({ message: 'Product Added to DB' });
 	});
 });
@@ -187,7 +206,7 @@ router.get('/getSingleProduct', async (req, res) => {
 });
 
 router.put('/updateProduct', async (req, res) => {
-	console.log(req.body.updatedProduct);
+	// console.log(req.body.updatedProduct);
 	Product.findOneAndUpdate(
 		{ productId: req.body.updatedProduct.productId },
 		{
@@ -197,7 +216,8 @@ router.put('/updateProduct', async (req, res) => {
 			InStore: req.body.updatedProduct.inStore,
 			description: req.body.updatedProduct.description,
 			fullDescription: req.body.updatedProduct.fullDescription,
-			licensor: req.body.updatedProduct.licensor
+			licensor: req.body.updatedProduct.licensor,
+			licensee: "N/A"
 		},
 		{ new: true },
 		(err, resu) => {
@@ -241,7 +261,7 @@ router.put('/addLicense', async (req, res) => {
 });
 
 router.get('/getScriptAssets', async (req, res) => {
-	Product.find({productType: "script", InStore: true}, (err, data) => {
+	Product.find({ productType: 'script', InStore: true }, (err, data) => {
 		if (err) {
 			res.status(404).send({ message: 'Error Not found Details', err });
 		} else {
@@ -251,7 +271,7 @@ router.get('/getScriptAssets', async (req, res) => {
 });
 
 router.get('/getLogoAssets', async (req, res) => {
-	Product.find({productType: "logo", InStore: true}, (err, data) => {
+	Product.find({ productType: 'logo', InStore: true }, (err, data) => {
 		if (err) {
 			res.status(404).send({ message: 'Error Not found Details', err });
 		} else {
@@ -261,7 +281,7 @@ router.get('/getLogoAssets', async (req, res) => {
 });
 
 router.get('/getBackgroundAssets', async (req, res) => {
-	Product.find({productType: "background", InStore: true}, (err, data) => {
+	Product.find({ productType: 'background', InStore: true }, (err, data) => {
 		if (err) {
 			res.status(404).send({ message: 'Error Not found Details', err });
 		} else {
@@ -271,7 +291,7 @@ router.get('/getBackgroundAssets', async (req, res) => {
 });
 
 router.get('/getAudioAssets', async (req, res) => {
-	Product.find({productType: "audio", InStore: true}, (err, data) => {
+	Product.find({ productType: 'audio', InStore: true }, (err, data) => {
 		if (err) {
 			res.status(404).send({ message: 'Error Not found Details', err });
 		} else {
@@ -281,7 +301,7 @@ router.get('/getAudioAssets', async (req, res) => {
 });
 
 router.get('/getVideoAssets', async (req, res) => {
-	Product.find({productType: "video", InStore: true}, (err, data) => {
+	Product.find({ productType: 'video', InStore: true }, (err, data) => {
 		if (err) {
 			res.status(404).send({ message: 'Error Not found Details', err });
 		} else {
@@ -291,7 +311,7 @@ router.get('/getVideoAssets', async (req, res) => {
 });
 
 router.get('/getPropsAssets', async (req, res) => {
-	Product.find({productType: "props",  InStore: true}, (err, data) => {
+	Product.find({ productType: 'props', InStore: true }, (err, data) => {
 		if (err) {
 			res.status(404).send({ message: 'Error Not found Details', err });
 		} else {
@@ -300,10 +320,8 @@ router.get('/getPropsAssets', async (req, res) => {
 	}).limit(4);
 });
 
-
-
 router.get('/getCharacterAssets', async (req, res) => {
-	Product.find({productType: "character", InStore: true}, (err, data) => {
+	Product.find({ productType: 'character', InStore: true }, (err, data) => {
 		if (err) {
 			res.status(404).send({ message: 'Error Not found Details', err });
 		} else {
@@ -336,8 +354,6 @@ router.put('/purchaseProduct', async (req, res) => {
 });
 
 router.put('/purchaseLicense', async (req, res) => {
-	console.log('Purchase License Triggered');
-	console.log(req.body.updatedLicense);
 	Product.findOneAndUpdate(
 		{ productId: req.body.updatedLicense.productId },
 		{
@@ -355,14 +371,32 @@ router.put('/purchaseLicense', async (req, res) => {
 				res.send({ message: 'Error', err });
 				console.log(error);
 			} else {
-				console.log('Product license  api completed');
 				res.send({ message: 'Product License updated' });
 			}
 		}
 	);
 });
-router.post('/addTransaction', async (req, res) => {
-	console.log(req.body);
+
+router.get('/getTransactions', async (req,res) => {
+	let email = req.query.email
+	Transaction.find({$or:[{previousOwner: email},{currentOwner:email}]}, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Transactions Fetched', data });
+		}
+	})
+})
+
+router.get('/getProductType', async (req, res) => {
+	let id = req.query.productId
+	Product.find({productId: id}, (err,data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'productType Fetched', data });
+		}
+	})
 })
 
 module.exports = router;

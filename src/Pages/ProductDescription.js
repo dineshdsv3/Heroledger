@@ -81,7 +81,9 @@ function ProductDescription() {
 			.send({ from: account, value: price })
 			.once('receipt', (receipt) => {
 				const BCData = receipt.events.productPurchased;
+				console.log(BCData);
 				const returnData = receipt.events.productPurchased.returnValues;
+				console.log(returnData);
 				const updatedProduct = {
 					productId: returnData.productId,
 					ownerAddress: returnData.ownerAddress,
@@ -92,14 +94,24 @@ function ProductDescription() {
 				};
 				const transactionDetails = {
 					productId: returnData.productId,
-				}
-				console.log('Product Purchase completed');
+					productName: returnData.productName,
+					transactionHash: BCData.transactionHash,
+					transactionType: 'asset',
+					previousOwner: returnData.seller,
+					currentOwner: returnData.ownerEmail,
+					purchaseDate: returnData.timestamp,
+					amountinEth: returnData.amount,
+					registrationDate: returnData.registrationDate
+				};
+				console.log(transactionDetails);
 				axios
 					.put('/purchaseProduct', { updatedProduct })
 					.then((res) => {
-						axios.post('/addTransaction')
-						alert('Purchase Succesfful, Product added to your account');
-						window.location.reload();
+						axios.post('/addTransaction', { transactionDetails }).then((res) => {
+							console.log(res);
+							alert('Purchase Succesfful, Product added to your account');
+							window.location.reload();
+						});
 					})
 					.catch((error) => {
 						alert('Purchase not successful, Please try again');
@@ -129,19 +141,33 @@ function ProductDescription() {
 						license: returnData.license,
 						licenseeMail: returnData.licenseeMail,
 						licensorMail: returnData.licensorMail,
-						term2: returnData.term2,
+						term2: "N/A",
 						transactionHash: BCData.transactionHash,
 						timestamp: returnData.timestamp,
 						ownerAddress: returnData.ownerAddress,
 					};
 					console.log('License Update purchased');
-					console.log(updatedLicense);
+					console.log(BCData);
+					console.log(returnData);
+					const transactionDetails = {
+						productId: returnData.productId,
+						productName: returnData.productName,
+						transactionHash: BCData.transactionHash,
+						transactionType: 'license',
+						previousOwner: returnData.licensorMail,
+						currentOwner: returnData.licenseeMail,
+						purchaseDate: returnData.timestamp,
+						amountinEth: returnData.amount,
+						registrationDate: returnData.registrationDate
+					};
 					axios
 						.put('/purchaseLicense', { updatedLicense })
 						.then((res) => {
-							console.log(res);
-							alert('License successful, Product license added to your account');
-							window.location.reload();
+							axios.post('/addTransaction', { transactionDetails }).then((res) => {
+								console.log(res);
+								alert('License Purchase Succesfful, Product added to your account');
+								window.location.reload();
+							});
 						})
 						.catch((error) => {
 							alert('Purchase not successful, Please try again');
@@ -199,7 +225,7 @@ function ProductDescription() {
 							type="button"
 							className="btn btn-primary product-btn p-2"
 							onClick={() => purchaseProduct(product.productId, user.email, product.price)}
-							disabled={!(user.email == product.ownerEmail)}
+							disabled={user.email == product.ownerEmail}
 						>
 							Purchase
 						</button>
@@ -245,7 +271,7 @@ function ProductDescription() {
 							</button>
 						</div>
 						<div className="modal-body">
-							<div class="watermark">SAMPLE</div>
+							<div className="watermark">SAMPLE</div>
 							<p>
 								<b>
 									<i>Asset Name:</i>

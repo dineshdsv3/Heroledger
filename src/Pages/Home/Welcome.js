@@ -216,6 +216,15 @@ function Welcome() {
 													<i className="fas fa-bell text-muted fa-lg"></i>
 												</a>
 											</li>
+											{/* <li className="nav-item icon-parent">
+												<a className="nav-link icon-bullet">
+													<img
+														className="rounded-circle"
+														src={require('../../Assets/Images/face.png')}
+														width="50"
+													/>
+												</a>
+											</li> */}
 											<li className="nav-item icon-parent ml-md-auto">
 												<a
 													className="nav-link icon-bullet"
