@@ -21,7 +21,7 @@ function Transactions() {
 				.map((ele) => {
 					console.log(ele);
 					return {
-						name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
+						name: <a href={`/Product?id=${ele.productId}&prev=transactions`}>{ele.productName}</a>,
 						hash: (
 							<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
 								{ele.transactionHash}
@@ -41,7 +41,7 @@ function Transactions() {
 				.map((ele) => {
 					console.log(ele);
 					return {
-						name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
+						name: <a href={`/Product?id=${ele.productId}&prev=transactions`}>{ele.productName}</a>,
 						hash: (
 							<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
 								{ele.transactionHash}

@@ -100,9 +100,9 @@ function Store() {
 			.send({ from: account, value: price })
 			.once('receipt', (receipt) => {
 				const BCData = receipt.events.productPurchased;
-				// console.log(BCData);
+				console.log(BCData);
 				const returnData = receipt.events.productPurchased.returnValues;
-				// console.log(returnData);
+				console.log(returnData);
 				const updatedProduct = {
 					productId: returnData.productId,
 					ownerAddress: returnData.ownerAddress,
@@ -120,6 +120,7 @@ function Store() {
 					currentOwner: returnData.ownerEmail,
 					purchaseDate: returnData.timestamp,
 					amountinEth: returnData.amount,
+					registrationDate: returnData.registrationDate,
 				};
 				console.log(transactionDetails);
 				axios
@@ -159,7 +160,7 @@ function Store() {
 						license: returnData.license,
 						licenseeMail: returnData.licenseeMail,
 						licensorMail: returnData.licensorMail,
-						term2: returnData.term2,
+						term2: 'N/A',
 						transactionHash: BCData.transactionHash,
 						timestamp: returnData.timestamp,
 						ownerAddress: returnData.ownerAddress,
@@ -176,6 +177,7 @@ function Store() {
 						currentOwner: returnData.licenseeMail,
 						purchaseDate: returnData.timestamp,
 						amountinEth: returnData.amount,
+						registrationDate: returnData.registrationDate,
 					};
 					axios
 						.put('/purchaseLicense', { updatedLicense })
@@ -194,6 +196,7 @@ function Store() {
 			alert('license expired for the selected product');
 		}
 	};
+
 	return (
 		<div>
 			<div className="col-xl-10 col-lg-9 col-md-8 store-page pt-5 mt-4 ml-auto">
@@ -213,7 +216,7 @@ function Store() {
 											<img
 												src={ele.image}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}`)}
+												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -294,7 +297,7 @@ function Store() {
 											<img
 												src={ele.image}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}`)}
+												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -373,7 +376,7 @@ function Store() {
 											<img
 												src={require('../../Assets/Images/doc.jpeg')}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}`)}
+												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -452,7 +455,7 @@ function Store() {
 											<img
 												src={ele.image}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}`)}
+												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -531,7 +534,7 @@ function Store() {
 											<img
 												src={require('../../Assets/Images/music.png')}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}`)}
+												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -610,7 +613,7 @@ function Store() {
 											<img
 												src={require('../../Assets/Images/video.jpeg')}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}`)}
+												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -689,7 +692,7 @@ function Store() {
 											<img
 												src={ele.image}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}`)}
+												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -851,7 +854,7 @@ function Store() {
 										)
 									}
 								>
-									Accept and Purchase
+									Proceed to purchase
 								</button>
 								<button type="button" className="btn btn-danger" data-dismiss="modal">
 									Close

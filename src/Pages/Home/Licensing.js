@@ -52,43 +52,42 @@ function Licensing() {
 		console.log(email);
 
 		axios.get('/getUserLicensorAssets', { params: { email } }).then((res) => {
-			const assetData = res.data.data
-				.map((ele) => {
-					return {
-						image: getImage(ele.productType, ele.image),
+			const assetData = res.data.data.map((ele) => {
+				return {
+					image: getImage(ele.productType, ele.image),
 
-						name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
-						hash: (
-							<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
-								{ele.transactionHash}
-							</a>
-						),
-						fee: ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A',
-						royalty: ele.royalty ? `${ele.royalty}%` : 'N/A',
-						term1: ele.term1StartDate
-							? `${getDate(ele.term1StartDate)} to ${getDate(ele.term1EndDate)}`
-							: 'N/A',
-						term2: ele.term2 ? (ele.term2 == 'nonExclusive' ? 'Non-Exclusive' : 'Exclusive') : 'N/A',
-						transfer: <i className="fa fa-exchange" aria-hidden="true"></i>,
-						manage: (
-							<div className="d-flex justify-content-between">
-								<button
-									className="btn border-0 text-info"
-									data-toggle="modal"
-									data-target="#add-license"
-									disabled={((ele.licensee).includes('.com') )}
-									onClick={() => addLicenseProduct(ele.productId)}
-								>
-									<i className="fa fa-pencil" aria-hidden="true"></i>
-								</button>
-								&nbsp;
-								<button className="btn border-0 text-danger" disabled>
-									<i className="fa fa-times" aria-hidden="true"></i>
-								</button>
-							</div>
-						),
-					};
-				});
+					name: <a href={`/Product?id=${ele.productId}&prev=licensing`}>{ele.productName}</a>,
+					hash: (
+						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
+							{ele.transactionHash}
+						</a>
+					),
+					fee: ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A',
+					royalty: ele.royalty ? `${ele.royalty}%` : 'N/A',
+					term1: ele.term1StartDate
+						? `${getDate(ele.term1StartDate)} to ${getDate(ele.term1EndDate)}`
+						: 'N/A',
+					term2: ele.term2 ? (ele.term2 == 'nonExclusive' ? 'Non-Exclusive' : 'Exclusive') : 'N/A',
+					transfer: <i className="fa fa-exchange" aria-hidden="true"></i>,
+					manage: (
+						<div className="d-flex justify-content-between">
+							<button
+								className="btn border-0 text-info"
+								data-toggle="modal"
+								data-target="#add-license"
+								disabled={ele.licensee.includes('.com')}
+								onClick={() => addLicenseProduct(ele.productId)}
+							>
+								<i className="fa fa-pencil" aria-hidden="true"></i>
+							</button>
+							&nbsp;
+							<button className="btn border-0 text-danger" disabled>
+								<i className="fa fa-times" aria-hidden="true"></i>
+							</button>
+						</div>
+					),
+				};
+			});
 			setLicensorAssets(assetData);
 			setlicensorLoader(false);
 		});
@@ -97,7 +96,7 @@ function Licensing() {
 			const assetData = res.data.data.map((ele) => {
 				return {
 					image: getImage(ele.productType, ele.image),
-					name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
+					name: <a href={`/Product?id=${ele.productId}&prev=licensing`}>{ele.productName}</a>,
 					hash: (
 						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
 							{ele.transactionHash}
@@ -231,7 +230,7 @@ function Licensing() {
 				axios.put('/addLicense', { license }).then((res) => {
 					alert('License added to the product successfully!!!');
 					setLicenseLoader(false);
-					window.location.reload();
+					window.location.href = '/Welcome?page=licensing';
 				});
 			});
 	};

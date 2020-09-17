@@ -23,19 +23,29 @@ function Welcome() {
 			// console.log(accounts);
 		}
 		loadWeb3();
+		loadPage();
 	}, []);
 
 	const user = JSON.parse(localStorage.getItem('user'));
 	const email = user.email;
 
 	const [toggle, setToggleItems] = useState({
-		dashboard: true,
+		dashboard: false,
 		assets: false,
 		licensing: false,
 		store: false,
 		transactions: false,
 	});
 	// console.log(toggle);
+
+	const loadPage = async () => {
+		let url = window.location.href;
+		let urlsplit = url.split('?');
+		let params = urlsplit[1].split('=');
+		let page = params[1];
+		console.log(page);
+		setToggleItems({ ...toggle, [page]: true });
+	};
 
 	const logout = () => {
 		console.log(email);
@@ -88,15 +98,7 @@ function Welcome() {
 													? 'nav-link text-white p-3 mb-2 current'
 													: 'nav-link text-white p-3 mb-2 sidebar-link'
 											}
-											onClick={() =>
-												setToggleItems({
-													dashboard: true,
-													assets: false,
-													licensing: false,
-													store: false,
-													transactions: false,
-												})
-											}
+											href="/Welcome?page=dashboard"
 										>
 											<i className="fa fa-dashboard text-light fa-lg mr-3"></i>Dashboard
 										</a>
@@ -108,15 +110,7 @@ function Welcome() {
 													? 'nav-link text-white p-3 mb-2 current'
 													: 'nav-link text-white p-3 mb-2 sidebar-link'
 											}
-											onClick={() =>
-												setToggleItems({
-													dashboard: false,
-													assets: true,
-													licensing: false,
-													store: false,
-													transactions: false,
-												})
-											}
+											href="/Welcome?page=assets"
 										>
 											<i className="fas fa-envelope text-light fa-lg mr-3"></i>Assets
 										</a>
@@ -128,15 +122,7 @@ function Welcome() {
 													? 'nav-link text-white p-3 mb-2 current'
 													: 'nav-link text-white p-3 mb-2 sidebar-link'
 											}
-											onClick={() =>
-												setToggleItems({
-													dashboard: false,
-													assets: false,
-													licensing: false,
-													store: true,
-													transactions: false,
-												})
-											}
+											href="/Welcome?page=store"
 										>
 											<i className="fas fa-chart-line text-light fa-lg mr-3"></i>Store
 										</a>
@@ -148,14 +134,7 @@ function Welcome() {
 													? 'nav-link text-white p-3 mb-2 current'
 													: 'nav-link text-white p-3 mb-2 sidebar-link'
 											}
-											onClick={() =>
-												setToggleItems({
-													dashboard: false,
-													assets: false,
-													licensing: true,
-													transactions: false,
-												})
-											}
+											href="/Welcome?page=licensing"
 										>
 											<i className="fas fa-chart-bar text-light fa-lg mr-3"></i>Licensing
 										</a>
@@ -167,15 +146,7 @@ function Welcome() {
 													? 'nav-link text-white p-3 mb-2 current'
 													: 'nav-link text-white p-3 mb-2 sidebar-link'
 											}
-											onClick={() =>
-												setToggleItems({
-													dashboard: false,
-													assets: false,
-													licensing: false,
-													store: false,
-													transactions: true,
-												})
-											}
+											href="/Welcome?page=transactions"
 										>
 											<i className="fas fa fa-files-o text-light fa-lg mr-3"></i>Transactions
 										</a>
@@ -216,15 +187,16 @@ function Welcome() {
 													<i className="fas fa-bell text-muted fa-lg"></i>
 												</a>
 											</li>
-											{/* <li className="nav-item icon-parent">
-												<a className="nav-link icon-bullet">
+											<li className="nav-item mx-auto">
+												<a className="nav-link" href={'/profile'}>
 													<img
 														className="rounded-circle"
 														src={require('../../Assets/Images/face.png')}
-														width="50"
-													/>
+														width="20"
+													/>{' '}
+													<span className="text-white">Profile</span>
 												</a>
-											</li> */}
+											</li>
 											<li className="nav-item icon-parent ml-md-auto">
 												<a
 													className="nav-link icon-bullet"

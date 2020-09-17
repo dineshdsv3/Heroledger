@@ -31,6 +31,9 @@ const userSchema = mongoose.Schema({
     longitude : {
         type: String
     },
+    image: {
+        type: String
+    },
     tokens: [{
         token: {
             type: String,

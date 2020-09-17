@@ -73,13 +73,13 @@ function EditAsset(props) {
 					usdPrice: editDetails.priceinUSD,
 					description: editDetails.briefDescription,
 					fullDescription: editDetails.fullDescription,
-					licensor: data.originatorEmail
+					licensor: data.originatorEmail,
 				};
 				axios
 					.put('/updateProduct', { updatedProduct })
 					.then((res) => {
 						alert('Changed Asset Details Successfully!!!');
-						window.location.reload();
+						window.location.href = '/Welcome?page=assets';
 					})
 					.catch((err) => {
 						alert('Error in Changing Asset Details, Please co');

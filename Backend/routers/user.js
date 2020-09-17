@@ -111,19 +111,46 @@ router.post('/addTransaction', async (req, res) => {
 	console.log(req.body.transactionDetails);
 	let transaction = new Transaction({
 		productId: req.body.transactionDetails.productId,
-		productName:req.body.transactionDetails.productName,
-		transactionHash:req.body.transactionDetails.transactionHash,
-		transactionType:req.body.transactionDetails.transactionType,
-		previousOwner:req.body.transactionDetails.previousOwner,
-		currentOwner:req.body.transactionDetails.currentOwner,
-		purchaseDate:req.body.transactionDetails.purchaseDate,
-		amountinEth:req.body.transactionDetails.amountinEth,
-		registrationDate:req.body.transactionDetails.registrationDate
+		productName: req.body.transactionDetails.productName,
+		transactionHash: req.body.transactionDetails.transactionHash,
+		transactionType: req.body.transactionDetails.transactionType,
+		previousOwner: req.body.transactionDetails.previousOwner,
+		currentOwner: req.body.transactionDetails.currentOwner,
+		purchaseDate: req.body.transactionDetails.purchaseDate,
+		amountinEth: req.body.transactionDetails.amountinEth,
+		registrationDate: req.body.transactionDetails.registrationDate,
 	});
-	 transaction.save().then((result) => {
-		 console.log('Transaction Added');
-		 res.send({message: "Transaction Added to DB"})
-	 });
+	transaction.save().then((result) => {
+		console.log('Transaction Added');
+		res.send({ message: 'Transaction Added to DB' });
+	});
+});
+
+router.post('/imageUpload', async (req, res) => {
+	User.findOneAndUpdate(
+		{ email: req.body.updatedUser.email },
+		{ image: req.body.updatedUser.image },
+		{ new: true },
+		(err, resu) => {
+			if (err) {
+				res.status(404).send({ message: 'Error', err });
+				console.log(error);
+			} else {
+				res.send({ message: 'Image Uploaded' });
+			}
+		}
+	);
+});
+
+router.get('/getImage', async (req, res) => {
+	const email = req.query.email;
+	User.find({ email: email }, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error', err });
+		} else {
+			res.send({ message: 'User Data gathered', data });
+		}
+	});
 });
 
 router.post('/addProduct', async (req, res) => {
@@ -217,7 +244,7 @@ router.put('/updateProduct', async (req, res) => {
 			description: req.body.updatedProduct.description,
 			fullDescription: req.body.updatedProduct.fullDescription,
 			licensor: req.body.updatedProduct.licensor,
-			licensee: "N/A"
+			licensee: 'N/A',
 		},
 		{ new: true },
 		(err, resu) => {
@@ -377,26 +404,26 @@ router.put('/purchaseLicense', async (req, res) => {
 	);
 });
 
-router.get('/getTransactions', async (req,res) => {
-	let email = req.query.email
-	Transaction.find({$or:[{previousOwner: email},{currentOwner:email}]}, (err, data) => {
+router.get('/getTransactions', async (req, res) => {
+	let email = req.query.email;
+	Transaction.find({ $or: [{ previousOwner: email }, { currentOwner: email }] }, (err, data) => {
 		if (err) {
 			res.status(404).send({ message: 'Error Not found Details', err });
 		} else {
 			res.send({ message: 'Transactions Fetched', data });
 		}
-	})
-})
+	});
+});
 
 router.get('/getProductType', async (req, res) => {
-	let id = req.query.productId
-	Product.find({productId: id}, (err,data) => {
+	let id = req.query.productId;
+	Product.find({ productId: id }, (err, data) => {
 		if (err) {
 			res.status(404).send({ message: 'Error Not found Details', err });
 		} else {
 			res.send({ message: 'productType Fetched', data });
 		}
-	})
-})
+	});
+});
 
 module.exports = router;

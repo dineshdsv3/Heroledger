@@ -9,13 +9,13 @@ function PreLogin1() {
 		remember: false,
 	});
 
-	// useEffect(() => {
-	// 	const user = JSON.parse(localStorage.getItem('user'));
-	// 	const token = localStorage.getItem('token') || '';
-	// 	if (user.remember && token) {
-	// 		window.location.pathname = '/welcome';
-	// 	}
-	// }, []);
+	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem('user'));
+		const token = localStorage.getItem('token') || '';
+		if (user.remember && token) {
+			window.location.href = '/Welcome?page=dashboard';
+		}
+	}, []);
 
 	// console.log(userDetails);
 	const handleSubmit = async (e) => {
@@ -38,7 +38,7 @@ function PreLogin1() {
 				localStorage.setItem('token', res.data.token);
 				localStorage.setItem('user', JSON.stringify(userResponseDetails));
 				alert('Log-in Successful');
-				window.location.pathname = '/Welcome';
+				window.location.href = '/Welcome?page=dashboard';
 			})
 			.catch((error) => {
 				alert('Incorrect Email and Password combination!!. Try again');

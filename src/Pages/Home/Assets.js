@@ -42,7 +42,7 @@ function Assets() {
 
 	useEffect(() => {
 		getUserDetails();
-	}, [assets]);
+	}, []);
 
 	// Table Data Styling & Sorting
 	const customStyles = {
@@ -155,35 +155,38 @@ function Assets() {
 		let email = user.email;
 
 		axios.get('/getUserAssets', { params: { email } }).then((res) => {
-			const assetData = res.data.data
-				.map((ele) => {
-					return {
-						image: getImage(ele.productType, ele.image),
-						name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
-						hash: (
-							<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
-								{ele.transactionHash}
-							</a>
-						),
-						owner: (ele.ownerEmail),
-						timestamp: getDate(ele.timestamp),
-						productType: ele.productType,
-						price: `$ ${ele.priceinUsd}`,
-						inStore: ele.InStore ? <span className="dot active"></span> : <span className="dot"></span>,
-						licensing: ele.license ? <span className="dot active"></span> : <span className="dot"></span>,
-						actions: (
-							<div className="d-flex justify-content-between">
-								<button className="btn border-0" disabled={ele.ownerEmail !== user.email} onClick={() => editAsset(ele.productId)}>
-									<i className="fa fa-pencil text-info" aria-hidden="true"></i>
-								</button>
-								&nbsp;
-								<button className="btn border-0" onClick={() => deleteAsset(ele.productId)}>
-									<i className="fa fa-times text-danger" aria-hidden="true"></i>
-								</button>
-							</div>
-						),
-					};
-				});
+			const assetData = res.data.data.map((ele) => {
+				return {
+					image: getImage(ele.productType, ele.image),
+					name: <a href={`/Product?id=${ele.productId}&prev=assets`}>{ele.productName}</a>,
+					hash: (
+						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
+							{ele.transactionHash}
+						</a>
+					),
+					owner: ele.ownerEmail,
+					timestamp: getDate(ele.timestamp),
+					productType: ele.productType,
+					price: `$ ${ele.priceinUsd}`,
+					inStore: ele.InStore ? <span className="dot active"></span> : <span className="dot"></span>,
+					licensing: ele.license ? <span className="dot active"></span> : <span className="dot"></span>,
+					actions: (
+						<div className="d-flex justify-content-between">
+							<button
+								className="btn border-0"
+								disabled={ele.ownerEmail !== user.email}
+								onClick={() => editAsset(ele.productId)}
+							>
+								<i className="fa fa-pencil text-info" aria-hidden="true"></i>
+							</button>
+							&nbsp;
+							<button className="btn border-0" onClick={() => deleteAsset(ele.productId)}>
+								<i className="fa fa-times text-danger" aria-hidden="true"></i>
+							</button>
+						</div>
+					),
+				};
+			});
 			setAssets(assetData);
 			setAssetLoader(false);
 		});
@@ -193,13 +196,13 @@ function Assets() {
 				.map((ele) => {
 					return {
 						image: getImage(ele.productType, ele.image),
-						name: <a href={`/Product?id=${ele.productId}`}>{ele.productName}</a>,
+						name: <a href={`/Product?id=${ele.productId}&prev=assets`}>{ele.productName}</a>,
 						hash: (
 							<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
 								{ele.transactionHash}
 							</a>
 						),
-						owner: (ele.ownerEmail),
+						owner: ele.ownerEmail,
 						timestamp: getDate(ele.timestamp),
 						productType: ele.productType,
 						price: `$ ${ele.priceinUsd}`,
@@ -212,7 +215,7 @@ function Assets() {
 									<i className="fa fa-pencil text-info" aria-hidden="true"></i>
 								</button>
 								&nbsp;
-								<button className="btn border-0"  disabled onClick={() => deleteAsset(ele.productId)}>
+								<button className="btn border-0" disabled onClick={() => deleteAsset(ele.productId)}>
 									<i className="fa fa-times text-danger" aria-hidden="true"></i>
 								</button>
 							</div>
@@ -245,6 +248,7 @@ function Assets() {
 				console.log(res.data.message);
 				$('#register-asset').modal('hide');
 				alert('Your Product has been successfully Registered');
+				window.location.href = '/Welcome?page=assets';
 			})
 			.catch((err) => {
 				alert('Product Registration failed. Please try again in few minutes');

@@ -13,6 +13,8 @@ function ProductDescription() {
 	const [product, setProduct] = useState([]);
 	const [user, setUser] = useState({});
 	const [check, setCheck] = useState(false);
+	const [prev, setPrev] = useState('');
+	const [loader, setLoader] = useState(true);
 	console.log(check);
 
 	useEffect(() => {
@@ -26,11 +28,16 @@ function ProductDescription() {
 		let url = window.location.href;
 		let urlsplit = url.split('?');
 		let params = urlsplit[1].split('=');
+		console.log(params);
 		let idArr = params[1].split('&').filter((ele) => ele > 0);
+		console.log(idArr);
 		let productId = idArr[0];
+		let prev = params[2];
+		setPrev(prev);
 		await axios.get('/getSingleProduct', { params: { productId } }).then((res) => {
 			console.log(res.data);
 			setProduct(res.data.data[0]);
+			setLoader(false);
 		});
 	};
 
@@ -101,7 +108,7 @@ function ProductDescription() {
 					currentOwner: returnData.ownerEmail,
 					purchaseDate: returnData.timestamp,
 					amountinEth: returnData.amount,
-					registrationDate: returnData.registrationDate
+					registrationDate: returnData.registrationDate,
 				};
 				console.log(transactionDetails);
 				axios
@@ -141,7 +148,7 @@ function ProductDescription() {
 						license: returnData.license,
 						licenseeMail: returnData.licenseeMail,
 						licensorMail: returnData.licensorMail,
-						term2: "N/A",
+						term2: 'N/A',
 						transactionHash: BCData.transactionHash,
 						timestamp: returnData.timestamp,
 						ownerAddress: returnData.ownerAddress,
@@ -158,7 +165,7 @@ function ProductDescription() {
 						currentOwner: returnData.licenseeMail,
 						purchaseDate: returnData.timestamp,
 						amountinEth: returnData.amount,
-						registrationDate: returnData.registrationDate
+						registrationDate: returnData.registrationDate,
 					};
 					axios
 						.put('/purchaseLicense', { updatedLicense })
@@ -206,60 +213,90 @@ function ProductDescription() {
 	return (
 		<div className="container product-container">
 			<Navbar />
-			<div className="row">
-				<div className="col-md-5">{getImage(product.productType, product.image)}</div>
-				<div className="col-md-7 description-col">
-					<p className="new-product text-center text-capitalize">{product.productType}</p>
-					<h2>{product.productName}</h2>
-					<p>
-						Hash: <small>{product.transactionHash}</small>
-					</p>
-					<img className="star-rating-product" src={require('../Assets/Images/stars.jpeg')} />
-					<p>
-						<span className="product-short-header">Long Description:</span> {product.fullDescription}
-						<br />
-						<span className="product-price">
-							Price {product.priceinUsd ? `$ ${product.priceinUsd} USD` : 'N/A'}{' '}
-						</span>
-						<button
-							type="button"
-							className="btn btn-primary product-btn p-2"
-							onClick={() => purchaseProduct(product.productId, user.email, product.price)}
-							disabled={user.email == product.ownerEmail}
-						>
-							Purchase
-						</button>
-					</p>
-					<p>
-						<span className="product-short-header">License Description:</span>{' '}
-						{product.licenseDescription ? product.licenseDescription : 'N/A'}
-						<br />
-						<span className="product-short-header">Term 1:</span>{' '}
-						{product.term1StartDate
-							? `${getDate(product.term1StartDate)} to ${getDate(product.term1EndDate)}`
-							: 'N/A'}
-						<br />
-						<span className="product-short-header">Term 2:</span>{' '}
-						{product.term2 ? (product.term2 == 'nonExclusive' ? 'Non-Exclusive' : 'Exclusive') : 'N/A'}{' '}
-						&nbsp; <span className="product-short-header">Royalty:</span>{' '}
-						{product.royalty ? `${product.royalty}%` : 'N/A'} <br />
-						<span className="product-price">
-							License Fee: {product.licenseFeeUsd ? `$ ${product.licenseFeeUsd.toFixed(2)} USD` : 'N/A'}{' '}
-						</span>
-						<button
-							type="button"
-							className="btn btn-info product-btn p-2"
-							data-toggle="modal"
-							data-target="#licensing-terms"
-							disabled={
-								!(product.license && product.licenseFeeUsd > 0 && !(user.email == product.ownerEmail))
-							}
-						>
-							License
-						</button>
-					</p>
+			{loader ? (
+				<div className="spinner-border text-success" role="status">
+					<span className="sr-only">Loading...</span>
 				</div>
-			</div>
+			) : (
+				<div>
+					<div>
+						<a href="/Welcome?page=dashboard">Dashbord</a> => &nbsp;
+						<a className="text-capitalize" href={`/Welcome?page=${prev}`}>
+							{prev}
+						</a>{' '}
+						=> <span className="text-capitalize">{product.productType}</span> =>{' '}
+						<span className="text-capitalize">{product.productName}</span>
+					</div>
+					<div className="row">
+						<div className="col-md-5">{getImage(product.productType, product.image)}</div>
+						<div className="col-md-7 description-col">
+							<p className="new-product text-center text-capitalize">{product.productType}</p>
+							<h2>{product.productName}</h2>
+							<p>
+								Hash: <small>{product.transactionHash}</small>
+							</p>
+							<p>
+								Owner: <small>{product.ownerEmail}</small>
+							</p>
+							<img className="star-rating-product" src={require('../Assets/Images/stars.jpeg')} />
+							<p>
+								<span className="product-short-header">Long Description:</span>{' '}
+								{product.fullDescription}
+								<br />
+								<span className="product-price">
+									Price {product.priceinUsd ? `$ ${product.priceinUsd} USD` : 'N/A'}{' '}
+								</span>
+								<button
+									type="button"
+									className="btn btn-primary product-btn p-2"
+									onClick={() => purchaseProduct(product.productId, user.email, product.price)}
+									disabled={user.email == product.ownerEmail}
+								>
+									Purchase
+								</button>
+							</p>
+							<p>
+								<span className="product-short-header">License Description:</span>{' '}
+								{product.licenseDescription ? product.licenseDescription : 'N/A'}
+								<br />
+								<span className="product-short-header">Term 1:</span>{' '}
+								{product.term1StartDate
+									? `${getDate(product.term1StartDate)} to ${getDate(product.term1EndDate)}`
+									: 'N/A'}
+								<br />
+								<span className="product-short-header">Term 2:</span>{' '}
+								{product.term2
+									? product.term2 == 'nonExclusive'
+										? 'Non-Exclusive'
+										: 'Exclusive'
+									: 'N/A'}{' '}
+								&nbsp; <span className="product-short-header">Royalty:</span>{' '}
+								{product.royalty ? `${product.royalty}%` : 'N/A'} <br />
+								<span className="product-price">
+									License Fee:{' '}
+									{product.licenseFeeUsd ? `$ ${product.licenseFeeUsd.toFixed(2)} USD` : 'N/A'}{' '}
+								</span>
+								<button
+									type="button"
+									className="btn btn-info product-btn p-2"
+									data-toggle="modal"
+									data-target="#licensing-terms"
+									disabled={
+										!(
+											product.license &&
+											product.licenseFeeUsd > 0 &&
+											!(user.email == product.ownerEmail)
+										)
+									}
+								>
+									License
+								</button>
+							</p>
+						</div>
+					</div>
+				</div>
+			)}
+
 			{/* Modal-licensing terms */}
 			<div className="modal licensing-modal" id="licensing-terms">
 				<div className="modal-dialog modal-lg" role="document">
@@ -356,7 +393,7 @@ function ProductDescription() {
 									)
 								}
 							>
-								Accept and Purchase
+								Proceed to purchase
 							</button>
 							<button type="button" className="btn btn-danger" data-dismiss="modal">
 								Close
