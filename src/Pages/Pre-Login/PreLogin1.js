@@ -12,11 +12,11 @@ function PreLogin1() {
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem('user'));
 		const token = localStorage.getItem('token') || '';
-		// if (user) {
+		if (user) {
 			if (user.remember && token) {
 				window.location.href = '/Welcome?page=dashboard';
 			}
-		// }
+		}
 	}, []);
 
 	// console.log(userDetails);
