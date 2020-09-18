@@ -7,6 +7,7 @@ import Assets from './Assets';
 import Licensing from './Licensing';
 import Store from './Store';
 import Transactions from './Transactions';
+import Profile from '../Profile';
 
 // Style is in welcome.scss
 
@@ -35,6 +36,7 @@ function Welcome() {
 		licensing: false,
 		store: false,
 		transactions: false,
+		profile: false,
 	});
 	// console.log(toggle);
 
@@ -82,13 +84,22 @@ function Welcome() {
 										width="100"
 									/>
 								</div>
-								<div className="bottom-border py-3">
-									<img
-										className="rounded-circle"
-										src={require('../../Assets/Images/face.png')}
-										width="50"
-									/>{' '}
-									<a className="text-white">{user.name}</a>
+								<div className="bottom-border py-1">
+									<a
+										href="/Welcome?page=profile"
+										className={
+											toggle.profile
+												? 'nav-link text-white p-2 mb-2 current'
+												: 'nav-link text-white p-2 mb-2 sidebar-link'
+										}
+									>
+										<img
+											className="rounded-circle"
+											src={require('../../Assets/Images/face.png')}
+											width="30"
+										/>{' '}
+										<small>{user.name}</small>
+									</a>
 								</div>
 								<ul className="navbar-nav flex-column mt-4">
 									<li className="nav-item">
@@ -100,7 +111,9 @@ function Welcome() {
 											}
 											href="/Welcome?page=dashboard"
 										>
-											<i className="fa fa-dashboard text-light fa-lg mr-3"></i>Dashboard
+											<small>
+												<i className="fa fa-dashboard text-light fa-lg mr-3"></i>Dashboard
+											</small>
 										</a>
 									</li>
 									<li className="nav-item">
@@ -112,7 +125,9 @@ function Welcome() {
 											}
 											href="/Welcome?page=assets"
 										>
-											<i className="fas fa-envelope text-light fa-lg mr-3"></i>Assets
+											<small>
+												<i className="fas fa-envelope text-light fa-lg mr-3"></i>Assets
+											</small>
 										</a>
 									</li>
 									<li className="nav-item">
@@ -124,7 +139,9 @@ function Welcome() {
 											}
 											href="/Welcome?page=store"
 										>
-											<i className="fas fa-chart-line text-light fa-lg mr-3"></i>Store
+											<small>
+												<i className="fas fa-chart-line text-light fa-lg mr-3"></i>Store
+											</small>
 										</a>
 									</li>
 									<li className="nav-item">
@@ -136,7 +153,9 @@ function Welcome() {
 											}
 											href="/Welcome?page=licensing"
 										>
-											<i className="fas fa-chart-bar text-light fa-lg mr-3"></i>Licensing
+											<small>
+												<i className="fas fa-chart-bar text-light fa-lg mr-3"></i>Licensing
+											</small>
 										</a>
 									</li>
 									<li className="nav-item">
@@ -148,7 +167,9 @@ function Welcome() {
 											}
 											href="/Welcome?page=transactions"
 										>
-											<i className="fas fa fa-files-o text-light fa-lg mr-3"></i>Transactions
+											<small>
+												<i className="fas fa fa-files-o text-light fa-lg mr-3"></i>Transactions
+											</small>
 										</a>
 									</li>
 								</ul>
@@ -159,7 +180,7 @@ function Welcome() {
 							<div className="col-xl-10 col-lg-9 col-md-8 ml-auto bg-dark fixed-top py-2 top-navbar">
 								<div className="row align-items-center">
 									<div className="col-md-4">
-										<h4 className="text-light text-uppercase">Dashboard</h4>
+										{/* <h4 className="text-light text-uppercase">Dashboard</h4> */}
 									</div>
 									<div className="col-md-5">
 										<form>
@@ -185,16 +206,6 @@ function Welcome() {
 											<li className="nav-item icon-parent">
 												<a className="nav-link icon-bullet">
 													<i className="fas fa-bell text-muted fa-lg"></i>
-												</a>
-											</li>
-											<li className="nav-item mx-auto">
-												<a className="nav-link" href={'/profile'}>
-													<img
-														className="rounded-circle"
-														src={require('../../Assets/Images/face.png')}
-														width="20"
-													/>{' '}
-													<span className="text-white">Profile</span>
 												</a>
 											</li>
 											<li className="nav-item icon-parent ml-md-auto">
@@ -257,6 +268,8 @@ function Welcome() {
 				<Store />
 			) : toggle.transactions ? (
 				<Transactions />
+			) : toggle.profile ? (
+				<Profile />
 			) : (
 				<div>Nothing selected, Please contact your Admin</div>
 			)}

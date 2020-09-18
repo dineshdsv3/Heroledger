@@ -115,7 +115,7 @@ function Store() {
 					productId: returnData.productId,
 					productName: returnData.productName,
 					transactionHash: BCData.transactionHash,
-					transactionType: 'asset',
+					transactionType: 'Purchase',
 					previousOwner: returnData.seller,
 					currentOwner: returnData.ownerEmail,
 					purchaseDate: returnData.timestamp,

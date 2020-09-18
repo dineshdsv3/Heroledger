@@ -4,7 +4,6 @@ import axios from 'axios';
 
 function Transactions() {
 	const [user, setUser] = useState({});
-	const [sellData, setsellData] = useState([]);
 	const [buyData, setBuyData] = useState([]);
 
 	useEffect(() => {
@@ -16,45 +15,24 @@ function Transactions() {
 		setUser(user);
 		let email = user.email;
 		axios.get('/getTransactions', { params: { email } }).then((res) => {
-			const buyRecords = res.data.data
-				.filter((ele) => ele.currentOwner === email)
-				.map((ele) => {
-					console.log(ele);
-					return {
-						name: <a href={`/Product?id=${ele.productId}&prev=transactions`}>{ele.productName}</a>,
-						hash: (
-							<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
-								{ele.transactionHash}
-							</a>
-						),
-						price: `${getPriceinUSD(ele.amountinEth)} USD`,
-						previousOwner: ele.previousOwner,
-						transactionType: <span className="text-capitalize">{ele.transactionType}</span>,
-						registerDate: getDate(ele.registrationDate),
-						purchaseDate: getDate(ele.purchaseDate),
-					};
-				});
+			const buyRecords = res.data.data.map((ele) => {
+				console.log(ele);
+				return {
+					name: <a href={`/Product?id=${ele.productId}&prev=transactions`}>{ele.productName}</a>,
+					hash: (
+						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
+							{ele.transactionHash}
+						</a>
+					),
+					price: `${getPriceinUSD(ele.amountinEth)} USD`,
+					previousOwner: ele.previousOwner,
+					currentOwner: ele.currentOwner,
+					transactionType: <span className="text-capitalize">{ele.transactionType}</span>,
+					registerDate: getDate(ele.registrationDate),
+					purchaseDate: getDate(ele.purchaseDate),
+				};
+			});
 			setBuyData(buyRecords);
-
-			const sellRecords = res.data.data
-				.filter((ele) => ele.previousOwner === email)
-				.map((ele) => {
-					console.log(ele);
-					return {
-						name: <a href={`/Product?id=${ele.productId}&prev=transactions`}>{ele.productName}</a>,
-						hash: (
-							<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
-								{ele.transactionHash}
-							</a>
-						),
-						price: `${getPriceinUSD(ele.amountinEth)} USD`,
-						currentOwner: ele.currentOwner,
-						transactionType: <span className="text-capitalize">{ele.transactionType}</span>,
-						registerDate: getDate(ele.registrationDate),
-						purchaseDate: getDate(ele.purchaseDate),
-					};
-				});
-			setsellData(sellRecords);
 		});
 	};
 
@@ -97,57 +75,6 @@ function Transactions() {
 		},
 	};
 
-	const SellColumns = [
-		{
-			name: 'Asset Name',
-			selector: 'name',
-			width: '10%',
-		},
-		{
-			name: 'Hash',
-			selector: 'hash',
-			center: true,
-			width: '16%',
-		},
-		{
-			name: 'Price',
-			selector: 'price',
-			sortable: true,
-			center: true,
-			width: '10%',
-		},
-		{
-			name: 'Current Owner',
-			selector: 'currentOwner',
-			sortable: true,
-			wrap: true,
-			width: '20%',
-		},
-		{
-			name: 'Transaction Type',
-			selector: 'transactionType',
-			sortable: true,
-			center: true,
-			width: '15%',
-		},
-		{
-			name: 'Registration Date',
-			selector: 'registerDate',
-			sortable: true,
-			center: true,
-			wrap: true,
-			width: '15%',
-		},
-		{
-			name: 'Purchase Date',
-			selector: 'purchaseDate',
-			sortable: true,
-			center: true,
-			wrap: true,
-			width: '15%',
-		},
-	];
-
 	const BuyColumns = [
 		{
 			name: 'Asset Name',
@@ -158,7 +85,7 @@ function Transactions() {
 			name: 'Hash',
 			selector: 'hash',
 			center: true,
-			width: '16%',
+			width: '15%',
 		},
 		{
 			name: 'Price',
@@ -171,23 +98,31 @@ function Transactions() {
 			name: 'Previous Owner',
 			selector: 'previousOwner',
 			sortable: true,
-			wrap: true,
-			width: '20%',
+			width: '18%',
 		},
+		{
+			name: 'Current Owner',
+			selector: 'currentOwner',
+			sortable: true,
+			width: '18%',
+		},
+
 		{
 			name: 'Transaction Type',
 			selector: 'transactionType',
 			sortable: true,
+			wrap: false,
 			center: true,
-			width: '15%',
+			width: '10%',
 		},
 		{
 			name: 'Registration Date',
 			selector: 'registerDate',
 			sortable: true,
+			wrap: false,
 			center: true,
 			wrap: true,
-			width: '15%',
+			width: '10%',
 		},
 		{
 			name: 'Purchase Date',
@@ -195,7 +130,7 @@ function Transactions() {
 			sortable: true,
 			center: true,
 			wrap: true,
-			width: '15%',
+			width: '10%',
 		},
 	];
 
@@ -204,27 +139,12 @@ function Transactions() {
 			<div className="row align-items-center">
 				<div className="col-xl-10 col-lg-9 col-md-8 ml-auto">
 					<div className="row pt-5 mt-md-3 mb-5 ml-auto">
-						<h5 className="text-primary">Buy Transactions</h5>
+						<h5 className="text-primary">Transactions</h5>
 						{/* {console.log(buyData)} */}
 						<DataTable
 							noHeader
 							columns={BuyColumns}
 							data={buyData}
-							customStyles={customStyles}
-							pagination={true}
-							responsive={true}
-							paginationPerPage={5}
-							noDataComponent={
-								<div className="spinner-border text-success" role="status">
-									<span className="sr-only">Loading...</span>
-								</div>
-							}
-						/>
-						<h5 className="text-primary">Sell Transactions</h5>
-						<DataTable
-							noHeader
-							columns={SellColumns}
-							data={sellData}
 							customStyles={customStyles}
 							pagination={true}
 							responsive={true}

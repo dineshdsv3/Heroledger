@@ -9,6 +9,8 @@ function PreLogin1() {
 		remember: false,
 	});
 
+	const [loader, setLoader] = useState(false);
+
 	// useEffect(() => {
 	// 	const user = JSON.parse(localStorage.getItem('user'));
 	// 	const token = localStorage.getItem('token') || '';
@@ -22,7 +24,7 @@ function PreLogin1() {
 	// console.log(userDetails);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log(userDetails);
+		setLoader(true);
 		await axios
 			.post(`/login`, { userDetails })
 			.then(async (res) => {
@@ -39,7 +41,9 @@ function PreLogin1() {
 				};
 				localStorage.setItem('token', res.data.token);
 				localStorage.setItem('user', JSON.stringify(userResponseDetails));
+				console.log('login successful');
 				alert('Log-in Successful');
+				setLoader(false);
 				window.location.href = '/Welcome?page=dashboard';
 			})
 			.catch((error) => {
@@ -105,9 +109,17 @@ function PreLogin1() {
 								</div>
 							</div>
 							<div className="mb-3">
-								<button type="submit" className="btn btn-block text-uppercase">
-									<i className="fas fa-sign-in-alt"></i> Login
-								</button>
+								{loader ? (
+									<button type="submit" disabled className="btn btn-block text-uppercase">
+										<div class="spinner-border text-info" role="status">
+											<span class="sr-only">Loading...</span>
+										</div>
+									</button>
+								) : (
+									<button type="submit" className="btn btn-block text-uppercase">
+										<i className="fas fa-sign-in-alt"></i> Login
+									</button>
+								)}
 							</div>
 							<div className="text-right">
 								<a href="#" className="forget-link">

@@ -78,6 +78,7 @@ function Register() {
 									type="text"
 									name="username"
 									placeholder="Name"
+									maxLength={16}
 									required
 									onChange={(e) => setUserDetails({ ...userDetails, name: e.target.value })}
 								/>

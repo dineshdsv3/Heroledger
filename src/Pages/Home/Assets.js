@@ -498,7 +498,7 @@ function Assets() {
 										id="name"
 										onChange={(e) => setProductDetails({ ...productDetails, name: e.target.value })}
 										required
-										maxLength="15"
+										maxLength="20"
 									/>
 								</div>
 								<div>
