@@ -59,7 +59,6 @@ router.put('/logout', async (req, res) => {
 		res.status(500).send({ error: 'Signout failed' });
 	}
 });
-// Add Image Route
 
 // Add Audio Route
 router.post('/addAudio', async (req, res) => {

@@ -12,6 +12,8 @@ function Register() {
 		longitude: '',
 	});
 
+	const [loader, setLoader] = useState(false);
+
 	useEffect(() => {
 		if ('geolocation' in navigator) {
 			console.log('Available');
@@ -30,18 +32,20 @@ function Register() {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setLoader(true);
 		if (userDetails.password === userDetails.confirmPassword) {
 			const registerDetails = {
 				name: userDetails.name,
 				email: userDetails.email,
 				password: userDetails.password,
 				latitude: userDetails.latitude,
-				longitude: userDetails.longitude
+				longitude: userDetails.longitude,
 			};
 			axios
 				.post(`/signup`, { registerDetails })
 				.then((res) => {
 					alert('Registration Successful, continue to login');
+					setLoader(false);
 					window.location.pathname = '/';
 				})
 				.catch((error) => {
@@ -122,9 +126,17 @@ function Register() {
 								/>
 							</div>
 							<div className="mb-3">
-								<button type="submit" className="btn btn-block text-uppercase">
-									<i className="fas fa-sign-in-alt"></i> Register
-								</button>
+								{loader ? (
+									<button type="submit" disabled className="btn btn-block text-uppercase">
+										<div class="spinner-border text-info" role="status">
+											<span class="sr-only">Loading...</span>
+										</div>
+									</button>
+								) : (
+									<button type="submit" className="btn btn-block text-uppercase">
+										<i className="fas fa-sign-in-alt"></i> Register
+									</button>
+								)}
 							</div>
 
 							<div className="text-center mb-3"> or login with</div>

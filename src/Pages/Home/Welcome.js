@@ -25,11 +25,12 @@ function Welcome() {
 		}
 		loadWeb3();
 		loadPage();
+		loadImage();
 	}, []);
 
 	const user = JSON.parse(localStorage.getItem('user'));
 	const email = user.email;
-
+	const [image, setImage] = useState('');
 	const [toggle, setToggleItems] = useState({
 		dashboard: false,
 		assets: false,
@@ -45,8 +46,13 @@ function Welcome() {
 		let urlsplit = url.split('?');
 		let params = urlsplit[1].split('=');
 		let page = params[1];
-		console.log(page);
 		setToggleItems({ ...toggle, [page]: true });
+	};
+
+	const loadImage = async () => {
+		axios.get('/getImage', { params: { email } }).then((res) => {
+			setImage(res.data.data[0].image);
+		});
 	};
 
 	const logout = () => {
@@ -95,7 +101,7 @@ function Welcome() {
 									>
 										<img
 											className="rounded-circle"
-											src={require('../../Assets/Images/face.png')}
+											src={image ? image : require('../../Assets/Images/face.png')}
 											width="30"
 										/>{' '}
 										<small>{user.name}</small>
