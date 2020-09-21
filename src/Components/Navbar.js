@@ -16,10 +16,8 @@ function Navbar() {
 	};
 	return (
 		<div>
-			<nav className="navbar navbar-expand-lg navbar-light bg-dark fixed-top">
-				<div className="col-md-4">
-					<h4 className="text-light text-uppercase">Dashboard</h4>
-				</div>
+			<nav className="navbar navbar-expand-lg navbar-light bg-black fixed-top">
+				<div className="col-md-4">{/* <h4 className="text-light text-uppercase">Dashboard</h4> */}</div>
 				<div className="col-md-5">
 					<form>
 						<div className="input-group">
@@ -40,16 +38,6 @@ function Navbar() {
 						<li className="nav-item icon-parent">
 							<a href="#" className="nav-link icon-bullet">
 								<i className="fas fa-bell text-muted fa-lg"></i>
-							</a>
-						</li>
-						<li className="nav-item mx-auto">
-							<a className="nav-link" href={'/profile'}>
-								<img
-									className="rounded-circle"
-									src={require('../Assets/Images/face.png')}
-									width="20"
-								/>{' '}
-								<span className="text-white">Profile</span>
 							</a>
 						</li>
 						<li className="nav-item icon-parent ml-md-auto">

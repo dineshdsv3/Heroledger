@@ -214,9 +214,11 @@ function Store() {
 									<div className="row item justify-content-around" key={ele + ind}>
 										<div className="card store-card">
 											<img
-												src={ele.image}
+												src={`/image/${ele.image}`}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
+												onClick={() =>
+													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
+												}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -295,9 +297,11 @@ function Store() {
 									<div className="row item justify-content-around" key={ele + ind}>
 										<div className="card store-card">
 											<img
-												src={ele.image}
+												src={`/image/${ele.image}`}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
+												onClick={() =>
+													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
+												}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -376,7 +380,9 @@ function Store() {
 											<img
 												src={require('../../Assets/Images/doc.jpeg')}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
+												onClick={() =>
+													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
+												}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -453,9 +459,11 @@ function Store() {
 									<div className="row item justify-content-around" key={ele + ind}>
 										<div className="card store-card">
 											<img
-												src={ele.image}
+												src={`/image/${ele.image}`}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
+												onClick={() =>
+													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
+												}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -534,7 +542,9 @@ function Store() {
 											<img
 												src={require('../../Assets/Images/music.png')}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
+												onClick={() =>
+													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
+												}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -613,7 +623,9 @@ function Store() {
 											<img
 												src={require('../../Assets/Images/video.jpeg')}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
+												onClick={() =>
+													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
+												}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">
@@ -690,9 +702,11 @@ function Store() {
 									<div className="row item justify-content-around" key={ele + ind}>
 										<div className="card store-card">
 											<img
-												src={ele.image}
+												src={`/image/${ele.image}`}
 												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
+												onClick={() =>
+													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
+												}
 											/>
 											<div className="card-body store-card-body">
 												<div className="row">

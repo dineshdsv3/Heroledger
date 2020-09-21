@@ -75,7 +75,7 @@ function ProductDescription() {
 		} else {
 			return (
 				<div>
-					<img className="d-block w-100 img-fluid" style={{ height: '80vh' }} src={image} />
+					<img className="d-block w-100 img-fluid" style={{ height: '80vh' }} src={`/image/${image}`} />
 				</div>
 			);
 		}

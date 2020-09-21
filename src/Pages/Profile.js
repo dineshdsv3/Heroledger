@@ -3,8 +3,10 @@ import axios from 'axios';
 
 function Profile() {
 	const [image, setImage] = useState('');
+	const [base64Image, setbase64Image] = useState('');
 
 	const user = JSON.parse(localStorage.getItem('user'));
+	console.log(image);
 
 	useEffect(() => {
 		getImage();
@@ -20,6 +22,7 @@ function Profile() {
 	const handleUpload = (e) => {
 		let result;
 		let file = e.target.files[0];
+
 		if (file) {
 			if (file.size > 1148576) {
 				alert('In Beta version you need to upload file less than 1 MB');
@@ -28,32 +31,41 @@ function Profile() {
 				reader.readAsDataURL(file);
 				reader.onloadend = async () => {
 					result = reader.result;
-					setImage(result);
+					setImage(file);
+					setbase64Image(result);
 				};
 			}
 		}
 	};
 
 	const uploadImage = () => {
+		const formData = new FormData();
+		formData.append('image', image);
+
+		axios.post('/addUpload', formData).then((res) => {
+			console.log(res.data.file.filename);
+			if (image) {
+				console.log('uploading');
+				let updatedUser = {
+					email: user.email,
+					image: res.data.file.filename,
+				};
+				console.log(updatedUser);
+				axios
+					.post('/imageUpload', { updatedUser })
+					.then((res) => {
+						console.log(res);
+						alert('Upload successful!!!');
+					})
+					.catch((error) => {
+						alert('Upload not successful!!! Please Try again');
+					});
+			} else {
+				alert('Please select an image');
+			}
+		});
+
 		console.log('triggered');
-		if (image) {
-			console.log('uploading');
-			let updatedUser = {
-				email: user.email,
-				image: image,
-			};
-			axios
-				.post('/imageUpload', { updatedUser })
-				.then((res) => {
-					console.log(res);
-					alert('Upload successful!!!');
-				})
-				.catch((error) => {
-					alert('Upload not successful!!! Please Try again');
-				});
-		} else {
-			alert('Please select an image');
-		}
 	};
 
 	return (
@@ -65,7 +77,7 @@ function Profile() {
 							<div className="col-12">
 								<img
 									className="rounded-circle mx-auto d-block"
-									src={image ? image : require('../Assets/Images/face.png')}
+									src={base64Image ? base64Image : `/image/${image}`}
 									width="90"
 									height="90"
 								/>

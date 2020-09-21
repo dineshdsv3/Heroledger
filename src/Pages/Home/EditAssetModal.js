@@ -132,7 +132,7 @@ function EditAsset(props) {
 											height="30vh"
 										/>
 									) : (
-										<img className="img-fluid mt-2" src={data.image} width="45%" height="30vh" />
+										<img className="img-fluid mt-2" src={`/image/${data.image}`} width="45%" height="30vh" />
 									)}
 								</div>
 							</div>

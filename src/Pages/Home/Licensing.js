@@ -185,7 +185,7 @@ function Licensing() {
 		} else {
 			return (
 				<div>
-					<img className="rounded-circle" src={image} width="40" height="40" />
+					<img className="rounded-circle" src={`/image/${image}`} width="40" height="40" />
 				</div>
 			);
 		}

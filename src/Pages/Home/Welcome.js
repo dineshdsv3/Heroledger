@@ -101,7 +101,7 @@ function Welcome() {
 									>
 										<img
 											className="rounded-circle"
-											src={image ? image : require('../../Assets/Images/face.png')}
+											src={`/image/${image}`}
 											width="30"
 										/>{' '}
 										<small>{user.name}</small>
@@ -183,7 +183,7 @@ function Welcome() {
 							{/* End of sidebar */}
 
 							{/* Top-nav */}
-							<div className="col-xl-10 col-lg-9 col-md-8 ml-auto bg-dark fixed-top py-2 top-navbar">
+							<div className="col-xl-10 col-lg-9 col-md-8 ml-auto fixed-top py-2 top-navbar-welcome">
 								<div className="row align-items-center">
 									<div className="col-md-4">
 										{/* <h4 className="text-light text-uppercase">Dashboard</h4> */}
@@ -277,7 +277,7 @@ function Welcome() {
 			) : toggle.profile ? (
 				<Profile />
 			) : (
-				<div>Nothing selected, Please contact your Admin</div>
+				<div className="pt-5 mt-5 col-10 mr-auto">Nothing selected, Please contact your Admin</div>
 			)}
 
 			{/* End of Cards */}

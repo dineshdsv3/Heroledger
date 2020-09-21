@@ -242,17 +242,25 @@ function Assets() {
 	};
 
 	const addProductPostRequest = (product) => {
-		axios
-			.post('/addProduct', { product })
-			.then((res) => {
-				console.log(res.data.message);
-				$('#register-asset').modal('hide');
-				alert('Your Product has been successfully Registered');
-				window.location.href = '/Welcome?page=assets';
-			})
-			.catch((err) => {
-				alert('Product Registration failed. Please try again in few minutes');
-			});
+		const formData = new FormData();
+		formData.append('image', productDetails.upload);
+		axios.post('/addUpload', formData).then((res) => {
+			console.log(res.data.file.filename);
+			product.image = res.data.file.filename;
+			console.log(product);
+
+			axios
+				.post('/addProduct', { product })
+				.then((res) => {
+					console.log(res.data.message);
+					$('#register-asset').modal('hide');
+					alert('Your Product has been successfully Registered');
+					window.location.href = '/Welcome?page=assets';
+				})
+				.catch((err) => {
+					alert('Product Registration failed. Please try again in few minutes');
+				});
+		});
 	};
 
 	const addProduct = async (name, type, email, price) => {
@@ -274,58 +282,19 @@ function Assets() {
 					transactionHash: receipt.transactionHash,
 					blockHash: receipt.blockHash,
 					timestamp: blockchainData.timestamp,
-					image: productDetails.upload,
+					// image: productDetails.upload,
 					inStore: blockchainData.inStore,
 					license: blockchainData.license,
 					fullDescription: '',
 					priceinUsd: 0,
 				};
-				console.log(product);
-				const upload = {
-					id: product.productId,
-					name: product.productName,
-					upload: productDetails.upload,
-				};
-				console.log(upload);
-				if (product.productType == 'audio') {
-					axios
-						.post('/addAudio', { upload })
-						.then((res) => {
-							if (res.data.message) {
-								product.upload = '';
-								addProductPostRequest(product);
-							}
-						})
-						.catch((error) => {
-							alert('Product Registration Failed. Please register your product again');
-						});
-				} else if (product.productType == 'video') {
-					axios
-						.post('/addVideo', { upload })
-						.then((res) => {
-							if (res.data.message) {
-								product.upload = '';
-								addProductPostRequest(product);
-							}
-						})
-						.catch((error) => {
-							alert('Product Registration Failed. Please register your product again');
-						});
-				} else if (product.productType == 'script') {
-					axios
-						.post('/addDocument', { upload })
-						.then((res) => {
-							if (res.data.message) {
-								product.upload = '';
-								addProductPostRequest(product);
-							}
-						})
-						.catch((error) => {
-							alert('Product Registration Failed. Please register your product again');
-						});
-				} else {
-					addProductPostRequest(product);
-				}
+				// console.log(product);
+				// const upload = {
+				// 	id: product.productId,
+				// 	name: product.productName,
+				// 	upload: productDetails.upload,
+				// };
+				addProductPostRequest(product);
 			});
 	};
 
@@ -381,7 +350,7 @@ function Assets() {
 		} else {
 			return (
 				<div>
-					<img className="rounded-circle" src={image} width="40" height="40" />
+					<img className="rounded-circle" src={`/image/${image}`} width="40" height="40" />
 				</div>
 			);
 		}
@@ -392,14 +361,9 @@ function Assets() {
 		let file = e.target.files[0];
 		if (file) {
 			if (file.size > 1148576) {
-				alert('In Beta version you need to upload file less than 1 MB');
+				alert('In Beta version you need to upload file less than or equal to 1 MB');
 			} else {
-				let reader = new FileReader();
-				reader.readAsDataURL(file);
-				reader.onloadend = async () => {
-					result = reader.result;
-					setProductDetails({ ...productDetails, upload: reader.result });
-				};
+				setProductDetails({ ...productDetails, upload: file });
 			}
 		}
 	};

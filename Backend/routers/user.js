@@ -1,12 +1,51 @@
 const express = require('express');
+const crypto = require('crypto');
+const multer = require('multer');
+const GridFsStorage = require('multer-gridfs-storage');
+const Grid = require('gridfs-stream');
+const methodOverride = require('method-override');
+const bodyparser = require('body-parser');
 const User = require('../models/User');
-const Audio = require('../models/Audio');
-const Video = require('../models/Video');
-const Document = require('../models/Document');
 const Product = require('../models/Product');
 const Transaction = require('../models/Transactions');
+const mongoose = require('mongoose');
+const path = require('path');
 
 const router = express.Router();
+
+const conn = mongoose.createConnection(process.env.MONGODB_URL, {
+	useNewUrlParser: true,
+	useCreateIndex: true,
+	useUnifiedTopology: true,
+});
+
+conn.once('open', () => {
+	// initialize stream
+	gfs = Grid(conn.db, mongoose.mongo);
+	gfs.collection('uploads');
+});
+
+// Create Storage Engine
+const storage = new GridFsStorage({
+	url: process.env.MONGODB_URL,
+	file: (req, file) => {
+		return new Promise((resolve, reject) => {
+			crypto.randomBytes(16, (err, buf) => {
+				if (err) {
+					return reject(err);
+				}
+				const filename = buf.toString('hex') + path.extname(file.originalname);
+				const fileInfo = {
+					productName: 'Sample image Uploads',
+					filename: filename,
+					bucketName: 'uploads',
+				};
+				resolve(fileInfo);
+			});
+		});
+	},
+});
+const upload = multer({ storage });
 
 router.use(function (req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*'); // update to match the domain you will make the request from
@@ -60,52 +99,6 @@ router.put('/logout', async (req, res) => {
 	}
 });
 
-// Add Audio Route
-router.post('/addAudio', async (req, res) => {
-	// console.log(req.body.upload)
-	const audio = new Audio({
-		productId: req.body.upload.id,
-		productName: req.body.upload.name,
-		productAudio: req.body.upload.upload,
-	});
-
-	// console.log(audio);
-	audio.save().then((result) => {
-		console.log('Audio Added');
-		res.send({ message: 'Audio File Added to DB' });
-	});
-});
-// Add Video Route
-router.post('/addVideo', async (req, res) => {
-	// console.log(req.body.upload)
-	const video = new Video({
-		productId: req.body.upload.id,
-		productName: req.body.upload.name,
-		productVideo: req.body.upload.upload,
-	});
-
-	// console.log(video);
-	video.save().then((result) => {
-		console.log('Video Added');
-		res.send({ message: 'Video File Added to DB' });
-	});
-});
-// Add Document Route
-router.post('/addDocument', async (req, res) => {
-	// console.log(req.body.upload)
-	const document = new Document({
-		productId: req.body.upload.id,
-		productName: req.body.upload.name,
-		productDocument: req.body.upload.upload,
-	});
-
-	// console.log(document);
-	document.save().then((result) => {
-		console.log('Document Added');
-		res.send({ message: 'Document Added to DB' });
-	});
-});
-
 router.post('/addTransaction', async (req, res) => {
 	console.log(req.body.transactionDetails);
 	let transaction = new Transaction({
@@ -126,6 +119,7 @@ router.post('/addTransaction', async (req, res) => {
 });
 
 router.post('/imageUpload', async (req, res) => {
+	console.log('image request triggered');
 	User.findOneAndUpdate(
 		{ email: req.body.updatedUser.email },
 		{ image: req.body.updatedUser.image },
@@ -152,8 +146,37 @@ router.get('/getImage', async (req, res) => {
 	});
 });
 
+// Handle Upload
+router.post('/addUpload', upload.single('image'), (req, res) => {
+	res.json({ file: req.file });
+});
+
+// Display Image
+router.get('/image/:filename', (req, res) => {
+	// console.log('get Image Triggered');
+	gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
+		// Chec if file exists
+		if (!file || file.length === 0) {
+			return res.status(404).json({
+				err: 'No files exist',
+			});
+		}
+		// Check if image
+		if (file.contentType === 'image/jpeg' || file.contentType === 'image/png') {
+			// Read output to browser
+			const readstream = gfs.createReadStream(file.filename);
+			readstream.pipe(res);
+		} else {
+			// console.log(file.contentType)
+			const readstream = gfs.createReadStream(file.filename);
+			readstream.pipe(res);
+		}
+	});
+});
+
 router.post('/addProduct', async (req, res) => {
 	const productReq = req.body.product;
+	console.log(productReq);
 	const product = new Product({
 		productId: productReq.productId,
 		originatorEmail: productReq.originatorEmail,
