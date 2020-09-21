@@ -155,7 +155,7 @@ router.post('/addUpload', upload.single('image'), (req, res) => {
 router.get('/image/:filename', (req, res) => {
 	// console.log('get Image Triggered');
 	gfs.files.findOne({ filename: req.params.filename }, (err, file) => {
-		// Chec if file exists
+		// Check if file exists
 		if (!file || file.length === 0) {
 			return res.status(404).json({
 				err: 'No files exist',

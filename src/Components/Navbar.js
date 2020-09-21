@@ -16,7 +16,7 @@ function Navbar() {
 	};
 	return (
 		<div>
-			<nav className="navbar navbar-expand-lg navbar-light bg-black fixed-top">
+			<nav className="navbar navbar-expand-lg navbar-light top-navbar-welcome fixed-top">
 				<div className="col-md-4">{/* <h4 className="text-light text-uppercase">Dashboard</h4> */}</div>
 				<div className="col-md-5">
 					<form>
