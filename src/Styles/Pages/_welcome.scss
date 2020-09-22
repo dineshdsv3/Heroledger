@@ -85,6 +85,10 @@
         box-shadow: 2px 3px 15px #999999;
         transform: translateY(-1px);
     }
+    min-height: 41vh;
+}
+.card-dashboard-2 {
+    min-height: 29vh;
 }
 
 .profile-btn {
@@ -92,4 +96,21 @@
     border-radius: 2px;
     outline: none !important;
     border: none;
+}
+
+.font-10 {
+    font-size: 9px;
+}
+.font-9 {
+    font-size: 9px;
+}
+.font-14 {
+    font-size: 12px;
+}
+.card-footer-own {
+    background: rgb(148, 134, 134);
+}
+.dot {
+    fill: #ffab00;
+    stroke: #fff;
 }

@@ -34,6 +34,8 @@ function Assets() {
 		upload: '',
 		price: 0,
 	});
+	const [thumbnail, setThumbnail] = useState('');
+	console.log(thumbnail);
 
 	useEffect(() => {
 		// getUserDetails();
@@ -364,6 +366,7 @@ function Assets() {
 				alert('In Beta version you need to upload file less than or equal to 1 MB');
 			} else {
 				setProductDetails({ ...productDetails, upload: file });
+				setThumbnail(file.name);
 			}
 		}
 	};
@@ -502,6 +505,11 @@ function Assets() {
 									</label>
 									<input type="file" id="upload" onChange={handleUpload} accept="*" required hidden />
 								</div>
+								{thumbnail && (
+									<div className="text-success text-center">
+										Uploaded <span className="text-secondary">{thumbnail}</span> Successfully
+									</div>
+								)}
 							</div>
 							<div className="modal-footer">
 								<button type="submit" className="btn btn-success" disabled={submitLoader}>

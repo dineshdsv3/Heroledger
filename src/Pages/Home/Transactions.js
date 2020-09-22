@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
+import { set } from 'mongoose';
 
 function Transactions() {
 	const [user, setUser] = useState({});
 	const [buyData, setBuyData] = useState([]);
+	const [loader, setLoader] = useState(true);
 
 	useEffect(() => {
 		getTransactions();
@@ -29,10 +31,11 @@ function Transactions() {
 					currentOwner: ele.currentOwner,
 					transactionType: <span className="text-capitalize">{ele.transactionType}</span>,
 					registerDate: getDate(ele.registrationDate),
-					purchaseDate: getDate(ele.purchaseDate),
+					transactionDate: getDate(ele.purchaseDate),
 				};
 			});
 			setBuyData(buyRecords);
+			setLoader(false);
 		});
 	};
 
@@ -125,8 +128,8 @@ function Transactions() {
 			width: '10%',
 		},
 		{
-			name: 'Purchase Date',
-			selector: 'purchaseDate',
+			name: 'Transaction Date',
+			selector: 'transactionDate',
 			sortable: true,
 			center: true,
 			wrap: true,
@@ -138,23 +141,34 @@ function Transactions() {
 		<div className="container-fluid">
 			<div className="row align-items-center">
 				<div className="col-xl-10 col-lg-9 col-md-8 ml-auto">
-					<div className="row pt-5 mt-md-3 mb-5 ml-auto">
+					<div className="pt-5 mt-md-3 mb-5 ml-auto">
 						<h5 className="text-primary">Transactions</h5>
+						<br />
 						{/* {console.log(buyData)} */}
-						<DataTable
-							noHeader
-							columns={BuyColumns}
-							data={buyData}
-							customStyles={customStyles}
-							pagination={true}
-							responsive={true}
-							paginationPerPage={5}
-							noDataComponent={
+						<div>
+							{loader ? (
 								<div className="spinner-border text-success" role="status">
 									<span className="sr-only">Loading...</span>
 								</div>
-							}
-						/>
+							) : buyData.length > 0 ? (
+								<DataTable
+									noHeader
+									columns={BuyColumns}
+									data={buyData}
+									customStyles={customStyles}
+									pagination={true}
+									responsive={true}
+									paginationPerPage={10}
+									noDataComponent={
+										<div className="spinner-border text-success" role="status">
+											<span className="sr-only">Loading...</span>
+										</div>
+									}
+								/>
+							) : (
+								<h5 className="text-center text-warning">No Transactions Found</h5>
+							)}
+						</div>
 					</div>
 				</div>
 			</div>

@@ -229,15 +229,16 @@ function Store() {
 													<small className="pl-1">{ele.ownerEmail}</small>
 
 													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<p>
-															<small>
-																<b>Price:</b>$ {ele.priceinUsd}
-															</small>
-														</p>
+														<small className="font-9">
+															<b>Price:</b>
+															<br />
+															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
+														</small>
 													</div>
 													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small>
-															<b>Fee:</b>{' '}
+														<small className="font-9">
+															<b>Licensing Fee:</b>
+															<br />{' '}
 															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
 														</small>
 													</div>
@@ -310,15 +311,16 @@ function Store() {
 													</div>
 													<small className="pl-1">{ele.ownerEmail}</small>
 													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<p>
-															<small>
-																<b>Price:</b>$ {ele.priceinUsd}
-															</small>
-														</p>
+														<small className="font-9">
+															<b>Price:</b>
+															<br />
+															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
+														</small>
 													</div>
 													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small>
-															<b>Fee:</b>{' '}
+														<small className="font-9">
+															<b>Licensing Fee:</b>
+															<br />{' '}
 															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
 														</small>
 													</div>
@@ -391,15 +393,16 @@ function Store() {
 													</div>
 													<small className="pl-1">{ele.ownerEmail}</small>
 													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<p>
-															<small>
-																<b>Price:</b>$ {ele.priceinUsd}
-															</small>
-														</p>
+														<small className="font-9">
+															<b>Price:</b>
+															<br />
+															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
+														</small>
 													</div>
 													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small>
-															<b>Fee:</b>{' '}
+														<small className="font-9">
+															<b>Licensing Fee:</b>
+															<br />{' '}
 															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
 														</small>
 													</div>
@@ -472,15 +475,16 @@ function Store() {
 													</div>
 													<small className="pl-1">{ele.ownerEmail}</small>
 													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<p>
-															<small>
-																<b>Price:</b>$ {ele.priceinUsd}
-															</small>
-														</p>
+														<small className="font-9">
+															<b>Price:</b>
+															<br />
+															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
+														</small>
 													</div>
 													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small>
-															<b>Fee:</b>{' '}
+														<small className="font-9">
+															<b>Licensing Fee:</b>
+															<br />{' '}
 															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
 														</small>
 													</div>
@@ -553,15 +557,16 @@ function Store() {
 													</div>
 													<small className="pl-1">{ele.ownerEmail}</small>
 													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<p>
-															<small>
-																<b>Price:</b>$ {ele.priceinUsd}
-															</small>
-														</p>
+														<small className="font-9">
+															<b>Price:</b>
+															<br />
+															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
+														</small>
 													</div>
 													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small>
-															<b>Fee:</b>{' '}
+														<small className="font-9">
+															<b>Licensing Fee:</b>
+															<br />{' '}
 															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
 														</small>
 													</div>
@@ -634,15 +639,16 @@ function Store() {
 													</div>
 													<small className="pl-1">{ele.ownerEmail}</small>
 													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<p>
-															<small>
-																<b>Price:</b>$ {ele.priceinUsd}
-															</small>
-														</p>
+														<small className="font-9">
+															<b>Price:</b>
+															<br />
+															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
+														</small>
 													</div>
 													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small>
-															<b>Fee:</b>{' '}
+														<small className="font-9">
+															<b>Licensing Fee:</b>
+															<br />{' '}
 															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
 														</small>
 													</div>
@@ -715,21 +721,22 @@ function Store() {
 													</div>
 													<small className="pl-1">{ele.ownerEmail}</small>
 													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<p>
-															<small>
-																<b>Price:</b>$ {ele.priceinUsd}
-															</small>
-														</p>
+														<small className="font-9">
+															<b>Price:</b>
+															<br />
+															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
+														</small>
 													</div>
 													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small>
-															<b>Fee:</b>{' '}
+														<small className="font-9">
+															<b>Licensing Fee:</b>
+															<br />{' '}
 															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
 														</small>
 													</div>
 												</div>
 
-												<div className="row">
+												<div className="row mt-1">
 													<div className="col-6 d-flex justify-content-start">
 														<button
 															className="btn btn-info store-btn"

@@ -271,11 +271,11 @@ function Licensing() {
 			width: '18%',
 		},
 		{
-			name: 'Fee',
+			name: 'Licensing Fee',
 			selector: 'fee',
 			sortable: true,
 			center: true,
-			width: '10%',
+			width: '14%',
 		},
 		{
 			name: 'Royalty',
@@ -407,7 +407,7 @@ function Licensing() {
 									/>
 								</div>
 								<div>
-									<label htmlFor="fee">Fee</label>
+									<label htmlFor="fee">Licensing Fee</label>
 									<input
 										id="fee"
 										required
