@@ -507,7 +507,9 @@ function Assets() {
 								</div>
 								{thumbnail && (
 									<div className="text-success text-center">
-										Uploaded <span className="text-secondary">{thumbnail}</span> Successfully
+										<small>
+											Uploaded <span className="text-secondary">{thumbnail}</span> Successfully
+										</small>
 									</div>
 								)}
 							</div>
