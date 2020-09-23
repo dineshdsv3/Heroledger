@@ -77,7 +77,13 @@ function Profile() {
 							<div className="col-12">
 								<img
 									className="rounded-circle mx-auto d-block"
-									src={base64Image ? base64Image : `/image/${image}`}
+									src={
+										base64Image
+											? base64Image
+											: image
+											? `/image/${image}`
+											: require('../Assets/Images/face.png')
+									}
 									width="90"
 									height="90"
 								/>

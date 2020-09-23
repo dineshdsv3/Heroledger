@@ -101,7 +101,7 @@ function Welcome() {
 									>
 										<img
 											className="rounded-circle"
-											src={`/image/${image}`}
+											src={image ? `/image/${image}` : require('../../Assets/Images/face.png')}
 											width="30"
 										/>{' '}
 										<small>{user.name}</small>
@@ -132,7 +132,8 @@ function Welcome() {
 											href="/Welcome?page=assets"
 										>
 											<small>
-												<i className="fas fa-envelope text-light fa-lg mr-3"></i>Assets
+												<i class="fa fa-folder text-light fa-lg mr-3" aria-hidden="true"></i>
+												Assets
 											</small>
 										</a>
 									</li>
@@ -146,7 +147,11 @@ function Welcome() {
 											href="/Welcome?page=store"
 										>
 											<small>
-												<i className="fas fa-chart-line text-light fa-lg mr-3"></i>Store
+												<i
+													class="fa fa-television text-light fa-lg mr-3"
+													aria-hidden="true"
+												></i>
+												Store
 											</small>
 										</a>
 									</li>
@@ -160,7 +165,7 @@ function Welcome() {
 											href="/Welcome?page=licensing"
 										>
 											<small>
-												<i className="fas fa-chart-bar text-light fa-lg mr-3"></i>Licensing
+												<i className="fa fa-file-o text-light fa-lg mr-3"></i>Licensing
 											</small>
 										</a>
 									</li>

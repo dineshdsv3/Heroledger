@@ -71,7 +71,7 @@ function Register() {
 				</div>
 				<div className="col-6 card flex-row mx-auto px-0">
 					<div className="pre-login-card-body card-body">
-						<h4 className="title mt-1">Register into Heroledger</h4>
+						<h6 className="title mt-1 text-center">Register into Heroledger</h6>
 
 						<form className="pre-login-form-box px-3" onSubmit={handleSubmit}>
 							<div className="form-input">
@@ -139,22 +139,22 @@ function Register() {
 								)}
 							</div>
 
-							<div className="text-center mb-3"> or login with</div>
+							<div className="text-center font-12 mb-1"> or login with</div>
 
-							<div className="row mb-3">
-								<div className="col-6">
+							<div className="row mb-1">
+								<div className="col-6 font-12">
 									<a href="#" className="btn btn-block btn-social btn-facebook">
 										Facebook
 									</a>
 								</div>
-								<div className="col-6">
+								<div className="col-6 font-12">
 									<a href="#" className="btn btn-block btn-social btn-google">
 										Google
 									</a>
 								</div>
 							</div>
-							<hr className="my-4" />
-							<div className="text-center mb-2">
+							<hr className="my-2" />
+							<div className="text-center font-12 mb-1">
 								Already have an account?{' '}
 								<a href="/" className="register-link">
 									Login here

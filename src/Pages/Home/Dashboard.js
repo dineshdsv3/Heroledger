@@ -103,6 +103,15 @@ function Dashboard() {
 										</div>
 										<div>
 											<table className="table font-9 mt-2 table-borderless">
+												<thead>
+													<tr>
+														<th scope="col">Image</th>
+														<th scope="col">Asset Name</th>
+														<th scope="col">Owner</th>
+														<th scope="col">Price</th>
+														<th scope="col">Date</th>
+													</tr>
+												</thead>
 												<tbody>
 													<tr>
 														<th scope="row">
@@ -132,21 +141,6 @@ function Dashboard() {
 														<td>Asset 2</td>
 														<td>{user.name}</td>
 														<td>$ 140</td>
-														<td>2020-03-03</td>
-													</tr>
-													<tr>
-														<th scope="row">
-															{' '}
-															<img
-																className="rounded-circle"
-																src={require('../../Assets/Images/SpiderMan.png')}
-																width="30"
-																height="30"
-															/>
-														</th>
-														<td>Asset 3</td>
-														<td>{user.name}</td>
-														<td>$ 300</td>
 														<td>2020-03-03</td>
 													</tr>
 												</tbody>
@@ -202,7 +196,16 @@ function Dashboard() {
 											<small>Transactions (Last 7 Days)</small>
 										</div>
 										<div>
-											<table className="table font-9 mt-2 table-borderless">
+											<table className="table font-9 table-borderless">
+												<thead>
+													<tr>
+														<th scope="col">Image</th>
+														<th scope="col">Asset Name</th>
+														<th scope="col">Hash</th>
+														<th scope="col">Price</th>
+														<th scope="col">Date</th>
+													</tr>
+												</thead>
 												<tbody>
 													<tr>
 														<th scope="row">
@@ -232,21 +235,6 @@ function Dashboard() {
 														<td>Asset 2</td>
 														<td>0xe509a834bf9ee3c27af895609e5cdd2f455c4854</td>
 														<td>$ 140</td>
-														<td>2020-03-03</td>
-													</tr>
-													<tr>
-														<th scope="row">
-															{' '}
-															<img
-																className="rounded-circle"
-																src={require('../../Assets/Images/Thor.png')}
-																width="30"
-																height="30"
-															/>
-														</th>
-														<td>Asset 3</td>
-														<td>0xe509a834bf9ee3c27af895609e5cdd2f455c4854</td>
-														<td>$ 180</td>
 														<td>2020-03-03</td>
 													</tr>
 												</tbody>

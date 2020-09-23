@@ -149,6 +149,8 @@ router.get('/getImage', async (req, res) => {
 // Handle Upload
 router.post('/addUpload', upload.single('image'), (req, res) => {
 	res.json({ file: req.file });
+	console.log("file upload successful")
+	console.log(req.file)
 });
 
 // Display Image
