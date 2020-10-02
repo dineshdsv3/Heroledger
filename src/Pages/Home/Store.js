@@ -81,9 +81,9 @@ function Store() {
 
 	const loadContract = async () => {
 		const web3 = window.web3;
-		const accounts =  web3.eth.getAccounts();
+		const accounts = web3.eth.getAccounts();
 		setAccount(accounts[0]);
-		const networkId =  web3.eth.net.getId();
+		const networkId = web3.eth.net.getId();
 		const networkData = Heroledger.networks[networkId];
 		if (networkData) {
 			const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
@@ -94,7 +94,9 @@ function Store() {
 	};
 
 	const purchaseProduct = async (productId, buyerEmail, price) => {
+		await loadContract();
 		console.log(productId, buyerEmail, price);
+		console.log(contract);
 		await contract.methods
 			.purchaseProduct(productId, buyerEmail)
 			.send({ from: account, value: price })

@@ -48,6 +48,7 @@ function PreLogin1() {
 			})
 			.catch((error) => {
 				alert('Incorrect Email and Password combination!!. Try again');
+				setLoader(false);
 			});
 	};
 	return (

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import publicIp from 'public-ip';
 // Styles are in pre-login1
 
 function Register() {
@@ -10,24 +11,43 @@ function Register() {
 		confirmPassword: '',
 		latitude: '',
 		longitude: '',
+		countryCode: '',
+		countryName: '',
+		state: '',
 	});
 
 	const [loader, setLoader] = useState(false);
 
 	useEffect(() => {
-		if ('geolocation' in navigator) {
-			console.log('Available');
-		} else {
-			console.log('Not Available');
-		}
-
-		navigator.geolocation.getCurrentPosition(function (position) {
-			setUserDetails({
-				...userDetails,
-				latitude: position.coords.latitude,
-				longitude: position.coords.longitude,
+		const getLocation = async () => {
+			let ip = await publicIp.v4().then((res) => res);
+			// Used https://geolocation-db.com/dashboard# to get location by IP
+			axios.get(`https://geolocation-db.com/json/697de680-a737-11ea-9820-af05f4014d91/${ip}`).then((res) => {
+				setUserDetails({
+					...userDetails,
+					latitude: res.data.latitude,
+					longitude: res.data.longitude,
+					countryCode: res.data.country_code,
+					countryName: res.data.country_name,
+					state: res.data.state,
+				});
 			});
-		});
+		};
+		getLocation();
+		// The below code is used for asking permission for location from browser
+		// if ('geolocation' in navigator) {
+		// 	console.log('Available');
+		// } else {
+		// 	console.log('Not Available');
+		// }
+
+		// navigator.geolocation.getCurrentPosition(function (position) {
+		// 	setUserDetails({
+		// 		...userDetails,
+		// 		latitude: position.coords.latitude,
+		// 		longitude: position.coords.longitude,
+		// 	});
+		// });
 	}, []);
 
 	const handleSubmit = (e) => {
@@ -40,7 +60,11 @@ function Register() {
 				password: userDetails.password,
 				latitude: userDetails.latitude,
 				longitude: userDetails.longitude,
+				countryCode: userDetails.countryCode,
+				countryName: userDetails.countryName,
+				state: userDetails.state,
 			};
+			console.log(registerDetails);
 			axios
 				.post(`/signup`, { registerDetails })
 				.then((res) => {
@@ -50,6 +74,7 @@ function Register() {
 				})
 				.catch((error) => {
 					alert('Registration Failed, Please try again');
+					setLoader(false);
 				});
 		} else {
 			alert('Passwords dont match');
@@ -128,8 +153,8 @@ function Register() {
 							<div className="mb-3">
 								{loader ? (
 									<button type="submit" disabled className="btn btn-block text-uppercase">
-										<div class="spinner-border text-info" role="status">
-											<span class="sr-only">Loading...</span>
+										<div className="spinner-border text-info" role="status">
+											<span className="sr-only">Loading...</span>
 										</div>
 									</button>
 								) : (

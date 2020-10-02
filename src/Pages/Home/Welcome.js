@@ -8,6 +8,7 @@ import Licensing from './Licensing';
 import Store from './Store';
 import Transactions from './Transactions';
 import Profile from '../Profile';
+import Heroledger from '../../blockchain/abis/heroledger.json';
 
 // Style is in welcome.scss
 
@@ -21,7 +22,15 @@ function Welcome() {
 			const web3 = window.web3;
 			// console.log(web3);
 			const accounts = await web3.eth.getAccounts();
-			// console.log(accounts);
+			localStorage.setItem('account', accounts[0]);
+			const networkId = await web3.eth.net.getId();
+			const networkData = Heroledger.networks[networkId];
+			if (networkData) {
+				const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
+				console.log(heroledger)
+				await localStorage.setItem('contract', JSON.stringify(heroledger));
+				
+			}
 		}
 		loadWeb3();
 		loadPage();
@@ -132,7 +141,10 @@ function Welcome() {
 											href="/Welcome?page=assets"
 										>
 											<small>
-												<i class="fa fa-folder text-light fa-lg mr-3" aria-hidden="true"></i>
+												<i
+													className="fa fa-folder text-light fa-lg mr-3"
+													aria-hidden="true"
+												></i>
 												Assets
 											</small>
 										</a>
@@ -148,7 +160,7 @@ function Welcome() {
 										>
 											<small>
 												<i
-													class="fa fa-television text-light fa-lg mr-3"
+													className="fa fa-television text-light fa-lg mr-3"
 													aria-hidden="true"
 												></i>
 												Store
