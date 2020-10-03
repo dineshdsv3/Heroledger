@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import publicIp from 'public-ip';
+import GoogleLogin from 'react-google-login';
 // Styles are in pre-login1
 
 function Register() {
@@ -49,6 +50,10 @@ function Register() {
 		// 	});
 		// });
 	}, []);
+
+	const responseGoogle = (response) => {
+		console.log(response);
+	};
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
@@ -173,9 +178,25 @@ function Register() {
 									</a>
 								</div>
 								<div className="col-6 font-12">
-									<a href="#" className="btn btn-block btn-social btn-google">
+									{/* <a href="#" className="btn btn-block btn-social btn-google">
 										Google
-									</a>
+									</a> */}
+									<GoogleLogin
+										clientId="19141662008-gcd47nf7h9p4qjigkeloai8njjmjak1l.apps.googleusercontent.com"
+										buttonText="Login"
+										render={(renderProps) => (
+											<button
+												className="btn btn-block btn-social btn-google"
+												onClick={renderProps.onClick}
+												disabled={renderProps.disabled}
+											>
+												Google
+											</button>
+										)}
+										onSuccess={responseGoogle}
+										onFailure={responseGoogle}
+										cookiePolicy={'single_host_origin'}
+									/>
 								</div>
 							</div>
 							<hr className="my-2" />
