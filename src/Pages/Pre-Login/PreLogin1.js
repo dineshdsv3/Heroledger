@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import GoogleLogin from 'react-google-login';
 // Styles are in pre-login1
 
 function PreLogin1() {
@@ -11,17 +12,44 @@ function PreLogin1() {
 
 	const [loader, setLoader] = useState(false);
 
-	// useEffect(() => {
-	// 	const user = JSON.parse(localStorage.getItem('user'));
-	// 	const token = localStorage.getItem('token') || '';
-	// 	if (user) {
-	// 		if (user.remember && token) {
-	// 			window.location.href = '/Welcome?page=dashboard';
-	// 		}
-	// 	}
-	// }, []);
+	const responseGoogle = (response) => {
+		console.log(response);
+		try {
+			let userDetails = {
+				password: response.profileObj.googleId,
+				email: response.profileObj.email,
+			};
+			console.log(userDetails);
+			axios
+				.post(`/login`, { userDetails })
+				.then(async (res) => {
+					console.log(res);
+					// console.log(res.data.user);
+					if (res.error) {
+						console.log(res);
+					}
+					const userResponseDetails = {
+						name: res.data.user.name,
+						email: res.data.user.email,
+						token: res.data.token,
+						remember: userDetails.remember,
+					};
+					localStorage.setItem('token', res.data.token);
+					localStorage.setItem('user', JSON.stringify(userResponseDetails));
+					console.log('login successful');
+					alert('Log-in Successful');
+					setLoader(false);
+					window.location.href = '/Welcome?page=dashboard';
+				})
+				.catch((error) => {
+					alert('Login Failed, Please register using Google and try again');
+					setLoader(false);
+				});
+		} catch (error) {
+			alert('Google Sign on Failed');
+		}
+	};
 
-	// console.log(userDetails);
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		setLoader(true);
@@ -136,9 +164,22 @@ function PreLogin1() {
 									</a>
 								</div>
 								<div className="col-6 font-12">
-									<a href="#" className="btn btn-block btn-social btn-google">
-										Google
-									</a>
+									<GoogleLogin
+										clientId="19141662008-gcd47nf7h9p4qjigkeloai8njjmjak1l.apps.googleusercontent.com"
+										buttonText="Login"
+										render={(renderProps) => (
+											<button
+												className="btn btn-block btn-social btn-google"
+												onClick={renderProps.onClick}
+												disabled={renderProps.disabled}
+											>
+												Google
+											</button>
+										)}
+										onSuccess={responseGoogle}
+										onFailure={responseGoogle}
+										cookiePolicy={'single_host_origin'}
+									/>
 								</div>
 							</div>
 							<hr className="my-2" />

@@ -53,6 +53,33 @@ function Register() {
 
 	const responseGoogle = (response) => {
 		console.log(response);
+		try {
+			const registerDetails = {
+				name: response.profileObj.givenName + ' ' + response.profileObj.familyName,
+				email: response.profileObj.email,
+				password: response.profileObj.googleId,
+				latitude: userDetails.latitude,
+				longitude: userDetails.longitude,
+				countryCode: userDetails.countryCode,
+				countryName: userDetails.countryName,
+				state: userDetails.state,
+				image: response.profileObj.imageUrl,
+			};
+			console.log(registerDetails);
+			axios
+				.post(`/signup`, { registerDetails })
+				.then((res) => {
+					alert('Registration Successful, continue to login');
+					setLoader(false);
+					window.location.pathname = '/';
+				})
+				.catch((error) => {
+					alert('Registration Failed, Please try again');
+					setLoader(false);
+				});
+		} catch (error) {
+			alert('Registration Failed');
+		}
 	};
 
 	const handleSubmit = (e) => {
@@ -68,6 +95,7 @@ function Register() {
 				countryCode: userDetails.countryCode,
 				countryName: userDetails.countryName,
 				state: userDetails.state,
+				image: '',
 			};
 			console.log(registerDetails);
 			axios
@@ -169,7 +197,7 @@ function Register() {
 								)}
 							</div>
 
-							<div className="text-center font-12 mb-1"> or login with</div>
+							<div className="text-center font-12 mb-1"> or Register with</div>
 
 							<div className="row mb-1">
 								<div className="col-6 font-12">
