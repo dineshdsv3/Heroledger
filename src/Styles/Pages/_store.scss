@@ -14,8 +14,8 @@
     width: 100px;
 }
 .store-page {
-    background: linear-gradient(to left, rgba(75, 69, 48, 0.6), rgba(46, 45, 40, 0.9));
-    // background: black;
+    // background: linear-gradient(to left, rgba(75, 69, 48, 0.6), rgba(46, 45, 40, 0.9));
+    background: black;
     min-height: 100vh;
     background-size: cover;
     background-position: center;
@@ -51,4 +51,24 @@
     -ms-user-select: none;
     left: calc(30%);
     bottom: calc(50%);
+}
+
+.carousel-item-0 {
+    height: 38vh;
+}
+.carousel-item-1 {
+    @extend .carousel-item-0;
+    // background-image: url("../../Assets/Images/store-bg.jpg");
+}
+.carousel-item-2 {
+    @extend .carousel-item-0;
+}
+.store-categories-2 {
+    min-height: 28vh;
+}
+.store-categories-1 {
+    min-height: 28vh;
+}
+.store-home {
+    min-height: 100vh;
 }

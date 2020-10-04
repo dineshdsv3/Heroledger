@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Heroledger from '../../blockchain/abis/heroledger.json';
 import moment from 'moment';
+import StoreHome from './StoreHome';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
@@ -201,6 +202,7 @@ function Store() {
 
 	return (
 		<div>
+			<StoreHome />
 			<div className="col-xl-10 col-lg-9 col-md-8 store-page pt-5 mt-4 ml-auto">
 				{/* Characters */}
 				<h2 className="my-3 text-white ml-2">Characters</h2>
