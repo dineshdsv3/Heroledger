@@ -211,78 +211,95 @@ function Store() {
 						<span className="sr-only">Loading...</span>
 					</div>
 				) : (
-					<div className="ml-5 pl-5">
+					<div className="ml-2 pl-2">
 						{characterData.length > 0 ? (
-							<OwlCarousel className="owl-theme" dotsContainer="false" items={4}>
-								{characterData.map((ele, ind) => (
-									<div className="row item justify-content-around" key={ele + ind}>
-										<div className="card store-card">
-											<img
-												src={`/image/${ele.image}`}
-												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() =>
-													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
-												}
-											/>
-											<div className="card-body store-card-body">
-												<div className="row">
-													<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic mb-0">
-														{ele.productName}
-													</div>
+							<div className="row">
+								<div className="col-3 store-card-header m-0 p-0">
+									<img
+										src={require('../../Assets/Images/Shop_Char.png')}
+										className="card-img img-fluid"
+										// onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
+									/>
+								</div>
+								<div className="col-9">
+									<OwlCarousel className="owl-theme" dotsContainer="false" loop nav items={3}>
+										{characterData.map((ele, ind) => (
+											<div className="row item justify-content-around" key={ele + ind}>
+												<div className="card store-card">
+													<img
+														src={`/image/${ele.image}`}
+														className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
+														onClick={() =>
+															(window.location.href = `/Product?id=${ele.productId}&prev=store`)
+														}
+													/>
+													<div className="card-body store-card-body">
+														<div className="row">
+															<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic mb-0">
+																{ele.productName}
+															</div>
 
-													<small className="pl-1">{ele.ownerEmail}</small>
+															<small className="pl-1">{ele.ownerEmail}</small>
 
-													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Price:</b>
-															<br />
-															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
-														</small>
-													</div>
-													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Licensing Fee:</b>
-															<br />{' '}
-															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
-														</small>
-													</div>
-												</div>
+															<div className="col-7 px-1 m-0 d-flex justify-content-start">
+																<small className="font-9">
+																	<b>Price:</b>
+																	<br />
+																	{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
+																</small>
+															</div>
+															<div className="col-5 px-1 m-0 d-flex justify-content-start">
+																<small className="font-9">
+																	<b>Licensing Fee:</b>
+																	<br />{' '}
+																	{ele.licenseFeeUsd
+																		? `$ ${ele.licenseFeeUsd}`
+																		: 'N/A'}
+																</small>
+															</div>
+														</div>
 
-												<div className="row">
-													<div className="col-6 d-flex justify-content-start">
-														<button
-															className="btn btn-info store-btn"
-															onClick={() =>
-																purchaseProduct(ele.productId, user.email, ele.price)
-															}
-															disabled={user.email == ele.ownerEmail}
-														>
-															Buy
-														</button>
-													</div>
-													<div className="col-6 d-flex justify-content-end">
-														<button
-															className="btn btn-primary p-1 store-btn"
-															data-toggle="modal"
-															data-target="#licensing-terms"
-															onClick={() => setSelectedProduct(ele)}
-															disabled={
-																!(
-																	ele.license &&
-																	ele.licenseFeeUsd > 0 &&
-																	!(user.email == ele.ownerEmail)
-																)
-															}
-														>
-															License
-														</button>
+														<div className="row">
+															<div className="col-6 d-flex justify-content-start">
+																<button
+																	className="btn btn-info store-btn"
+																	onClick={() =>
+																		purchaseProduct(
+																			ele.productId,
+																			user.email,
+																			ele.price
+																		)
+																	}
+																	disabled={user.email == ele.ownerEmail}
+																>
+																	Buy
+																</button>
+															</div>
+															<div className="col-6 d-flex justify-content-end">
+																<button
+																	className="btn btn-primary p-1 store-btn"
+																	data-toggle="modal"
+																	data-target="#licensing-terms"
+																	onClick={() => setSelectedProduct(ele)}
+																	disabled={
+																		!(
+																			ele.license &&
+																			ele.licenseFeeUsd > 0 &&
+																			!(user.email == ele.ownerEmail)
+																		)
+																	}
+																>
+																	License
+																</button>
+															</div>
+														</div>
 													</div>
 												</div>
 											</div>
-										</div>
-									</div>
-								))}
-							</OwlCarousel>
+										))}
+									</OwlCarousel>
+								</div>
+							</div>
 						) : (
 							<h5 className="text-center text-warning">No Characters Found!!!</h5>
 						)}

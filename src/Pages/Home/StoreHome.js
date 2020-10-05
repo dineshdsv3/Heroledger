@@ -21,14 +21,14 @@ const StoreHome = () => {
 						<div className="carousel-item carousel-item-1">
 							<img
 								className="d-block w-100"
-								src={require('../../Assets/Images/carousel-2.png')}
+								src={require('../../Assets/Images/carousel-22.png')}
 								alt="First slide"
 							/>
 						</div>
 						<div className="carousel-item carousel-item-2">
 							<img
 								className="d-block w-100"
-								src={require('../../Assets/Images/carousel-3.png')}
+								src={require('../../Assets/Images/carousel-33.png')}
 								alt="First slide"
 							/>
 						</div>
@@ -54,11 +54,21 @@ const StoreHome = () => {
 				</div>
 			</div>
 			<div className="row">
-				<div className="col-4 bg-primary store-categories-1"></div>
-				<div className="col-4 bg-info store-categories-1"></div>
-				<div className="col-4 bg-success store-categories-1"></div>
-				<div className="col-4 bg-warning store-categories-2"></div>
-				<div className="col-4 bg-info store-categories-2"></div>
+				<div className="col-4 store-categories-1 m-0 p-0">
+					<img className="img-fluid" src={require('../../Assets/Images/Char_home.png')} />
+				</div>
+				<div className="col-4 store-categories-1 m-0 p-0">
+					<img className="img-fluid" src={require('../../Assets/Images/Logo_home.png')} />
+				</div>
+				<div className="col-4 store-categories-1 m-0 p-0">
+					<img className="img-fluid" src={require('../../Assets/Images/Script_home.png')} />
+				</div>
+				<div className="col-6 store-categories-2 m-0 p-0">
+					<img className="img-fluid" src={require('../../Assets/Images/Script_home.png')} />
+				</div>
+				<div className="col-6 store-categories-2 m-0 p-0">
+					<img className="img-fluid" src={require('../../Assets/Images/Logo_home.png')} />
+				</div>
 			</div>
 		</div>
 	);

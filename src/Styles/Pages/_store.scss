@@ -9,6 +9,10 @@
     margin-top: 20px;
     // background: linear-gradient(125deg, rgb(99, 93, 81) 50%, rgb(148, 177, 177))
 }
+.store-card-header {
+    width: 200px;
+    height: 60vh;
+}
 .store-card-image {
     height: 60%;
     width: 100px;
@@ -54,20 +58,19 @@
 }
 
 .carousel-item-0 {
-    height: 38vh;
+    height: 52vh;
 }
 .carousel-item-1 {
     @extend .carousel-item-0;
-    // background-image: url("../../Assets/Images/store-bg.jpg");
 }
 .carousel-item-2 {
     @extend .carousel-item-0;
 }
 .store-categories-2 {
-    min-height: 28vh;
+    height: 38vh;
 }
 .store-categories-1 {
-    min-height: 28vh;
+    height: 32vh;
 }
 .store-home {
     min-height: 100vh;

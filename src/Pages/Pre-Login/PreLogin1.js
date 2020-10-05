@@ -140,8 +140,8 @@ function PreLogin1() {
 							<div className="mb-3">
 								{loader ? (
 									<button type="submit" disabled className="btn btn-block text-uppercase">
-										<div class="spinner-border text-info" role="status">
-											<span class="sr-only">Loading...</span>
+										<div className="spinner-border text-info" role="status">
+											<span className="sr-only">Loading...</span>
 										</div>
 									</button>
 								) : (
