@@ -2,7 +2,7 @@ import React from 'react';
 
 const StoreHome = () => {
 	return (
-		<div className="col-xl-10 col-lg-9 col-md-8 pt-5 ml-auto m-0 p-0">
+		<div className="col-xl-10 col-lg-9 col-md-8 pt-5 ml-auto m-0 p-0 store-home">
 			<div className="carousel-store">
 				<div id="carouselExampleIndicators" className="carousel slide" data-ride="carousel">
 					<ol className="carousel-indicators">
@@ -63,11 +63,14 @@ const StoreHome = () => {
 				<div className="col-4 store-categories-1 m-0 p-0">
 					<img className="img-fluid" src={require('../../Assets/Images/Script_home.png')} />
 				</div>
-				<div className="col-6 store-categories-2 m-0 p-0">
-					<img className="img-fluid" src={require('../../Assets/Images/Script_home.png')} />
+				<div className="col-4 store-categories-2 m-0 p-0">
+					<img className="img-fluid" src={require('../../Assets/Images/Char_home.png')} />
 				</div>
-				<div className="col-6 store-categories-2 m-0 p-0">
+				<div className="col-4 store-categories-2 m-0 p-0">
 					<img className="img-fluid" src={require('../../Assets/Images/Logo_home.png')} />
+				</div>
+				<div className="col-4 store-categories-2 m-0 p-0">
+					<img className="img-fluid" src={require('../../Assets/Images/AV_Home1.png')} />
 				</div>
 			</div>
 		</div>

@@ -58,7 +58,7 @@
 }
 
 .carousel-item-0 {
-    height: 52vh;
+    min-height: 8vh;
 }
 .carousel-item-1 {
     @extend .carousel-item-0;
@@ -67,10 +67,10 @@
     @extend .carousel-item-0;
 }
 .store-categories-2 {
-    height: 38vh;
+    min-height: 29vh;
 }
 .store-categories-1 {
-    height: 32vh;
+    min-height: 31vh;
 }
 .store-home {
     min-height: 100vh;
