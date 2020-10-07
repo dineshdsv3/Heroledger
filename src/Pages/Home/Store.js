@@ -3,16 +3,12 @@ import axios from 'axios';
 import Heroledger from '../../blockchain/abis/heroledger.json';
 import moment from 'moment';
 import StoreHome from './StoreHome';
-import HorizontalLine from '../../Components/HorizontalLine';
-import OwlCarousel from 'react-owl-carousel';
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import 'owl.carousel/dist/assets/owl.theme.default.css';
+import CategoryComponent from './CategoryComponent';
 
 function Store() {
 	const [contract, setContract] = useState({});
 	const [account, setAccount] = useState('');
 	const [user, setUser] = useState({});
-	const [selectedProduct, setSelectedProduct] = useState({});
 	const [characterData, setCharacterData] = useState([]);
 	const [characterLoader, setCharacterLoader] = useState(true);
 	const [scriptData, setScriptData] = useState([]);
@@ -27,6 +23,7 @@ function Store() {
 	const [audioLoader, setAudioLoader] = useState(true);
 	const [propsData, setPropsData] = useState([]);
 	const [propsLoader, setPropsLoader] = useState(true);
+	const [selectedProduct, setSelectedProduct] = useState({});
 	const [check, setCheck] = useState(false);
 
 	useEffect(() => {
@@ -206,601 +203,88 @@ function Store() {
 			<StoreHome />
 			<div className="col-xl-10 col-lg-9 col-md-8 store-page pt-5 ml-auto">
 				{/* Characters */}
-				<h3 className="mt-3 mb-0 text-white ml-2">
-					Characters <HorizontalLine />
-				</h3>
-
-				{characterLoader ? (
-					<div className="spinner-border text-success" role="status">
-						<span className="sr-only">Loading...</span>
-					</div>
-				) : (
-					<div className="ml-2 pl-2">
-						{characterData.length > 0 ? (
-							<div className="row">
-								<div className="col-3 store-card-header m-0 p-0">
-									<img
-										src={require('../../Assets/Images/Shop_Char.png')}
-										className="card-img img-fluid"
-										// onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
-									/>
-								</div>
-								<div className="col-9">
-									<OwlCarousel className="owl-theme" dotsContainer="false" loop nav items={3}>
-										{characterData.map((ele, ind) => (
-											<div className="row item justify-content-around" key={ele + ind}>
-												<div className="card store-card">
-													<img
-														src={`/image/${ele.image}`}
-														className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-														onClick={() =>
-															(window.location.href = `/Product?id=${ele.productId}&prev=store`)
-														}
-													/>
-													<div className="card-body store-card-body">
-														<div className="row">
-															<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic mb-0">
-																{ele.productName}
-															</div>
-
-															<small className="pl-1">{ele.ownerEmail}</small>
-
-															<div className="col-7 px-1 m-0 d-flex justify-content-start">
-																<small className="font-9">
-																	<b>Price:</b>
-																	<br />
-																	{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
-																</small>
-															</div>
-															<div className="col-5 px-1 m-0 d-flex justify-content-start">
-																<small className="font-9">
-																	<b>Licensing Fee:</b>
-																	<br />{' '}
-																	{ele.licenseFeeUsd
-																		? `$ ${ele.licenseFeeUsd}`
-																		: 'N/A'}
-																</small>
-															</div>
-														</div>
-
-														<div className="row">
-															<div className="col-6 d-flex justify-content-start">
-																<button
-																	className="btn btn-info store-btn"
-																	onClick={() =>
-																		purchaseProduct(
-																			ele.productId,
-																			user.email,
-																			ele.price
-																		)
-																	}
-																	disabled={user.email == ele.ownerEmail}
-																>
-																	Buy
-																</button>
-															</div>
-															<div className="col-6 d-flex justify-content-end">
-																<button
-																	className="btn btn-primary p-1 store-btn"
-																	data-toggle="modal"
-																	data-target="#licensing-terms"
-																	onClick={() => setSelectedProduct(ele)}
-																	disabled={
-																		!(
-																			ele.license &&
-																			ele.licenseFeeUsd > 0 &&
-																			!(user.email == ele.ownerEmail)
-																		)
-																	}
-																>
-																	License
-																</button>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										))}
-									</OwlCarousel>
-								</div>
-							</div>
-						) : (
-							<h5 className="text-center text-warning">No Characters Found!!!</h5>
-						)}
-					</div>
-				)}
+				<div className="my-2">
+					<CategoryComponent
+						loader={characterLoader}
+						data={characterData}
+						user={user}
+						header={'Characters'}
+						image={require('../../Assets/Images/Shop_Char.png')}
+						contract={contract}
+					/>
+				</div>
+				{/* End of characters section */}
 				{/* Logos */}
-				<h2 className="my-3 text-white ml-2">Logos</h2>
-				{logoLoader ? (
-					<div className="spinner-border text-success" role="status">
-						<span className="sr-only">Loading...</span>
-					</div>
-				) : (
-					<div className="ml-5 pl-5">
-						{logoData.length > 0 ? (
-							<OwlCarousel className="owl-theme" dotsContainer="false" items={4}>
-								{logoData.map((ele, ind) => (
-									<div className="row item justify-content-around" key={ele + ind}>
-										<div className="card store-card">
-											<img
-												src={`/image/${ele.image}`}
-												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() =>
-													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
-												}
-											/>
-											<div className="card-body store-card-body">
-												<div className="row">
-													<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic mb-0">
-														{ele.productName}
-													</div>
-													<small className="pl-1">{ele.ownerEmail}</small>
-													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Price:</b>
-															<br />
-															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
-														</small>
-													</div>
-													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Licensing Fee:</b>
-															<br />{' '}
-															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
-														</small>
-													</div>
-												</div>
+				<div className="my-2">
+					<CategoryComponent
+						loader={logoLoader}
+						data={logoData}
+						user={user}
+						header={'Logos'}
+						image={require('../../Assets/Images/Shop_logo.png')}
+					/>
+				</div>
+				{/* End of Logos */}
 
-												<div className="row">
-													<div className="col-6 d-flex justify-content-start">
-														<button
-															className="btn btn-info store-btn"
-															onClick={() =>
-																purchaseProduct(ele.productId, user.email, ele.price)
-															}
-															disabled={user.email == ele.ownerEmail}
-														>
-															Buy
-														</button>
-													</div>
-													<div className="col-6 d-flex justify-content-end">
-														<button
-															className="btn btn-primary p-1 store-btn"
-															data-toggle="modal"
-															data-target="#licensing-terms"
-															onClick={() => setSelectedProduct(ele)}
-															disabled={
-																!(
-																	ele.license &&
-																	ele.licenseFeeUsd > 0 &&
-																	!(user.email == ele.ownerEmail)
-																)
-															}
-														>
-															License
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								))}
-							</OwlCarousel>
-						) : (
-							<h5 className="text-center text-warning">No Logos Found!!!</h5>
-						)}
-					</div>
-				)}
 				{/* Scripts */}
-				<h2 className="my-3 text-white ml-2">Scripts</h2>
-				{scriptLoader ? (
-					<div className="spinner-border text-success" role="status">
-						<span className="sr-only">Loading...</span>
-					</div>
-				) : (
-					<div className="ml-5 pl-5">
-						{scriptData.length > 0 ? (
-							<OwlCarousel className="owl-theme" dotsContainer="false" items={4}>
-								{scriptData.map((ele, ind) => (
-									<div className="row item justify-content-around" key={ele + ind}>
-										<div className="card store-card">
-											<img
-												src={require('../../Assets/Images/doc.jpeg')}
-												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() =>
-													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
-												}
-											/>
-											<div className="card-body store-card-body">
-												<div className="row">
-													<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic mb-0">
-														{ele.productName}
-													</div>
-													<small className="pl-1">{ele.ownerEmail}</small>
-													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Price:</b>
-															<br />
-															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
-														</small>
-													</div>
-													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Licensing Fee:</b>
-															<br />{' '}
-															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
-														</small>
-													</div>
-												</div>
+				<div className="my-2">
+					<CategoryComponent
+						loader={scriptLoader}
+						data={scriptData}
+						user={user}
+						header={'Scripts'}
+						image={require('../../Assets/Images/Shop_script.png')}
+					/>
+				</div>
+				{/* End of Scripts */}
 
-												<div className="row">
-													<div className="col-6 d-flex justify-content-start">
-														<button
-															className="btn btn-info store-btn"
-															onClick={() =>
-																purchaseProduct(ele.productId, user.email, ele.price)
-															}
-															disabled={user.email == ele.ownerEmail}
-														>
-															Buy
-														</button>
-													</div>
-													<div className="col-6 d-flex justify-content-end">
-														<button
-															className="btn btn-primary p-1 store-btn"
-															data-toggle="modal"
-															data-target="#licensing-terms"
-															onClick={() => setSelectedProduct(ele)}
-															disabled={
-																!(
-																	ele.license &&
-																	ele.licenseFeeUsd > 0 &&
-																	!(user.email == ele.ownerEmail)
-																)
-															}
-														>
-															License
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								))}
-							</OwlCarousel>
-						) : (
-							<h5 className="text-center text-warning">No Scripts Found!!!</h5>
-						)}
-					</div>
-				)}
 				{/* Backgrounds */}
-				<h2 className="my-3 text-white ml-2">Backgrounds</h2>
-				{backgroundLoader ? (
-					<div className="spinner-border text-success" role="status">
-						<span className="sr-only">Loading...</span>
-					</div>
-				) : (
-					<div className="ml-5 pl-5">
-						{backgroundData.length > 0 ? (
-							<OwlCarousel className="owl-theme" dotsContainer="false" items={4}>
-								{backgroundData.map((ele, ind) => (
-									<div className="row item justify-content-around" key={ele + ind}>
-										<div className="card store-card">
-											<img
-												src={`/image/${ele.image}`}
-												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() =>
-													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
-												}
-											/>
-											<div className="card-body store-card-body">
-												<div className="row">
-													<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic mb-0">
-														{ele.productName}
-													</div>
-													<small className="pl-1">{ele.ownerEmail}</small>
-													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Price:</b>
-															<br />
-															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
-														</small>
-													</div>
-													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Licensing Fee:</b>
-															<br />{' '}
-															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
-														</small>
-													</div>
-												</div>
+				<div className="my-2">
+					<CategoryComponent
+						loader={backgroundLoader}
+						data={backgroundData}
+						user={user}
+						header={'Backgrounds'}
+						image={require('../../Assets/Images/Shop_BG.png')}
+					/>
+				</div>
+				{/* End of Backgrounds */}
 
-												<div className="row">
-													<div className="col-6 d-flex justify-content-start">
-														<button
-															className="btn btn-info store-btn"
-															onClick={() =>
-																purchaseProduct(ele.productId, user.email, ele.price)
-															}
-															disabled={user.email == ele.ownerEmail}
-														>
-															Buy
-														</button>
-													</div>
-													<div className="col-6 d-flex justify-content-end">
-														<button
-															className="btn btn-primary p-1 store-btn"
-															data-toggle="modal"
-															data-target="#licensing-terms"
-															onClick={() => setSelectedProduct(ele)}
-															disabled={
-																!(
-																	ele.license &&
-																	ele.licenseFeeUsd > 0 &&
-																	!(user.email == ele.ownerEmail)
-																)
-															}
-														>
-															License
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								))}
-							</OwlCarousel>
-						) : (
-							<h5 className="text-center text-warning">No Backgrounds Found!!!</h5>
-						)}
-					</div>
-				)}
 				{/* Audios */}
-				<h2 className="my-3 text-white ml-2">Audios</h2>
-				{audioLoader ? (
-					<div className="spinner-border text-success" role="status">
-						<span className="sr-only">Loading...</span>
-					</div>
-				) : (
-					<div className="ml-5 pl-5">
-						{audioData.length > 0 ? (
-							<OwlCarousel className="owl-theme" dotsContainer="false" items={4}>
-								{audioData.map((ele, ind) => (
-									<div className="row item justify-content-around" key={ele + ind}>
-										<div className="card store-card">
-											<img
-												src={require('../../Assets/Images/music.png')}
-												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() =>
-													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
-												}
-											/>
-											<div className="card-body store-card-body">
-												<div className="row">
-													<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic mb-0">
-														{ele.productName}
-													</div>
-													<small className="pl-1">{ele.ownerEmail}</small>
-													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Price:</b>
-															<br />
-															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
-														</small>
-													</div>
-													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Licensing Fee:</b>
-															<br />{' '}
-															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
-														</small>
-													</div>
-												</div>
+				<div className="my-2">
+					<CategoryComponent
+						loader={audioLoader}
+						data={audioData}
+						user={user}
+						header={'Audios'}
+						image={require('../../Assets/Images/Shop_AV.png')}
+					/>
+				</div>
+				{/* End of Audios */}
 
-												<div className="row">
-													<div className="col-6 d-flex justify-content-start">
-														<button
-															className="btn btn-info store-btn"
-															onClick={() =>
-																purchaseProduct(ele.productId, user.email, ele.price)
-															}
-															disabled={user.email == ele.ownerEmail}
-														>
-															Buy
-														</button>
-													</div>
-													<div className="col-6 d-flex justify-content-end">
-														<button
-															className="btn btn-primary p-1 store-btn"
-															data-toggle="modal"
-															data-target="#licensing-terms"
-															onClick={() => setSelectedProduct(ele)}
-															disabled={
-																!(
-																	ele.license &&
-																	ele.licenseFeeUsd > 0 &&
-																	!(user.email == ele.ownerEmail)
-																)
-															}
-														>
-															License
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								))}
-							</OwlCarousel>
-						) : (
-							<h5 className="text-center text-warning">No Audios Found!!!</h5>
-						)}
-					</div>
-				)}
 				{/* Videos */}
-				<h2 className="my-3 text-white ml-2">Videos</h2>
-				{videoLoader ? (
-					<div className="spinner-border text-success" role="status">
-						<span className="sr-only">Loading...</span>
-					</div>
-				) : (
-					<div className="ml-5 pl-5">
-						{videoData.length > 0 ? (
-							<OwlCarousel className="owl-theme" dotsContainer="false" items={4}>
-								{videoData.map((ele, ind) => (
-									<div className="row item justify-content-around" key={ele + ind}>
-										<div className="card store-card">
-											<img
-												src={require('../../Assets/Images/video.jpeg')}
-												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() =>
-													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
-												}
-											/>
-											<div className="card-body store-card-body">
-												<div className="row">
-													<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic mb-0">
-														{ele.productName}
-													</div>
-													<small className="pl-1">{ele.ownerEmail}</small>
-													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Price:</b>
-															<br />
-															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
-														</small>
-													</div>
-													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Licensing Fee:</b>
-															<br />{' '}
-															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
-														</small>
-													</div>
-												</div>
+				<div className="my-2">
+					<CategoryComponent
+						loader={videoLoader}
+						data={videoData}
+						user={user}
+						header={'Videos'}
+						image={require('../../Assets/Images/Shop_AV.png')}
+					/>
+				</div>
+				{/* End of Videos */}
 
-												<div className="row">
-													<div className="col-6 d-flex justify-content-start">
-														<button
-															className="btn btn-info store-btn"
-															onClick={() =>
-																purchaseProduct(ele.productId, user.email, ele.price)
-															}
-															disabled={user.email == ele.ownerEmail}
-														>
-															Buy
-														</button>
-													</div>
-													<div className="col-6 d-flex justify-content-end">
-														<button
-															className="btn btn-primary p-1 store-btn"
-															data-toggle="modal"
-															data-target="#licensing-terms"
-															onClick={() => setSelectedProduct(ele)}
-															disabled={
-																!(
-																	ele.license &&
-																	ele.licenseFeeUsd > 0 &&
-																	!(user.email == ele.ownerEmail)
-																)
-															}
-														>
-															License
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								))}
-							</OwlCarousel>
-						) : (
-							<h5 className="text-center text-warning">No Videos Found!!!</h5>
-						)}
-					</div>
-				)}
 				{/* Props */}
-				<h2 className="my-3 text-white ml-2">Props</h2>
-				{propsLoader ? (
-					<div className="spinner-border text-success" role="status">
-						<span className="sr-only">Loading...</span>
-					</div>
-				) : (
-					<div className="ml-5 pl-5">
-						{propsData.length > 0 ? (
-							<OwlCarousel className="owl-theme" dotsContainer="false" items={4}>
-								{propsData.map((ele, ind) => (
-									<div className="row item justify-content-around" key={ele + ind}>
-										<div className="card store-card">
-											<img
-												src={`/image/${ele.image}`}
-												className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-												onClick={() =>
-													(window.location.href = `/Product?id=${ele.productId}&prev=store`)
-												}
-											/>
-											<div className="card-body store-card-body">
-												<div className="row">
-													<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic mb-0">
-														{ele.productName}
-													</div>
-													<small className="pl-1">{ele.ownerEmail}</small>
-													<div className="col-7 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Price:</b>
-															<br />
-															{ele.priceinUsd ? `$ ${ele.priceinUsd}` : 'N/A'}
-														</small>
-													</div>
-													<div className="col-5 px-1 m-0 d-flex justify-content-start">
-														<small className="font-9">
-															<b>Licensing Fee:</b>
-															<br />{' '}
-															{ele.licenseFeeUsd ? `$ ${ele.licenseFeeUsd}` : 'N/A'}
-														</small>
-													</div>
-												</div>
-
-												<div className="row mt-1">
-													<div className="col-6 d-flex justify-content-start">
-														<button
-															className="btn btn-info store-btn"
-															onClick={() =>
-																purchaseProduct(ele.productId, user.email, ele.price)
-															}
-															disabled={user.email == ele.ownerEmail}
-														>
-															Buy
-														</button>
-													</div>
-													<div className="col-6 d-flex justify-content-end">
-														<button
-															className="btn btn-primary p-1 store-btn"
-															data-toggle="modal"
-															data-target="#licensing-terms"
-															onClick={() => setSelectedProduct(ele)}
-															disabled={
-																!(
-																	ele.license &&
-																	ele.licenseFeeUsd > 0 &&
-																	!(user.email == ele.ownerEmail)
-																)
-															}
-														>
-															License
-														</button>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-								))}
-							</OwlCarousel>
-						) : (
-							<h5 className="text-center text-warning">No Props Found!!!</h5>
-						)}
-					</div>
-				)}
+				<div className="my-2">
+					<CategoryComponent
+						loader={propsLoader}
+						data={propsData}
+						user={user}
+						header={'Props'}
+						image={require('../../Assets/Images/Shop_Props.png')}
+					/>
+				</div>
+				{/* End of Props */}
 
 				{/* Modal-licensing terms */}
 				<div className="modal licensing-modal" id="licensing-terms">

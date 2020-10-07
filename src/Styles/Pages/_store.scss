@@ -2,12 +2,16 @@
     width: 220px;
     height: 55vh;
     margin-bottom: 20px;
+    opacity: 0.9;
     &:hover {
         transform: scale(1.01);
         // background: linear-gradient(125deg, orange 60%, cyan);
     }
     margin-top: 20px;
-    // background: linear-gradient(125deg, rgb(99, 93, 81) 50%, rgb(148, 177, 177))
+    background: linear-gradient(125deg, rgb(99, 93, 81) 50%, rgb(148, 177, 177));
+}
+.card-img {
+    height: 62vh;
 }
 .store-card-header {
     width: 200px;
@@ -58,7 +62,7 @@
 }
 
 .carousel-item-0 {
-    min-height: 8vh;
+    height: 60vh;
 }
 .carousel-item-1 {
     @extend .carousel-item-0;

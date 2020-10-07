@@ -15,7 +15,7 @@ const StoreHome = () => {
 							<img
 								className="d-block w-100"
 								src={require('../../Assets/Images/carousel-11.png')}
-								alt="First slide"
+								alt="Zero slide"
 							/>
 						</div>
 						<div className="carousel-item carousel-item-1">
@@ -29,7 +29,14 @@ const StoreHome = () => {
 							<img
 								className="d-block w-100"
 								src={require('../../Assets/Images/carousel-33.png')}
-								alt="First slide"
+								alt="Second slide"
+							/>
+						</div>
+						<div className="carousel-item carousel-item-2">
+							<img
+								className="d-block w-100"
+								src={require('../../Assets/Images/carousel-44.png')}
+								alt="Third slide"
 							/>
 						</div>
 					</div>
@@ -55,7 +62,7 @@ const StoreHome = () => {
 			</div>
 			<div className="row">
 				<div className="col-4 store-categories-1 m-0 p-0">
-					<img className="img-fluid" src={require('../../Assets/Images/Char_home.png')} />
+					<img className="img-fluid" src={require('../../Assets/Images/AV_Home1.png')} />
 				</div>
 				<div className="col-4 store-categories-1 m-0 p-0">
 					<img className="img-fluid" src={require('../../Assets/Images/Logo_home.png')} />
@@ -64,13 +71,13 @@ const StoreHome = () => {
 					<img className="img-fluid" src={require('../../Assets/Images/Script_home.png')} />
 				</div>
 				<div className="col-4 store-categories-2 m-0 p-0">
+					<img className="img-fluid" src={require('../../Assets/Images/Bg_Home.png')} />
+				</div>
+				<div className="col-4 store-categories-2 m-0 p-0">
+					<img className="img-fluid" src={require('../../Assets/Images/Props_Home.png')} />
+				</div>
+				<div className="col-4 store-categories-2 m-0 p-0">
 					<img className="img-fluid" src={require('../../Assets/Images/Char_home.png')} />
-				</div>
-				<div className="col-4 store-categories-2 m-0 p-0">
-					<img className="img-fluid" src={require('../../Assets/Images/Logo_home.png')} />
-				</div>
-				<div className="col-4 store-categories-2 m-0 p-0">
-					<img className="img-fluid" src={require('../../Assets/Images/AV_Home1.png')} />
 				</div>
 			</div>
 		</div>
