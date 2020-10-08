@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import Heroledger from '../../blockchain/abis/heroledger.json';
 import moment from 'moment';
@@ -203,7 +204,7 @@ function Store() {
 			<StoreHome />
 			<div className="col-xl-10 col-lg-9 col-md-8 store-page pt-5 ml-auto">
 				{/* Characters */}
-				<div className="my-2">
+				<div className="my-5 py-2">
 					<CategoryComponent
 						loader={characterLoader}
 						data={characterData}
@@ -215,7 +216,7 @@ function Store() {
 				</div>
 				{/* End of characters section */}
 				{/* Logos */}
-				<div className="my-2">
+				<div className="my-3">
 					<CategoryComponent
 						loader={logoLoader}
 						data={logoData}
@@ -227,7 +228,7 @@ function Store() {
 				{/* End of Logos */}
 
 				{/* Scripts */}
-				<div className="my-2">
+				<div className="my-3">
 					<CategoryComponent
 						loader={scriptLoader}
 						data={scriptData}
@@ -239,7 +240,7 @@ function Store() {
 				{/* End of Scripts */}
 
 				{/* Backgrounds */}
-				<div className="my-2">
+				<div className="my-3">
 					<CategoryComponent
 						loader={backgroundLoader}
 						data={backgroundData}
@@ -251,7 +252,7 @@ function Store() {
 				{/* End of Backgrounds */}
 
 				{/* Audios */}
-				<div className="my-2">
+				<div className="my-3">
 					<CategoryComponent
 						loader={audioLoader}
 						data={audioData}
@@ -263,7 +264,7 @@ function Store() {
 				{/* End of Audios */}
 
 				{/* Videos */}
-				<div className="my-2">
+				<div className="my-3">
 					<CategoryComponent
 						loader={videoLoader}
 						data={videoData}
@@ -275,7 +276,7 @@ function Store() {
 				{/* End of Videos */}
 
 				{/* Props */}
-				<div className="my-2">
+				<div className="my-3">
 					<CategoryComponent
 						loader={propsLoader}
 						data={propsData}

@@ -29,49 +29,13 @@ const CategoryComponent = ({ loader, data, user, header, image }) => {
 
 	const getImage = (characterType, image) => {
 		if (characterType == 'audio') {
-			return (
-				<div>
-					<img
-						className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-						src={require('../../Assets/Images/music.png')}
-						width="40"
-						height="40"
-					/>
-				</div>
-			);
+			return require('../../Assets/Images/music.png');
 		} else if (characterType == 'video') {
-			return (
-				<div>
-					<img
-						className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-						src={require('../../Assets/Images/video.jpeg')}
-						width="40"
-						height="40"
-					/>
-				</div>
-			);
+			return require('../../Assets/Images/video.jpeg');
 		} else if (characterType == 'script') {
-			return (
-				<div>
-					<img
-						className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-						src={require('../../Assets/Images/doc.jpeg')}
-						width="40"
-						height="40"
-					/>
-				</div>
-			);
+			return require('../../Assets/Images/doc.jpeg');
 		} else {
-			return (
-				<div>
-					<img
-						className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
-						src={`/image/${image}`}
-						width="40"
-						height="40"
-					/>
-				</div>
-			);
+			return `/image/${image}`;
 		}
 	};
 
@@ -186,15 +150,16 @@ const CategoryComponent = ({ loader, data, user, header, image }) => {
 	return (
 		<div>
 			{loader ? (
-				<div className="spinner-border text-success" role="status">
+				<div className="spinner-border text-success my-2" role="status">
 					<span className="sr-only">Loading...</span>
 				</div>
 			) : (
-				<div className="ml-2 pl-2">
+				<div className="ml-2 mt-2 py-5 pl-2">
 					{data.length > 0 ? (
 						<div className="row">
 							<div className="col-3 store-card-header m-0 p-0">
 								<img
+									id={`#${header}`}
 									src={image}
 									className="card-img img-fluid"
 									// onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
@@ -208,14 +173,14 @@ const CategoryComponent = ({ loader, data, user, header, image }) => {
 									{data.map((ele, ind) => (
 										<div className="row item justify-content-around" key={ele + ind}>
 											<div className="card store-card">
-												{getImage(ele.characterType, ele.image)}
-												{/* <img
-													src={`${getImage(ele.characterType, ele.image)}`}
+												{/* {getImage(ele.characterType, ele.image)} */}
+												<img
+													src={`${getImage(ele.productType, ele.image)}`}
 													className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"
 													onClick={() =>
 														(window.location.href = `/Product?id=${ele.productId}&prev=store`)
 													}
-												/> */}
+												/>
 												<div className="card-body store-card-body">
 													<div className="row">
 														<div className="col-12 card-title store-card-title text-capitalize font-weight-bold font-italic mb-0">

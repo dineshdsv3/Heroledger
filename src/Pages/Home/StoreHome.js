@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 
 const StoreHome = () => {
 	return (
@@ -62,7 +63,9 @@ const StoreHome = () => {
 			</div>
 			<div className="row">
 				<div className="col-4 store-categories-1 m-0 p-0">
-					<img className="img-fluid" src={require('../../Assets/Images/AV_Home1.png')} />
+					<NavLink to="/Welcome?page=store#Audios">
+						<img className="img-fluid" src={require('../../Assets/Images/AV_Home1.png')} />
+					</NavLink>
 				</div>
 				<div className="col-4 store-categories-1 m-0 p-0">
 					<img className="img-fluid" src={require('../../Assets/Images/Logo_home.png')} />
