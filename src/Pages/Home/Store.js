@@ -288,7 +288,7 @@ function Store() {
 				{/* End of Props */}
 
 				{/* Modal-licensing terms */}
-				<div className="modal licensing-modal" id="licensing-terms">
+				{/* <div className="modal licensing-modal" id="licensing-terms">
 					<div className="modal-dialog modal-lg" role="document">
 						<div className="modal-content">
 							<div className="modal-header">
@@ -394,7 +394,9 @@ function Store() {
 						</div>
 					</div>
 				</div>
-			</div>
+				{/* End of Modal licensing terms */}
+			</div>{' '}
+			*/}
 		</div>
 	);
 }

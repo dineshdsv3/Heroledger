@@ -148,7 +148,7 @@ const CategoryComponent = ({ loader, data, user, header, image }) => {
 	};
 
 	return (
-		<div>
+		<section id={header}>
 			{loader ? (
 				<div className="spinner-border text-success my-2" role="status">
 					<span className="sr-only">Loading...</span>
@@ -159,7 +159,6 @@ const CategoryComponent = ({ loader, data, user, header, image }) => {
 						<div className="row">
 							<div className="col-3 store-card-header m-0 p-0">
 								<img
-									id={`#${header}`}
 									src={image}
 									className="card-img img-fluid"
 									// onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
@@ -357,7 +356,7 @@ const CategoryComponent = ({ loader, data, user, header, image }) => {
 					</div>
 				</div>
 			</div>
-		</div>
+		</section>
 	);
 };
 

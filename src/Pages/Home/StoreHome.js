@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import ScrollIntoView from 'react-scroll-into-view';
 
 const StoreHome = () => {
 	return (
@@ -10,6 +10,7 @@ const StoreHome = () => {
 						<li data-target="#carouselExampleIndicators" data-slide-to="0" className="active"></li>
 						<li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
 						<li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+						<li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
 					</ol>
 					<div className="carousel-inner">
 						<div className="carousel-item active carousel-item-0">
@@ -63,24 +64,34 @@ const StoreHome = () => {
 			</div>
 			<div className="row">
 				<div className="col-4 store-categories-1 m-0 p-0">
-					<NavLink to="/Welcome?page=store#Audios">
+					<ScrollIntoView smooth="true" alignToTop="true" selector="#Audios">
 						<img className="img-fluid" src={require('../../Assets/Images/AV_Home1.png')} />
-					</NavLink>
+					</ScrollIntoView>
 				</div>
 				<div className="col-4 store-categories-1 m-0 p-0">
-					<img className="img-fluid" src={require('../../Assets/Images/Logo_home.png')} />
+					<ScrollIntoView smooth="true" alignToTop="true" selector="#Logos">
+						<img className="img-fluid" src={require('../../Assets/Images/Logo_home.png')} />
+					</ScrollIntoView>
 				</div>
 				<div className="col-4 store-categories-1 m-0 p-0">
-					<img className="img-fluid" src={require('../../Assets/Images/Script_home.png')} />
+					<ScrollIntoView smooth="true" alignToTop="true" selector="#Scripts">
+						<img className="img-fluid" src={require('../../Assets/Images/Script_home.png')} />
+					</ScrollIntoView>
 				</div>
 				<div className="col-4 store-categories-2 m-0 p-0">
-					<img className="img-fluid" src={require('../../Assets/Images/Bg_Home.png')} />
+					<ScrollIntoView smooth="true" alignToTop="true" selector="#Backgrounds">
+						<img className="img-fluid" src={require('../../Assets/Images/Bg_Home.png')} />
+					</ScrollIntoView>
 				</div>
 				<div className="col-4 store-categories-2 m-0 p-0">
-					<img className="img-fluid" src={require('../../Assets/Images/Props_Home.png')} />
+					<ScrollIntoView smooth="true" alignToTop="true" selector="#Props">
+						<img className="img-fluid" src={require('../../Assets/Images/Props_Home.png')} />
+					</ScrollIntoView>
 				</div>
 				<div className="col-4 store-categories-2 m-0 p-0">
-					<img className="img-fluid" src={require('../../Assets/Images/Char_home.png')} />
+					<ScrollIntoView smooth="true" alignToTop="true" selector="#Characters">
+						<img className="img-fluid" src={require('../../Assets/Images/Char_home.png')} />
+					</ScrollIntoView>
 				</div>
 			</div>
 		</div>

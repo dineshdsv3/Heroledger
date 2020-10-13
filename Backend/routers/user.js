@@ -321,6 +321,16 @@ router.get('/getScriptAssets', async (req, res) => {
 	}).limit(4);
 });
 
+router.get('/getAllScripts', async (req, res) => {
+	Product.find({ productType: 'script', InStore: true }, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	});
+});
+
 router.get('/getLogoAssets', async (req, res) => {
 	Product.find({ productType: 'logo', InStore: true }, (err, data) => {
 		if (err) {
@@ -329,6 +339,16 @@ router.get('/getLogoAssets', async (req, res) => {
 			res.send({ message: 'Data Fetched', data });
 		}
 	}).limit(4);
+});
+
+router.get('/getAllLogos', async (req, res) => {
+	Product.find({ productType: 'logo', InStore: true }, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	});
 });
 
 router.get('/getBackgroundAssets', async (req, res) => {
@@ -341,6 +361,16 @@ router.get('/getBackgroundAssets', async (req, res) => {
 	}).limit(4);
 });
 
+router.get('/getAllBackgrounds', async (req, res) => {
+	Product.find({ productType: 'background', InStore: true }, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	});
+});
+
 router.get('/getAudioAssets', async (req, res) => {
 	Product.find({ productType: 'audio', InStore: true }, (err, data) => {
 		if (err) {
@@ -349,6 +379,16 @@ router.get('/getAudioAssets', async (req, res) => {
 			res.send({ message: 'Data Fetched', data });
 		}
 	}).limit(4);
+});
+
+router.get('/getAllAudios', async (req, res) => {
+	Product.find({ productType: 'audio', InStore: true }, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	});
 });
 
 router.get('/getVideoAssets', async (req, res) => {
@@ -361,6 +401,16 @@ router.get('/getVideoAssets', async (req, res) => {
 	}).limit(4);
 });
 
+router.get('/getAllVideos', async (req, res) => {
+	Product.find({ productType: 'video', InStore: true }, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	});
+});
+
 router.get('/getPropsAssets', async (req, res) => {
 	Product.find({ productType: 'props', InStore: true }, (err, data) => {
 		if (err) {
@@ -371,6 +421,16 @@ router.get('/getPropsAssets', async (req, res) => {
 	}).limit(4);
 });
 
+router.get('/getAllProps', async (req, res) => {
+	Product.find({ productType: 'props', InStore: true }, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	});
+});
+
 router.get('/getCharacterAssets', async (req, res) => {
 	Product.find({ productType: 'character', InStore: true }, (err, data) => {
 		if (err) {
@@ -379,6 +439,16 @@ router.get('/getCharacterAssets', async (req, res) => {
 			res.send({ message: 'Data Fetched', data });
 		}
 	}).limit(4);
+});
+
+router.get('/getAllCharacters', async (req, res) => {
+	Product.find({ productType: 'character', InStore: true }, (err, data) => {
+		if (err) {
+			res.status(404).send({ message: 'Error Not found Details', err });
+		} else {
+			res.send({ message: 'Data Fetched', data });
+		}
+	});
 });
 
 router.put('/purchaseProduct', async (req, res) => {

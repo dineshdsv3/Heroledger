@@ -16,6 +16,12 @@ import Welcome from './Pages/Home/Welcome';
 import ProductDescription from './Pages/ProductDescription';
 import Store from './Pages/Home/Store';
 import Profile from './Pages/Profile';
+import Characters from './Pages/Home/IndividualCategories/Characters';
+import Logos from './Pages/Home/IndividualCategories/Logos';
+import Scripts from './Pages/Home/IndividualCategories/Scripts';
+import Audios from './Pages/Home/IndividualCategories/Audios';
+import Videos from './Pages/Home/IndividualCategories/Videos';
+import Props from './Pages/Home/IndividualCategories/Props';
 
 const routing = (
 	<Router>
@@ -27,6 +33,12 @@ const routing = (
 			<PrivateRouter exact path="/Product" component={ProductDescription} />
 			<PrivateRouter exact path="/Store" component={Store} />
 			<PrivateRouter exact path="/profile" component={Profile} />
+			<PrivateRouter exact path="/characters" component={Characters} />
+			<PrivateRouter exact path="/scripts" component={Scripts} />
+			<PrivateRouter exact path="/logos" component={Logos} />
+			<PrivateRouter exact path="/audios" component={Audios} />
+			<PrivateRouter exact path="/videos" component={Videos} />
+			<PrivateRouter exact path="/props" component={Props} />
 		</div>
 	</Router>
 );
