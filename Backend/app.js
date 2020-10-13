@@ -3,7 +3,7 @@ const app = express();
 const bodyParser = require('body-parser');
 const http = require('http');
 const colors = require('colors');
-var server = http.Server(app);
+const server = http.Server(app);
 const userRouter = require('./routers/user');
 const port = process.env.PORT;
 const path = require('path');
@@ -23,5 +23,5 @@ app.use(function (req, res) {
 });
 
 app.listen(port, () => {
-	console.log(`Server running on port ${port}`);
+	console.log(`Server running on port ${port}`.yellow.bold);
 });
