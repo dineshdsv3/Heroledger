@@ -224,8 +224,11 @@ function ProductDescription() {
 						<a className="text-capitalize" href={`/Welcome?page=${prev}`}>
 							{prev}
 						</a>{' '}
-						=> <span className="text-capitalize">{product.productType}</span> =>{' '}
-						<span className="text-capitalize">{product.productName}</span>
+						=>{' '}
+						<a className="text-capitalize" href={`/${product.productType}s`}>
+							{product.productType}
+						</a>{' '}
+						=> <span className="text-capitalize">{product.productName}</span>
 					</div>
 					<div className="row">
 						<div className="col-md-5">{getImage(product.productType, product.image)}</div>

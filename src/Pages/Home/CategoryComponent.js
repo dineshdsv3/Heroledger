@@ -11,6 +11,7 @@ const CategoryComponent = ({ loader, data, user, header, image }) => {
 	const [account, setAccount] = useState('');
 	const [selectedProduct, setSelectedProduct] = useState({});
 	const [check, setCheck] = useState(false);
+
 	useEffect(() => {
 		loadContract();
 	}, []);
@@ -161,7 +162,7 @@ const CategoryComponent = ({ loader, data, user, header, image }) => {
 								<img
 									src={image}
 									className="card-img img-fluid"
-									// onClick={() => (window.location.href = `/Product?id=${ele.productId}&prev=store`)}
+									onClick={() => (window.location.href = `/${header}`)}
 								/>
 							</div>
 							<div className="col-9">

@@ -63,9 +63,9 @@ const StoreHome = () => {
 				</div>
 			</div>
 			<div className="row">
-				<div className="col-4 store-categories-1 m-0 p-0">
-					<ScrollIntoView smooth="true" alignToTop="true" selector="#Audios">
-						<img className="img-fluid" src={require('../../Assets/Images/AV_Home1.png')} />
+				<div className="col-4 store-categories-2 m-0 p-0">
+					<ScrollIntoView smooth="true" alignToTop="true" selector="#Backgrounds">
+						<img className="img-fluid" src={require('../../Assets/Images/Bg_Home.png')} />
 					</ScrollIntoView>
 				</div>
 				<div className="col-4 store-categories-1 m-0 p-0">
@@ -78,9 +78,9 @@ const StoreHome = () => {
 						<img className="img-fluid" src={require('../../Assets/Images/Script_home.png')} />
 					</ScrollIntoView>
 				</div>
-				<div className="col-4 store-categories-2 m-0 p-0">
-					<ScrollIntoView smooth="true" alignToTop="true" selector="#Backgrounds">
-						<img className="img-fluid" src={require('../../Assets/Images/Bg_Home.png')} />
+				<div className="col-4 store-categories-1 m-0 p-0">
+					<ScrollIntoView smooth="true" alignToTop="true" selector="#Audios">
+						<img className="img-fluid" src={require('../../Assets/Images/AV_Home1.png')} />
 					</ScrollIntoView>
 				</div>
 				<div className="col-4 store-categories-2 m-0 p-0">
