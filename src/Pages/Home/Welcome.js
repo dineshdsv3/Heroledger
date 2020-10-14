@@ -9,6 +9,8 @@ import Store from './Store';
 import Transactions from './Transactions';
 import Profile from '../Profile';
 import Heroledger from '../../blockchain/abis/heroledger.json';
+import publicIp from 'public-ip';
+import GoogleLogin from 'react-google-login';
 
 // Style is in welcome.scss
 
@@ -27,15 +29,32 @@ function Welcome() {
 			const networkData = Heroledger.networks[networkId];
 			if (networkData) {
 				const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
-				console.log(heroledger)
+				console.log(heroledger);
 				await localStorage.setItem('contract', JSON.stringify(heroledger));
-				
 			}
 		}
 		loadWeb3();
 		loadPage();
 		loadImage();
+		getLocation();
 	}, []);
+
+	const getLocation = async () => {
+		let ip = await publicIp.v4().then((res) => res);
+		// Used https://geolocation-db.com/dashboard# to get location by IP
+		axios.get(`https://geolocation-db.com/json/697de680-a737-11ea-9820-af05f4014d91/${ip}`).then((res) => {
+			console.log(res);
+			const location = {
+				latitude: res.data.latitude,
+				longitude: res.data.longitude,
+				state: res.data.state,
+				city: res.data.city,
+				countryName: res.data.country_name,
+				countryCode: res.data.country_code,
+			};
+			localStorage.setItem('location', JSON.stringify(location));
+		});
+	};
 
 	const user = JSON.parse(localStorage.getItem('user'));
 	const email = user.email;

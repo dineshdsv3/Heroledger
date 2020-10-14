@@ -178,7 +178,6 @@ router.get('/image/:filename', (req, res) => {
 
 router.post('/addProduct', async (req, res) => {
 	const productReq = req.body.product;
-	console.log(productReq);
 	const product = new Product({
 		productId: productReq.productId,
 		originatorEmail: productReq.originatorEmail,
@@ -196,12 +195,22 @@ router.post('/addProduct', async (req, res) => {
 		license: productReq.license,
 		fullDescription: productReq.fullDescription,
 		priceinUsd: productReq.priceinUsd,
+		latitude: productReq.latitude,
+		longitude: productReq.longitude,
+		state: productReq.state,
+		city: productReq.city,
+		countryName: productReq.countryName,
+		countyCode: productReq.countyCode,
 	});
-
-	product.save().then((result) => {
-		// console.log('Product Added');
-		res.send({ message: 'Product Added to DB' });
-	});
+	console.log(product);
+	try {
+		product.save().then((result) => {
+			// console.log('Product Added');
+			res.status(200).send({ message: 'Product Added to DB' });
+		});
+	} catch (error) {
+		res.status(500).send({ message: 'Failed adding product to DB' });
+	}
 });
 
 router.get('/getUserAssets', async (req, res) => {

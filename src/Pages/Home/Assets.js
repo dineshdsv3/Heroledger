@@ -17,6 +17,7 @@ const productOptions = [
 
 function Assets() {
 	const [user, setUser] = useState({});
+	const [location, setLocation] = useState({});
 	const [contract, setContract] = useState({});
 	const [submitLoader, setSubmitLoader] = useState(false);
 	const [assets, setAssets] = useState([]);
@@ -156,6 +157,9 @@ function Assets() {
 		setUser(user);
 		let email = user.email;
 
+		const location = await JSON.parse(localStorage.getItem('location'));
+		setLocation(location);
+
 		axios.get('/getUserAssets', { params: { email } }).then((res) => {
 			const assetData = res.data.data.map((ele) => {
 				return {
@@ -260,7 +264,8 @@ function Assets() {
 					window.location.href = '/Welcome?page=assets';
 				})
 				.catch((err) => {
-					alert('Product Registration failed. Please try again in few minutes');
+					alert('Product Registration failed. Please try again after few minutes');
+					window.location.href = '/Welcome?page=assets';
 				});
 		});
 	};
@@ -289,8 +294,14 @@ function Assets() {
 					license: blockchainData.license,
 					fullDescription: '',
 					priceinUsd: 0,
+					latitude: location.latitude,
+					longitude: location.longitude,
+					state: location.state,
+					city: location.city,
+					countryName: location.countryName,
+					countryCode: location.countryCode,
 				};
-				// console.log(product);
+				console.log(product);
 				// const upload = {
 				// 	id: product.productId,
 				// 	name: product.productName,

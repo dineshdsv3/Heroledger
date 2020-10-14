@@ -68,6 +68,18 @@ const productSchema = mongoose.Schema({
 		type: String,
 		trim: true,
 	},
+	state: {
+		type: String,
+		trim: true,
+	},
+	countryName: {
+		type: String,
+		trim: true,
+	},
+	countryCode: {
+		type: String,
+		trim: true,
+	},
 	image: {
 		type: String,
 		required: true,
@@ -79,13 +91,13 @@ const productSchema = mongoose.Schema({
 		type: Boolean,
 	},
 	licensor: {
-		type: String
+		type: String,
 	},
 	licensee: {
-		type: String
+		type: String,
 	},
 	licenseOwnerAddress: {
-		type: String
+		type: String,
 	},
 	licenseDescription: {
 		type: String,
@@ -107,7 +119,7 @@ const productSchema = mongoose.Schema({
 	},
 	term2: {
 		type: String,
-	}
+	},
 });
 
 module.exports = mongoose.model('product', productSchema);
