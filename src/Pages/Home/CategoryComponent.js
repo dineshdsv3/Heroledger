@@ -5,23 +5,29 @@ import Heroledger from '../../blockchain/abis/heroledger.json';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+import Fortmatic from 'fortmatic';
+import Web3 from 'web3';
+import axios from 'axios';
 
 const CategoryComponent = ({ loader, data, user, header, image }) => {
 	const [contract, setContract] = useState({});
 	const [account, setAccount] = useState('');
 	const [selectedProduct, setSelectedProduct] = useState({});
 	const [check, setCheck] = useState(false);
+	console.log(contract);
 
 	useEffect(() => {
 		loadContract();
 	}, []);
 
 	const loadContract = async () => {
+		let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
+		window.web3 = new Web3(fm.getProvider());
 		const web3 = window.web3;
-		const accounts = web3.eth.getAccounts();
+		const accounts = await web3.eth.getAccounts();
 		setAccount(accounts[0]);
-		const networkId = web3.eth.net.getId();
-		const networkData = Heroledger.networks[networkId];
+		const networkId = await web3.eth.net.getId();
+		const networkData = await Heroledger.networks[networkId];
 		if (networkData) {
 			const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
 			setContract(heroledger);
@@ -46,45 +52,44 @@ const CategoryComponent = ({ loader, data, user, header, image }) => {
 		// await contract.methods
 		// 	.purchaseProduct(productId, buyerEmail)
 		// 	.send({ from: account, value: price })
-		// .once('receipt', (receipt) => {
-		// 	const BCData = receipt.events.productPurchased;
-		// 	console.log(BCData);
-		// 	const returnData = receipt.events.productPurchased.returnValues;
-		// 	console.log(returnData);
-		// 	const updatedProduct = {
-		// 		productId: returnData.productId,
-		// 		ownerAddress: returnData.ownerAddress,
-		// 		ownerEmail: returnData.ownerEmail,
-		// 		inStore: returnData.inStore,
-		// 		timestamp: returnData.timestamp,
-		// 		transactionHash: BCData.transactionHash,
-		// 	};
-		// 	const transactionDetails = {
-		// 		productId: returnData.productId,
-		// 		productName: returnData.productName,
-		// 		transactionHash: BCData.transactionHash,
-		// 		transactionType: 'Purchase',
-		// 		previousOwner: returnData.seller,
-		// 		currentOwner: returnData.ownerEmail,
-		// 		purchaseDate: returnData.timestamp,
-		// 		amountinEth: returnData.amount,
-		// 		registrationDate: returnData.registrationDate,
-		// 	};
-		// 	console.log(transactionDetails);
-		// 	axios
-		// 		.put('/purchaseProduct', { updatedProduct })
-		// 		.then((res) => {
-		// 			axios.post('/addTransaction', { transactionDetails }).then((res) => {
-		// 				console.log(res);
-		// 				alert('Purchase Succesfful, Product added to your account');
-		// 				window.location.reload();
+		// 	.once('receipt', (receipt) => {
+		// 		const BCData = receipt.events.productPurchased;
+		// 		console.log(BCData);
+		// 		const returnData = receipt.events.productPurchased.returnValues;
+		// 		console.log(returnData);
+		// 		const updatedProduct = {
+		// 			productId: returnData.productId,
+		// 			ownerAddress: returnData.ownerAddress,
+		// 			ownerEmail: returnData.ownerEmail,
+		// 			inStore: returnData.inStore,
+		// 			timestamp: returnData.timestamp,
+		// 			transactionHash: BCData.transactionHash,
+		// 		};
+		// 		const transactionDetails = {
+		// 			productId: returnData.productId,
+		// 			productName: returnData.productName,
+		// 			transactionHash: BCData.transactionHash,
+		// 			transactionType: 'Purchase',
+		// 			previousOwner: returnData.seller,
+		// 			currentOwner: returnData.ownerEmail,
+		// 			purchaseDate: returnData.timestamp,
+		// 			amountinEth: returnData.amount,
+		// 			registrationDate: returnData.registrationDate,
+		// 		};
+		// 		console.log(transactionDetails);
+		// 		axios
+		// 			.put('/purchaseProduct', { updatedProduct })
+		// 			.then((res) => {
+		// 				axios.post('/addTransaction', { transactionDetails }).then((res) => {
+		// 					console.log(res);
+		// 					alert('Purchase Succesfful, Product added to your account');
+		// 					window.location.reload();
+		// 				});
+		// 			})
+		// 			.catch((error) => {
+		// 				alert('Purchase not successful, Please try again');
 		// 			});
-		// 		})
-		// 		.catch((error) => {
-		// 			alert('Purchase not successful, Please try again');
-		// 		});
-		// }
-		// );
+		// 	});
 	};
 
 	const purchaseLicense = async (productId, licensee, licenseFee, endDate) => {

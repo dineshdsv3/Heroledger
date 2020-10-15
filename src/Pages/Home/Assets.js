@@ -36,7 +36,7 @@ function Assets() {
 		price: 0,
 	});
 	const [thumbnail, setThumbnail] = useState('');
-	// console.log(thumbnail);
+	console.log(contract);
 
 	useEffect(() => {
 		// getUserDetails();

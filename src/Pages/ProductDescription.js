@@ -253,7 +253,7 @@ function ProductDescription() {
 									type="button"
 									className="btn btn-primary product-btn p-2"
 									onClick={() => purchaseProduct(product.productId, user.email, product.price)}
-									disabled={user.email == product.ownerEmail}
+									disabled={!(user.email !== product.ownerEmail && !product.inStore)}
 								>
 									Purchase
 								</button>
