@@ -10,11 +10,11 @@ import Transactions from './Transactions';
 import Profile from '../Profile';
 import Heroledger from '../../blockchain/abis/heroledger.json';
 import publicIp from 'public-ip';
-import GoogleLogin from 'react-google-login';
-
 // Style is in welcome.scss
 
 function Welcome() {
+	const [contract, setContract] = useState({});
+
 	useEffect(() => {
 		async function loadWeb3() {
 			let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
@@ -29,8 +29,7 @@ function Welcome() {
 			const networkData = Heroledger.networks[networkId];
 			if (networkData) {
 				const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
-				console.log(heroledger);
-				await localStorage.setItem('contract', JSON.stringify(heroledger));
+				setContract(heroledger);
 			}
 		}
 		loadWeb3();
@@ -43,7 +42,6 @@ function Welcome() {
 		let ip = await publicIp.v4().then((res) => res);
 		// Used https://geolocation-db.com/dashboard# to get location by IP
 		axios.get(`https://geolocation-db.com/json/697de680-a737-11ea-9820-af05f4014d91/${ip}`).then((res) => {
-			console.log(res);
 			const location = {
 				latitude: res.data.latitude,
 				longitude: res.data.longitude,
@@ -303,11 +301,11 @@ function Welcome() {
 			{toggle.dashboard ? (
 				<Dashboard />
 			) : toggle.assets ? (
-				<Assets />
+				<Assets contract={contract} />
 			) : toggle.licensing ? (
 				<Licensing />
 			) : toggle.store ? (
-				<Store />
+				<Store contract={contract} />
 			) : toggle.transactions ? (
 				<Transactions />
 			) : toggle.profile ? (

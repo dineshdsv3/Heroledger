@@ -41,9 +41,6 @@ function Assets() {
 	useEffect(() => {
 		// getUserDetails();
 		loadContract();
-	}, []);
-
-	useEffect(() => {
 		getUserDetails();
 	}, []);
 
@@ -221,9 +218,9 @@ function Assets() {
 									<i className="fa fa-pencil text-info" aria-hidden="true"></i>
 								</button>
 								&nbsp;
-								<button className="btn border-0" disabled onClick={() => deleteAsset(ele.productId)}>
-									<i className="fa fa-times text-danger" aria-hidden="true"></i>
-								</button>
+								<a className="btn border-0" download href={`/image/${ele.image}`}>
+									<i className="fa fa-download text-success" aria-hidden="true"></i>
+								</a>
 							</div>
 						),
 					};

@@ -202,7 +202,7 @@ router.post('/addProduct', async (req, res) => {
 		countryName: productReq.countryName,
 		countyCode: productReq.countyCode,
 	});
-	console.log(product);
+	// console.log(product);
 	try {
 		product.save().then((result) => {
 			// console.log('Product Added');
