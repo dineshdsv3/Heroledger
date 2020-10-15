@@ -6,10 +6,10 @@ import moment from 'moment';
 import Fortmatic from 'fortmatic';
 import Web3 from 'web3';
 
-const Audios = () => {
+const Backgrounds = () => {
 	const [contract, setContract] = useState({});
 	const [account, setAccount] = useState('');
-	const [audios, setAudios] = useState([]);
+	const [backgrounds, setBackgrounds] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState({});
 	const [product, setSelectedProduct] = useState({});
@@ -40,9 +40,8 @@ const Audios = () => {
 	const getAllCharacters = async () => {
 		const user = await JSON.parse(localStorage.getItem('user'));
 		setUser(user);
-		await axios.get('/getAllAudios').then((res) => {
-			setAudios(res.data.data);
-			console.log(res.data.data);
+		await axios.get('/getAllBackgrounds').then((res) => {
+			setBackgrounds(res.data.data);
 			setLoading(false);
 		});
 	};
@@ -170,7 +169,7 @@ const Audios = () => {
 		<div className="category-page bg-dark">
 			<Navbar />
 			<div className="mt-5 mx-2">
-				<h4 className="text-white mt-5 pt-5">Audios</h4>
+				<h4 className="text-white mt-5 pt-5">Backgrounds</h4>
 				<div>
 					<a href="/Welcome?page=dashboard">Dashbord</a> => &nbsp;
 					<a className="text-capitalize" href={`/Welcome?page=store`}>
@@ -183,7 +182,7 @@ const Audios = () => {
 					</div>
 				) : (
 					<div className="row mx-1">
-						{audios.map((ele, ind) => (
+						{backgrounds.map((ele, ind) => (
 							<div
 								className="col-sm-12 col-md-6 col-lg-4 col-xl-3 item justify-content-between"
 								key={ele + ind}
@@ -367,4 +366,4 @@ const Audios = () => {
 	);
 };
 
-export default Audios;
+export default Backgrounds;

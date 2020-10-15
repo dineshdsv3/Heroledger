@@ -5,6 +5,8 @@ import Heroledger from '../../blockchain/abis/heroledger.json';
 import moment from 'moment';
 import StoreHome from './StoreHome';
 import CategoryComponent from './CategoryComponent';
+import Fortmatic from 'fortmatic';
+import Web3 from 'web3';
 
 function Store() {
 	const [contract, setContract] = useState({});
@@ -26,14 +28,29 @@ function Store() {
 	const [propsLoader, setPropsLoader] = useState(true);
 	const [selectedProduct, setSelectedProduct] = useState({});
 	const [check, setCheck] = useState(false);
+	console.log(contract);
 
 	useEffect(() => {
 		loadContract();
 		getAllAssets();
 	}, []);
 
+	const loadContract = async () => {
+		let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
+		window.web3 = new Web3(fm.getProvider());
+		const web3 = window.web3;
+		const accounts = await web3.eth.getAccounts();
+		setAccount(accounts[0]);
+		const networkId = await web3.eth.net.getId();
+		const networkData = await Heroledger.networks[networkId];
+		if (networkData) {
+			const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
+			setContract(heroledger);
+		}
+	};
+
 	const getAllAssets = async () => {
-		const user = JSON.parse(localStorage.getItem('user'));
+		const user = await JSON.parse(localStorage.getItem('user'));
 		setUser(user);
 		// character
 		axios.get('/getCharacterAssets').then((res) => {
@@ -79,65 +96,50 @@ function Store() {
 		});
 	};
 
-	const loadContract = async () => {
-		const web3 = window.web3;
-		const accounts = web3.eth.getAccounts();
-		setAccount(accounts[0]);
-		const networkId = web3.eth.net.getId();
-		const networkData = Heroledger.networks[networkId];
-		if (networkData) {
-			const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
-			setContract(heroledger);
-			// const productCount = await heroledger.methods.productCount().call();
-			// setproductCount(productCount);
-		}
-	};
-
 	const purchaseProduct = async (productId, buyerEmail, price) => {
-		await loadContract();
 		console.log(productId, buyerEmail, price);
 		console.log(contract);
-		await contract.methods
-			.purchaseProduct(productId, buyerEmail)
-			.send({ from: account, value: price })
-			.once('receipt', (receipt) => {
-				const BCData = receipt.events.productPurchased;
-				console.log(BCData);
-				const returnData = receipt.events.productPurchased.returnValues;
-				console.log(returnData);
-				const updatedProduct = {
-					productId: returnData.productId,
-					ownerAddress: returnData.ownerAddress,
-					ownerEmail: returnData.ownerEmail,
-					inStore: returnData.inStore,
-					timestamp: returnData.timestamp,
-					transactionHash: BCData.transactionHash,
-				};
-				const transactionDetails = {
-					productId: returnData.productId,
-					productName: returnData.productName,
-					transactionHash: BCData.transactionHash,
-					transactionType: 'Purchase',
-					previousOwner: returnData.seller,
-					currentOwner: returnData.ownerEmail,
-					purchaseDate: returnData.timestamp,
-					amountinEth: returnData.amount,
-					registrationDate: returnData.registrationDate,
-				};
-				console.log(transactionDetails);
-				axios
-					.put('/purchaseProduct', { updatedProduct })
-					.then((res) => {
-						axios.post('/addTransaction', { transactionDetails }).then((res) => {
-							console.log(res);
-							alert('Purchase Succesfful, Product added to your account');
-							window.location.reload();
-						});
-					})
-					.catch((error) => {
-						alert('Purchase not successful, Please try again');
-					});
-			});
+		// await contract.methods
+		// 	.purchaseProduct(productId, buyerEmail)
+		// 	.send({ from: account, value: price })
+		// 	.once('receipt', (receipt) => {
+		// 		const BCData = receipt.events.productPurchased;
+		// 		console.log(BCData);
+		// 		const returnData = receipt.events.productPurchased.returnValues;
+		// 		console.log(returnData);
+		// 		const updatedProduct = {
+		// 			productId: returnData.productId,
+		// 			ownerAddress: returnData.ownerAddress,
+		// 			ownerEmail: returnData.ownerEmail,
+		// 			inStore: returnData.inStore,
+		// 			timestamp: returnData.timestamp,
+		// 			transactionHash: BCData.transactionHash,
+		// 		};
+		// 		const transactionDetails = {
+		// 			productId: returnData.productId,
+		// 			productName: returnData.productName,
+		// 			transactionHash: BCData.transactionHash,
+		// 			transactionType: 'Purchase',
+		// 			previousOwner: returnData.seller,
+		// 			currentOwner: returnData.ownerEmail,
+		// 			purchaseDate: returnData.timestamp,
+		// 			amountinEth: returnData.amount,
+		// 			registrationDate: returnData.registrationDate,
+		// 		};
+		// 		console.log(transactionDetails);
+		// 		axios
+		// 			.put('/purchaseProduct', { updatedProduct })
+		// 			.then((res) => {
+		// 				axios.post('/addTransaction', { transactionDetails }).then((res) => {
+		// 					console.log(res);
+		// 					alert('Purchase Succesfful, Product added to your account');
+		// 					window.location.reload();
+		// 				});
+		// 			})
+		// 			.catch((error) => {
+		// 				alert('Purchase not successful, Please try again');
+		// 			});
+		// 	});
 	};
 
 	const purchaseLicense = async (productId, licensee, licenseFee, endDate) => {
@@ -212,6 +214,12 @@ function Store() {
 						header={'Characters'}
 						image={require('../../Assets/Images/Shop_Char.png')}
 						contract={contract}
+						selectedProduct={selectedProduct}
+						setSelectedProduct={setSelectedProduct}
+						check={check}
+						setCheck={setCheck}
+						purchaseProduct={purchaseProduct}
+						purchaseLicense={purchaseLicense}
 					/>
 				</div>
 				{/* End of characters section */}

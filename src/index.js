@@ -22,6 +22,7 @@ import Scripts from './Pages/Home/IndividualCategories/Scripts';
 import Audios from './Pages/Home/IndividualCategories/Audios';
 import Videos from './Pages/Home/IndividualCategories/Videos';
 import Props from './Pages/Home/IndividualCategories/Props';
+import Backgrounds from './Pages/Home/IndividualCategories/Backgrounds';
 
 const routing = (
 	<Router>
@@ -39,6 +40,7 @@ const routing = (
 			<PrivateRouter exact path="/audios" component={Audios} />
 			<PrivateRouter exact path="/videos" component={Videos} />
 			<PrivateRouter exact path="/props" component={Props} />
+			<PrivateRouter exact path="/backgrounds" component={Backgrounds} />
 		</div>
 	</Router>
 );
