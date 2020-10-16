@@ -202,7 +202,7 @@ function Store() {
 	};
 
 	return (
-		<div>
+		<div className="store-bg">
 			<StoreHome />
 			<div className="col-xl-10 col-lg-9 col-md-8 store-page pt-5 ml-auto">
 				{/* Characters */}

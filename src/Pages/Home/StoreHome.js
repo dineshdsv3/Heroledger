@@ -80,7 +80,7 @@ const StoreHome = () => {
 				</div>
 				<div className="col-4 store-categories-1 m-0 p-0">
 					<ScrollIntoView smooth="true" alignToTop="true" selector="#Audios">
-						<img className="img-fluid" src={require('../../Assets/Images/AV_Home1.png')} />
+						<img className="img-fluid" src={require('../../Assets/Images/AV_Home.png')} />
 					</ScrollIntoView>
 				</div>
 				<div className="col-4 store-categories-2 m-0 p-0">
