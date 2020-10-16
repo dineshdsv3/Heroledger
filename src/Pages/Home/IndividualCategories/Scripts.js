@@ -169,7 +169,7 @@ const Scripts = () => {
 		<div className="category-page bg-dark">
 			<Navbar />
 			<div className="mt-5 mx-2">
-				<h4 className="text-white mt-5 pt-5">Scripts</h4>
+				<h4 className="text-white mt-5 pt-5">Scriptss</h4>
 				<div>
 					<a href="/Welcome?page=dashboard">Dashbord</a> => &nbsp;
 					<a className="text-capitalize" href={`/Welcome?page=store`}>

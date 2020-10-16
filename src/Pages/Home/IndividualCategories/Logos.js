@@ -111,9 +111,6 @@ const Logos = () => {
 		var currentTime = moment(d).format('X');
 
 		if (currentTime <= endDate) {
-			console.log(productId, licensee, licenseFee, currentTime);
-			console.log(contract);
-			console.log(contract.methods);
 			await contract.methods
 				.purchaseLicense(productId, licensee)
 				.send({ from: account, value: licenseFee })

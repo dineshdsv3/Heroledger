@@ -100,7 +100,7 @@ router.put('/logout', async (req, res) => {
 });
 
 router.post('/addTransaction', async (req, res) => {
-	console.log(req.body.transactionDetails);
+	// console.log(req.body.transactionDetails);
 	let transaction = new Transaction({
 		productId: req.body.transactionDetails.productId,
 		productName: req.body.transactionDetails.productName,
@@ -113,13 +113,13 @@ router.post('/addTransaction', async (req, res) => {
 		registrationDate: req.body.transactionDetails.registrationDate,
 	});
 	transaction.save().then((result) => {
-		console.log('Transaction Added');
+		// console.log('Transaction Added');
 		res.send({ message: 'Transaction Added to DB' });
 	});
 });
 
 router.post('/imageUpload', async (req, res) => {
-	console.log('image request triggered');
+	// console.log('image request triggered');
 	User.findOneAndUpdate(
 		{ email: req.body.updatedUser.email },
 		{ image: req.body.updatedUser.image },
@@ -150,7 +150,7 @@ router.get('/getImage', async (req, res) => {
 router.post('/addUpload', upload.single('image'), (req, res) => {
 	res.status(200).send({ file: req.file });
 	console.log('file upload successful');
-	console.log(req.file);
+	// console.log(req.file);
 });
 
 // Display Image
@@ -293,7 +293,7 @@ router.put('/updateProduct', async (req, res) => {
 });
 
 router.put('/addLicense', async (req, res) => {
-	console.log(req.body.license);
+	// console.log(req.body.license);
 	Product.findOneAndUpdate(
 		{ productId: req.body.license.productId },
 		{
@@ -461,8 +461,8 @@ router.get('/getAllCharacters', async (req, res) => {
 });
 
 router.put('/purchaseProduct', async (req, res) => {
-	console.log('Purchase Product triggered');
-	console.log(req.body.updatedProduct);
+	// console.log('Purchase Product triggered');
+	// console.log(req.body.updatedProduct);
 	Product.findOneAndUpdate(
 		{ productId: req.body.updatedProduct.productId },
 		{

@@ -119,9 +119,9 @@ function Licensing() {
 								<i className="fa fa-file" aria-hidden="true"></i>
 							</button>
 							&nbsp;
-							<button className="btn border-0 text-danger" disabled>
-								<i className="fa fa-times" aria-hidden="true"></i>
-							</button>
+							<a className="btn border-0">
+								<i className="fa fa-download text-success" aria-hidden="true"></i>
+							</a>
 						</div>
 					),
 				};
