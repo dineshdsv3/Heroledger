@@ -1,0 +1,85 @@
+[{
+  "_id": {
+    "$oid": "5f4298eb21014f2b3e1450d4"
+  },
+  "name": "Satya Dinesh",
+  "email": "dineshdsv3@gmail.com",
+  "password": "$2a$08$XOKBedCOc.IP8HuX2Mhovex81iAKEb2AuEjtxJYBOZE5xjWzHMmxG",
+  "latitude": "18.3003719",
+  "longitude": "83.8831502",
+  "tokens": [
+    {
+      "_id": {
+        "$oid": "5f89bd0aa2c23100161bf36e"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjQyOThlYjIxMDE0ZjJiM2UxNDUwZDQiLCJpYXQiOjE2MDI4NjIzNDZ9.4L0faFnmM0biJzN_X8TqZyCKE10ypqim_Rd-J3ACWl4"
+    },
+    {
+      "_id": {
+        "$oid": "5f8daf319865985e9938a7a6"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjQyOThlYjIxMDE0ZjJiM2UxNDUwZDQiLCJpYXQiOjE2MDMxMjA5NDV9.NqggYhtbSubcN8LoTYmeUNc7LbWFeAprK8Z5awDawAg"
+    }
+  ],
+  "__v": 192,
+  "image": "3a9a74424478db62837a872f72c80db6.jpg"
+},{
+  "_id": {
+    "$oid": "5f4b75c8d0bde00016f51f0b"
+  },
+  "name": "Dion Wilson",
+  "email": "prone2xtincion@live.com",
+  "password": "$2a$08$gTUQT/YCqq4ie3BLeipINONenuwi.xA7FCvKeE5u62ZAwshDMmWV2",
+  "latitude": "37.9667769",
+  "longitude": "-122.03310099999999",
+  "tokens": [],
+  "__v": 42
+},{
+  "_id": {
+    "$oid": "5f61e0b4e28d666abe028d6f"
+  },
+  "name": "Dinesh Danda",
+  "email": "dineshdsu3@gmail.com",
+  "password": "$2a$08$gfn/QVNoxnx636H7NSWTR.1Pey6oY5RXYwuTdZZokyPz7HdMnQAEO",
+  "latitude": "15.912899800000002",
+  "longitude": "79.7399875",
+  "tokens": [
+    {
+      "_id": {
+        "$oid": "5f7a09643872bf3e2fa1e7bb"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjYxZTBiNGUyOGQ2NjZhYmUwMjhkNmYiLCJpYXQiOjE2MDE4MzMzMTZ9.vN1x_gsWvJuFEnjom0eZJZXTlbkD3mcdaouObfpK1TI"
+    },
+    {
+      "_id": {
+        "$oid": "5f7ded1f30e217420350d253"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjYxZTBiNGUyOGQ2NjZhYmUwMjhkNmYiLCJpYXQiOjE2MDIwODgyMjN9.g9-wAPG9g0sWdnZLQD1K2i1HMYApxzoPPaWa7trbRZY"
+    },
+    {
+      "_id": {
+        "$oid": "5f85a73bb3796d7e75084534"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjYxZTBiNGUyOGQ2NjZhYmUwMjhkNmYiLCJpYXQiOjE2MDI1OTQ2MTl9.kUBnSow6CtNIstoRY-UtOYeOtQbwRr0lJTVmCNfEF3o"
+    },
+    {
+      "_id": {
+        "$oid": "5f88461a06acf566efe194b8"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjYxZTBiNGUyOGQ2NjZhYmUwMjhkNmYiLCJpYXQiOjE2MDI3NjYzNjF9.BJ0KOs6hG9OL_SezlifNoxMc73jCkfYqvqbRnyWA2VI"
+    },
+    {
+      "_id": {
+        "$oid": "5f898ab3d8d9631f070ee610"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjYxZTBiNGUyOGQ2NjZhYmUwMjhkNmYiLCJpYXQiOjE2MDI4NDk0NTl9.Gu43rFr_cPo6FYEzfLRJdcj7fscmHgOnnWVOZ8u8vTY"
+    },
+    {
+      "_id": {
+        "$oid": "5f89be3ca2c23100161bf372"
+      },
+      "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZjYxZTBiNGUyOGQ2NjZhYmUwMjhkNmYiLCJpYXQiOjE2MDI4NjI2NTJ9.nltokoJAOj-L72P0ZCq6cL8nV3WPd0XVVxp_VR-jqXQ"
+    }
+  ],
+  "__v": 20
+}]

@@ -10,6 +10,9 @@ import './Styles/main.scss';
 import PrivateRouter from './PrivateRoute';
 import * as serviceWorker from './serviceWorker';
 
+import { Provider } from 'react-redux';
+import ReduxStore from './Redux/Store';
+
 import PreLogin1 from './Pages/Pre-Login/PreLogin1';
 import Register from './Pages/Pre-Login/Register';
 import Welcome from './Pages/Home/Welcome';
@@ -25,24 +28,26 @@ import Props from './Pages/Home/IndividualCategories/Props';
 import Backgrounds from './Pages/Home/IndividualCategories/Backgrounds';
 
 const routing = (
-	<Router>
-		<div>
-			<Route exact path="/" component={PreLogin1} />
-			<Route exact path="/register" component={Register} />
+	<Provider store={ReduxStore}>
+		<Router>
+			<div>
+				<Route exact path="/" component={PreLogin1} />
+				<Route exact path="/register" component={Register} />
 
-			<PrivateRouter exact path="/Welcome" component={Welcome} />
-			<PrivateRouter exact path="/Product" component={ProductDescription} />
-			<PrivateRouter exact path="/Store" component={Store} />
-			<PrivateRouter exact path="/profile" component={Profile} />
-			<PrivateRouter exact path="/characters" component={Characters} />
-			<PrivateRouter exact path="/scripts" component={Scripts} />
-			<PrivateRouter exact path="/logos" component={Logos} />
-			<PrivateRouter exact path="/audios" component={Audios} />
-			<PrivateRouter exact path="/videos" component={Videos} />
-			<PrivateRouter exact path="/props" component={Props} />
-			<PrivateRouter exact path="/backgrounds" component={Backgrounds} />
-		</div>
-	</Router>
+				<PrivateRouter exact path="/Welcome" component={Welcome} />
+				<PrivateRouter exact path="/Product" component={ProductDescription} />
+				<PrivateRouter exact path="/Store" component={Store} />
+				<PrivateRouter exact path="/profile" component={Profile} />
+				<PrivateRouter exact path="/characters" component={Characters} />
+				<PrivateRouter exact path="/scripts" component={Scripts} />
+				<PrivateRouter exact path="/logos" component={Logos} />
+				<PrivateRouter exact path="/audios" component={Audios} />
+				<PrivateRouter exact path="/videos" component={Videos} />
+				<PrivateRouter exact path="/props" component={Props} />
+				<PrivateRouter exact path="/backgrounds" component={Backgrounds} />
+			</div>
+		</Router>
+	</Provider>
 );
 
 ReactDOM.render(routing, document.getElementById('root'));

@@ -9,7 +9,6 @@ function Dashboard() {
 		'https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json';
 
 	const user = JSON.parse(localStorage.getItem('user'));
-	console.log(user);
 	useEffect(() => {
 		const svg = select(svgRef.current);
 

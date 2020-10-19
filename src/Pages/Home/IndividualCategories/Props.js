@@ -5,9 +5,16 @@ import Heroledger from '../../../blockchain/abis/heroledger.json';
 import moment from 'moment';
 import Fortmatic from 'fortmatic';
 import Web3 from 'web3';
+import { useDispatch, useSelector } from 'react-redux';
+
+// const contract = contractState.state.methods;
 
 const Props = () => {
-	const [contract, setContract] = useState({});
+	const contract = useSelector((state) => state.contract);
+
+	console.log(contract.state);
+
+	// const [contract, setContract] = useState({});
 	const [account, setAccount] = useState('');
 	const [props, setProps] = useState([]);
 	const [loading, setLoading] = useState(true);
@@ -18,24 +25,24 @@ const Props = () => {
 
 	useEffect(() => {
 		getAllCharacters();
-		loadContract();
+		// loadContract();
 	}, []);
 
-	const loadContract = async () => {
-		let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
-		window.web3 = new Web3(fm.getProvider());
-		const web3 = window.web3;
-		const accounts = await web3.eth.getAccounts();
-		setAccount(accounts[0]);
-		const networkId = await web3.eth.net.getId();
-		const networkData = await Heroledger.networks[networkId];
-		if (networkData) {
-			const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
-			console.log('hello');
-			console.log(heroledger);
-			setContract(heroledger);
-		}
-	};
+	// const loadContract = async () => {
+	// 	let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
+	// 	window.web3 = new Web3(fm.getProvider());
+	// 	const web3 = window.web3;
+	// 	const accounts = await web3.eth.getAccounts();
+	// 	setAccount(accounts[0]);
+	// 	const networkId = await web3.eth.net.getId();
+	// 	const networkData = await Heroledger.networks[networkId];
+	// 	if (networkData) {
+	// 		const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
+	// 		console.log('hello');
+	// 		console.log(heroledger);
+	// 		setContract(heroledger);
+	// 	}
+	// };
 
 	const getAllCharacters = async () => {
 		const user = await JSON.parse(localStorage.getItem('user'));

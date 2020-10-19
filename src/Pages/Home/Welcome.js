@@ -10,29 +10,21 @@ import Transactions from './Transactions';
 import Profile from '../Profile';
 import Heroledger from '../../blockchain/abis/heroledger.json';
 import publicIp from 'public-ip';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContract } from '../../Redux/actions/contractAction';
 // Style is in welcome.scss
 
 function Welcome() {
-	const [contract, setContract] = useState({});
+	const dispatch = useDispatch();
+
+	const contract = useSelector((state) => state.contract);
+	// console.log(contract);
 
 	useEffect(() => {
-		async function loadWeb3() {
-			let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
-			window.web3 = new Web3(fm.getProvider());
-			// console.log(fm.getProvider().isFortmatic);
-			// console.log(window.web3.currentProvider.isFortmatic);
-			const web3 = window.web3;
-			// console.log(web3);
-			const accounts = await web3.eth.getAccounts();
-			localStorage.setItem('account', accounts[0]);
-			const networkId = await web3.eth.net.getId();
-			const networkData = Heroledger.networks[networkId];
-			if (networkData) {
-				const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
-				setContract(heroledger);
-			}
-		}
-		loadWeb3();
+		dispatch(getContract());
+	}, [dispatch]);
+
+	useEffect(() => {
 		loadPage();
 		loadImage();
 		getLocation();
