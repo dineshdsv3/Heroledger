@@ -1,48 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../../Components/Navbar';
 import axios from 'axios';
-import Heroledger from '../../../blockchain/abis/heroledger.json';
 import moment from 'moment';
-import Fortmatic from 'fortmatic';
-import Web3 from 'web3';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 // const contract = contractState.state.methods;
 
 const Props = () => {
 	const contract = useSelector((state) => state.contract);
-
-	console.log(contract.state);
-
-	// const [contract, setContract] = useState({});
-	const [account, setAccount] = useState('');
+	const account = localStorage.getItem('account');
+	// console.log(contract.state);
 	const [props, setProps] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState({});
 	const [product, setSelectedProduct] = useState({});
 	const [check, setCheck] = useState(false);
-	console.log(contract);
 
 	useEffect(() => {
 		getAllCharacters();
-		// loadContract();
 	}, []);
-
-	// const loadContract = async () => {
-	// 	let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
-	// 	window.web3 = new Web3(fm.getProvider());
-	// 	const web3 = window.web3;
-	// 	const accounts = await web3.eth.getAccounts();
-	// 	setAccount(accounts[0]);
-	// 	const networkId = await web3.eth.net.getId();
-	// 	const networkData = await Heroledger.networks[networkId];
-	// 	if (networkData) {
-	// 		const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
-	// 		console.log('hello');
-	// 		console.log(heroledger);
-	// 		setContract(heroledger);
-	// 	}
-	// };
 
 	const getAllCharacters = async () => {
 		const user = await JSON.parse(localStorage.getItem('user'));
@@ -67,8 +43,8 @@ const Props = () => {
 
 	const purchaseProduct = async (productId, buyerEmail, price) => {
 		console.log(productId, buyerEmail, price);
-
-		await contract.methods
+		console.log(contract.state.methods.purchaseProduct);
+		await contract.state.methods
 			.purchaseProduct(productId, buyerEmail)
 			.send({ from: account, value: price })
 			.once('receipt', (receipt) => {
@@ -121,7 +97,7 @@ const Props = () => {
 			console.log(productId, licensee, licenseFee, currentTime);
 			console.log(contract);
 			console.log(contract.methods);
-			await contract.methods
+			await contract.state.methods
 				.purchaseLicense(productId, licensee)
 				.send({ from: account, value: licenseFee })
 				.once('receipt', (receipt) => {

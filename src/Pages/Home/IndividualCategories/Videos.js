@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../../../Components/Navbar';
 import axios from 'axios';
-import Heroledger from '../../../blockchain/abis/heroledger.json';
 import moment from 'moment';
-import Fortmatic from 'fortmatic';
-import Web3 from 'web3';
+import { useSelector } from 'react-redux';
 
 const Videos = () => {
-	const [contract, setContract] = useState({});
-	const [account, setAccount] = useState('');
+	const contract = useSelector((state) => state.contract);
+	const account = localStorage.getItem('account');
 	const [videos, setVideos] = useState([]);
 	const [loading, setLoading] = useState(true);
 	const [user, setUser] = useState({});
@@ -18,24 +16,7 @@ const Videos = () => {
 
 	useEffect(() => {
 		getAllCharacters();
-		loadContract();
 	}, []);
-
-	const loadContract = async () => {
-		let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
-		window.web3 = new Web3(fm.getProvider());
-		const web3 = window.web3;
-		const accounts = await web3.eth.getAccounts();
-		setAccount(accounts[0]);
-		const networkId = await web3.eth.net.getId();
-		const networkData = await Heroledger.networks[networkId];
-		if (networkData) {
-			const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
-			console.log('hello');
-			console.log(heroledger);
-			setContract(heroledger);
-		}
-	};
 
 	const getAllCharacters = async () => {
 		const user = await JSON.parse(localStorage.getItem('user'));
@@ -61,7 +42,7 @@ const Videos = () => {
 	const purchaseProduct = async (productId, buyerEmail, price) => {
 		console.log(productId, buyerEmail, price);
 
-		await contract.methods
+		await contract.state.methods
 			.purchaseProduct(productId, buyerEmail)
 			.send({ from: account, value: price })
 			.once('receipt', (receipt) => {
@@ -111,10 +92,7 @@ const Videos = () => {
 		var currentTime = moment(d).format('X');
 
 		if (currentTime <= endDate) {
-			console.log(productId, licensee, licenseFee, currentTime);
-			console.log(contract);
-			console.log(contract.methods);
-			await contract.methods
+			await contract.state.methods
 				.purchaseLicense(productId, licensee)
 				.send({ from: account, value: licenseFee })
 				.once('receipt', (receipt) => {
@@ -133,9 +111,6 @@ const Videos = () => {
 						timestamp: returnData.timestamp,
 						ownerAddress: returnData.ownerAddress,
 					};
-					console.log('License Update purchased');
-					console.log(BCData);
-					console.log(returnData);
 					const transactionDetails = {
 						productId: returnData.productId,
 						productName: returnData.productName,

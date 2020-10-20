@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
+import { Link } from 'react-router-dom';
 import HorizontalLine from '../../Components/HorizontalLine';
 import Heroledger from '../../blockchain/abis/heroledger.json';
 import OwlCarousel from 'react-owl-carousel';
@@ -66,11 +67,9 @@ const CategoryComponent = ({
 					{data.length > 0 ? (
 						<div className="row">
 							<div className="col-3 store-card-header m-0 p-0">
-								<img
-									src={image}
-									className="card-img img-fluid"
-									onClick={() => (window.location.href = `/${header}`)}
-								/>
+								<Link to={`/${header}`}>
+									<img src={image} className="card-img img-fluid" />
+								</Link>
 							</div>
 							<div className="col-9">
 								<h5 className="mb-0 text-white">
