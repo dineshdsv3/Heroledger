@@ -4,6 +4,7 @@ import axios from 'axios';
 import Heroledger from '../../blockchain/abis/heroledger.json';
 import DataTable from 'react-data-table-component';
 import EditAssetModal from './EditAssetModal';
+import { Link } from 'react-router-dom';
 
 const productOptions = [
 	{ id: 0, name: 'Character', value: 'character', type: 'image' },
@@ -161,7 +162,7 @@ function Assets() {
 			const assetData = res.data.data.map((ele) => {
 				return {
 					image: getImage(ele.productType, ele.image),
-					name: <a href={`/Product?id=${ele.productId}&prev=assets`}>{ele.productName}</a>,
+					name: <Link to={`/Product?id=${ele.productId}&prev=assets`}>{ele.productName}</Link>,
 					hash: (
 						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
 							{ele.transactionHash}
@@ -199,7 +200,7 @@ function Assets() {
 				.map((ele) => {
 					return {
 						image: getImage(ele.productType, ele.image),
-						name: <a href={`/Product?id=${ele.productId}&prev=assets`}>{ele.productName}</a>,
+						name: <Link to={`/Product?id=${ele.productId}&prev=assets`}>{ele.productName}</Link>,
 						hash: (
 							<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
 								{ele.transactionHash}

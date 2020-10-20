@@ -1,15 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Heroledger from '../../blockchain/abis/heroledger.json';
 import moment from 'moment';
 import StoreHome from './StoreHome';
 import CategoryComponent from './CategoryComponent';
-import Fortmatic from 'fortmatic';
-import Web3 from 'web3';
 import { useDispatch, useSelector } from 'react-redux';
+import { getContract } from '../../Redux/actions/contractAction';
 
 function Store() {
-	const [account, setAccount] = useState('');
 	const [user, setUser] = useState({});
 	const [characterData, setCharacterData] = useState([]);
 	const [characterLoader, setCharacterLoader] = useState(true);
@@ -25,12 +22,16 @@ function Store() {
 	const [audioLoader, setAudioLoader] = useState(true);
 	const [propsData, setPropsData] = useState([]);
 	const [propsLoader, setPropsLoader] = useState(true);
-	const [selectedProduct, setSelectedProduct] = useState({});
+	const [selectedProduct, setSelectedProduct] = useState('');
 	const [check, setCheck] = useState(false);
 
 	const contract = useSelector((state) => state.contract);
-	// const contract = contractState.state.methods;
-	console.log(contract.state);
+	const account = localStorage.getItem('account');
+	const dispatch = useDispatch();
+
+	useEffect(() => {
+		dispatch(getContract());
+	}, [dispatch]);
 
 	useEffect(() => {
 		getAllAssets();
@@ -84,16 +85,16 @@ function Store() {
 	};
 
 	const purchaseProduct = async (productId, buyerEmail, price) => {
-		console.log(productId, buyerEmail, price);
-		console.log(contract);
+		console.log(productId, buyerEmail, price, account);
+		console.log(contract.state);
 		await contract.state.methods
 			.purchaseProduct(productId, buyerEmail)
 			.send({ from: account, value: price })
 			.once('receipt', (receipt) => {
 				const BCData = receipt.events.productPurchased;
-				console.log(BCData);
+				// console.log(BCData);
 				const returnData = receipt.events.productPurchased.returnValues;
-				console.log(returnData);
+				// console.log(returnData);
 				const updatedProduct = {
 					productId: returnData.productId,
 					ownerAddress: returnData.ownerAddress,
@@ -132,11 +133,11 @@ function Store() {
 	const purchaseLicense = async (productId, licensee, licenseFee, endDate) => {
 		var d = new Date();
 		var date = d.getDate();
-		console.log(date);
+		// console.log(date);
 		var currentTime = moment(d).format('X');
 
+		console.log(productId, licensee, licenseFee, currentTime);
 		if (currentTime <= endDate) {
-			console.log(productId, licensee, licenseFee, currentTime);
 			await contract.state.methods
 				.purchaseLicense(productId, licensee)
 				.send({ from: account, value: licenseFee })
@@ -200,7 +201,6 @@ function Store() {
 						user={user}
 						header={'Characters'}
 						image={require('../../Assets/Images/Shop_Char.png')}
-						contract={contract}
 						selectedProduct={selectedProduct}
 						setSelectedProduct={setSelectedProduct}
 						check={check}
@@ -218,6 +218,12 @@ function Store() {
 						user={user}
 						header={'Logos'}
 						image={require('../../Assets/Images/Shop_logo.png')}
+						selectedProduct={selectedProduct}
+						setSelectedProduct={setSelectedProduct}
+						check={check}
+						setCheck={setCheck}
+						purchaseProduct={purchaseProduct}
+						purchaseLicense={purchaseLicense}
 					/>
 				</div>
 				{/* End of Logos */}
@@ -230,6 +236,12 @@ function Store() {
 						user={user}
 						header={'Scripts'}
 						image={require('../../Assets/Images/Shop_script.png')}
+						selectedProduct={selectedProduct}
+						setSelectedProduct={setSelectedProduct}
+						check={check}
+						setCheck={setCheck}
+						purchaseProduct={purchaseProduct}
+						purchaseLicense={purchaseLicense}
 					/>
 				</div>
 				{/* End of Scripts */}
@@ -242,6 +254,12 @@ function Store() {
 						user={user}
 						header={'Backgrounds'}
 						image={require('../../Assets/Images/Shop_BG.png')}
+						selectedProduct={selectedProduct}
+						setSelectedProduct={setSelectedProduct}
+						check={check}
+						setCheck={setCheck}
+						purchaseProduct={purchaseProduct}
+						purchaseLicense={purchaseLicense}
 					/>
 				</div>
 				{/* End of Backgrounds */}
@@ -254,6 +272,12 @@ function Store() {
 						user={user}
 						header={'Audios'}
 						image={require('../../Assets/Images/Shop_AV.png')}
+						selectedProduct={selectedProduct}
+						setSelectedProduct={setSelectedProduct}
+						check={check}
+						setCheck={setCheck}
+						purchaseProduct={purchaseProduct}
+						purchaseLicense={purchaseLicense}
 					/>
 				</div>
 				{/* End of Audios */}
@@ -266,6 +290,12 @@ function Store() {
 						user={user}
 						header={'Videos'}
 						image={require('../../Assets/Images/Shop_AV.png')}
+						selectedProduct={selectedProduct}
+						setSelectedProduct={setSelectedProduct}
+						check={check}
+						setCheck={setCheck}
+						purchaseProduct={purchaseProduct}
+						purchaseLicense={purchaseLicense}
 					/>
 				</div>
 				{/* End of Videos */}
@@ -278,12 +308,18 @@ function Store() {
 						user={user}
 						header={'Props'}
 						image={require('../../Assets/Images/Shop_Props.png')}
+						selectedProduct={selectedProduct}
+						setSelectedProduct={setSelectedProduct}
+						check={check}
+						setCheck={setCheck}
+						purchaseProduct={purchaseProduct}
+						purchaseLicense={purchaseLicense}
 					/>
 				</div>
 				{/* End of Props */}
 
 				{/* Modal-licensing terms */}
-				{/* <div className="modal licensing-modal" id="licensing-terms">
+				<div className="modal licensing-modal" id="licensing-terms">
 					<div className="modal-dialog modal-lg" role="document">
 						<div className="modal-content">
 							<div className="modal-header">
@@ -390,8 +426,7 @@ function Store() {
 					</div>
 				</div>
 				{/* End of Modal licensing terms */}
-			</div>{' '}
-			*/}
+			</div>
 		</div>
 	);
 }

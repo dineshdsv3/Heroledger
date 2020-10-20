@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import GoogleLogin from 'react-google-login';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContract } from '../../Redux/actions/contractAction';
 // Styles are in pre-login1
 
 function PreLogin1() {
+	const dispatch = useDispatch();
+
+	const contract = useSelector((state) => state.contract);
+
 	const [userDetails, setUserDetails] = useState({
 		password: '',
 		email: '',
@@ -23,10 +29,8 @@ function PreLogin1() {
 			axios
 				.post(`/login`, { userDetails })
 				.then(async (res) => {
-					console.log(res);
-					// console.log(res.data.user);
 					if (res.error) {
-						console.log(res);
+						return new Error();
 					}
 					const userResponseDetails = {
 						name: res.data.user.name,
@@ -37,6 +41,7 @@ function PreLogin1() {
 					localStorage.setItem('token', res.data.token);
 					localStorage.setItem('user', JSON.stringify(userResponseDetails));
 					console.log('login successful');
+					dispatch(getContract());
 					alert('Log-in Successful');
 					setLoader(false);
 					window.location.href = '/Welcome?page=dashboard';

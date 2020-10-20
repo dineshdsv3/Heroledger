@@ -6,6 +6,7 @@ import Fortmatic from 'fortmatic';
 import moment from 'moment';
 
 import Web3 from 'web3';
+import { Link } from 'react-router-dom';
 
 function ProductDescription() {
 	const [contract, setContract] = useState({});
@@ -220,14 +221,14 @@ function ProductDescription() {
 			) : (
 				<div>
 					<div>
-						<a href="/Welcome?page=dashboard">Dashbord</a> => &nbsp;
-						<a className="text-capitalize" href={`/Welcome?page=${prev}`}>
+						<Link to="/Welcome?page=dashboard">Dashbord</Link> => &nbsp;
+						<Link className="text-capitalize" to={`/Welcome?page=${prev}`}>
 							{prev}
-						</a>{' '}
+						</Link>{' '}
 						=>{' '}
-						<a className="text-capitalize" href={`/${product.productType}s`}>
+						<Link className="text-capitalize" to={`/${product.productType}s`}>
 							{product.productType}
-						</a>{' '}
+						</Link>{' '}
 						=> <span className="text-capitalize">{product.productName}</span>
 					</div>
 					<div className="row">

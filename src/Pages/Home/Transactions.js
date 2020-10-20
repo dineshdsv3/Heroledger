@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DataTable from 'react-data-table-component';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 function Transactions() {
 	const [user, setUser] = useState({});
@@ -17,9 +18,8 @@ function Transactions() {
 		let email = user.email;
 		axios.get('/getTransactions', { params: { email } }).then((res) => {
 			const buyRecords = res.data.data.map((ele) => {
-				console.log(ele);
 				return {
-					name: <a href={`/Product?id=${ele.productId}&prev=transactions`}>{ele.productName}</a>,
+					name: <Link to={`/Product?id=${ele.productId}&prev=transactions`}>{ele.productName}</Link>,
 					hash: (
 						<a href={`https://kovan.etherscan.io/tx/${ele.transactionHash}`} target="_blank">
 							{ele.transactionHash}
@@ -40,9 +40,7 @@ function Transactions() {
 
 	const getPriceinUSD = (weiPrice) => {
 		let Eth = window.web3.utils.fromWei(weiPrice.toString(), 'Ether');
-		console.log(Eth);
 		const usdPrice = Eth / 0.0026;
-		console.log(usdPrice);
 		return usdPrice.toFixed(2);
 	};
 	const getDate = (timestamp) => {

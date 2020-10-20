@@ -18,32 +18,9 @@ const CategoryComponent = ({
 	image,
 	selectedProduct,
 	setSelectedProduct,
-	check,
-	setCheck,
 	purchaseProduct,
 	purchaseLicense,
 }) => {
-	const [contract, setContract] = useState({});
-	const [account, setAccount] = useState('');
-
-	// useEffect(() => {
-	// 	loadContract();
-	// }, []);
-
-	const loadContract = async () => {
-		let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
-		window.web3 = new Web3(fm.getProvider());
-		const web3 = window.web3;
-		const accounts = await web3.eth.getAccounts();
-		setAccount(accounts[0]);
-		const networkId = await web3.eth.net.getId();
-		const networkData = await Heroledger.networks[networkId];
-		if (networkData) {
-			const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
-			setContract(heroledger);
-		}
-	};
-
 	const getImage = (characterType, image) => {
 		if (characterType == 'audio') {
 			return require('../../Assets/Images/music.png');
@@ -79,7 +56,6 @@ const CategoryComponent = ({
 									{data.map((ele, ind) => (
 										<div className="row item justify-content-around" key={ele + ind}>
 											<div className="card store-card">
-												{/* {getImage(ele.characterType, ele.image)} */}
 												<img
 													src={`${getImage(ele.productType, ele.image)}`}
 													className="card-img-top store-card-image img-fluid pt-2 pb-1 px-2"

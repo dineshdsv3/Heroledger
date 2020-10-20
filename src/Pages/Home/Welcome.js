@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Fortmatic from 'fortmatic';
-import Web3 from 'web3';
 import Dashboard from './Dashboard';
 import Assets from './Assets';
 import Licensing from './Licensing';
 import Store from './Store';
 import Transactions from './Transactions';
 import Profile from '../Profile';
-import Heroledger from '../../blockchain/abis/heroledger.json';
 import publicIp from 'public-ip';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContract } from '../../Redux/actions/contractAction';
