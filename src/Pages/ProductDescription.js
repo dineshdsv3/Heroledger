@@ -1,26 +1,31 @@
 import React, { useState, useEffect } from 'react';
-import Heroledger from '../blockchain/abis/heroledger.json';
 import Navbar from '../Components/Navbar';
 import axios from 'axios';
-import Fortmatic from 'fortmatic';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContract } from '../Redux/actions/contractAction';
 
-import Web3 from 'web3';
 import { Link } from 'react-router-dom';
 
 function ProductDescription() {
-	const [contract, setContract] = useState({});
-	const [account, setAccount] = useState('');
+	const dispatch = useDispatch();
+
+	const contract = useSelector((state) => state.contract);
+	// console.log(contract);
+
+	useEffect(() => {
+		dispatch(getContract());
+	}, [dispatch]);
+	const account = localStorage.getItem('account');
+
 	const [product, setProduct] = useState([]);
 	const [user, setUser] = useState({});
 	const [check, setCheck] = useState(false);
 	const [prev, setPrev] = useState('');
 	const [loader, setLoader] = useState(true);
-	console.log(check);
 
 	useEffect(() => {
 		getProductDetails();
-		loadContract();
 	}, []);
 
 	const getProductDetails = async () => {
@@ -84,7 +89,7 @@ function ProductDescription() {
 
 	const purchaseProduct = async (productId, buyerEmail, price) => {
 		console.log(productId, buyerEmail, price);
-		await contract.methods
+		await contract.state.methods
 			.purchaseProduct(productId, buyerEmail)
 			.send({ from: account, value: price })
 			.once('receipt', (receipt) => {
@@ -135,7 +140,7 @@ function ProductDescription() {
 
 		if (currentTime <= endDate) {
 			console.log(productId, licensee, licenseFee, currentTime);
-			await contract.methods
+			await contract.state.methods
 				.purchaseLicense(productId, licensee)
 				.send({ from: account, value: licenseFee })
 				.once('receipt', (receipt) => {
@@ -183,21 +188,6 @@ function ProductDescription() {
 				});
 		} else {
 			alert('license expired for the selected product');
-		}
-	};
-
-	const loadContract = async () => {
-		let fm = new Fortmatic('pk_test_097457B513F0A02C', 'kovan');
-		window.web3 = new Web3(fm.getProvider());
-		const web3 = window.web3;
-		console.log(web3);
-		const accounts = await web3.eth.getAccounts();
-		setAccount(accounts[0]);
-		const networkId = await web3.eth.net.getId();
-		const networkData = Heroledger.networks[networkId];
-		if (networkData) {
-			const heroledger = await new web3.eth.Contract(Heroledger.abi, networkData.address);
-			setContract(heroledger);
 		}
 	};
 

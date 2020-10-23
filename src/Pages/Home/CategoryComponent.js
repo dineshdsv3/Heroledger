@@ -1,14 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import moment from 'moment';
 import { Link } from 'react-router-dom';
 import HorizontalLine from '../../Components/HorizontalLine';
-import Heroledger from '../../blockchain/abis/heroledger.json';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
-import Fortmatic from 'fortmatic';
-import Web3 from 'web3';
-import axios from 'axios';
 
 const CategoryComponent = ({
 	loader,

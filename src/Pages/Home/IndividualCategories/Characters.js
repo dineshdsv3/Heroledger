@@ -5,6 +5,8 @@ import moment from 'moment';
 import { useSelector } from 'react-redux';
 
 const Characters = () => {
+	// const dispatch = useDispatch();
+
 	const contract = useSelector((state) => state.contract);
 	const account = localStorage.getItem('account');
 	const [characters, setCharacters] = useState([]);
@@ -15,6 +17,7 @@ const Characters = () => {
 	console.log(contract);
 
 	useEffect(() => {
+		// dispatch(getContract())
 		getAllCharacters();
 	}, []);
 

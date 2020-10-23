@@ -9,6 +9,7 @@ import Profile from '../Profile';
 import publicIp from 'public-ip';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContract } from '../../Redux/actions/contractAction';
+import { Link } from 'react-router-dom';
 // Style is in welcome.scss
 
 function Welcome() {
